@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Register</title>
+    <script src="/scripts/_register.js"></script>
+    <script src="//kendo.cdn.telerik.com/2017.1.118/js/kendo.all.min.js"></script>
+  </head>
+  <body>
+    <div class="head">
+      <title>Dashboard :: Register</title>
+      <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+      <link rel="stylesheet" href="//cdn.kendostatic.com/2013.3.1119/styles/kendo.common.min.css">
+      <link rel="stylesheet" href="//cdn.kendostatic.com/2013.3.1119/styles/kendo.bootstrap.min.css">
+      <link rel="stylesheet" href="/stylesheets/login.css">
+    </div>
+    <div class="body">
+      <form id="register-form" method="POST" action="">
+        <div class="box">
+          <h1>REGISTER</h1>
+          <input type="hidden" name="_csrf" class="register">
+          <div class="form-group"></div>
+          <input type="text" name="fname" id="fname" placeholder="Enter first name" required data-required-msg="First name is required" class="register">
+          <div class="form-group"></div>
+          <input type="text" name="lname" id="lname" placeholder="Enter last name" required data-required-msg="Last name is required" class="register">
+          <div class="form-group"></div>
+          <input type="email" name="email" id="email" placeholder="Enter email" required data-required-msg="Email address is required" class="register">
+          <div class="form-group"></div>
+          <input type="text" name="username" id="username" placeholder="Enter username" required data-required-msg="Username is required" class="register">
+          <div class="form-group"></div>
+          <input type="password" name="password" id="password" placeholder="Enter password" required data-required-msg="Password is required" class="password">
+          <div class="form-group"></div>
+          <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm password" required data-required-msg="Confirmation is required" class="password">
+          <div class="form-group"></div>
+          <button id="register" type="submit" class="btn">Register</button><a href="/users/login">
+            <div id="btn2">Sign In</div></a>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
