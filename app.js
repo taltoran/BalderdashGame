@@ -40,7 +40,7 @@ var routes = require('./models/socket')(app.io);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+app.set('view engine', 'handlebars');
 
 
 // uncomment after placing your favicon in /public
