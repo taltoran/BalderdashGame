@@ -1,7 +1,49 @@
+
 doctype html
-html
+html(lang='en')
   head
-    title= title
+    title Chat It Up
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    //- bootstrap
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    //- stylesheets
     link(rel='stylesheet', href='/stylesheets/style.css')
+    //- script
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    //- Custom Fonts
+    link(href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800', rel='stylesheet', type='text/css')
+    link(href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic', rel='stylesheet', type='text/css')
   body
+    nav.navbar.navbar-inverse
+      .container-fluid
+        .navbar-header
+          a.navbar-brand(href='/') Project 2 : Group 3
+        ul.nav.navbar-nav
+          li
+            a(href='/chat') Chat
+        ul.nav.navbar-nav.navbar-nav-center
+          li
+            a User: 
+              span#myName= userName
+        ul.nav.navbar-nav.navbar-right
+          li
+            if userName == 'No User'
+              a(href='/users/login')
+                span.glyphicon.glyphicon-log-in
+                |  Login
+            else 
+              a(href='/logout')
+                span.glyphicon.glyphicon-log-out
+                |  Logout
+    .container
+
+    block scripts
+
     block content
+  
+
+   
+    
+    
