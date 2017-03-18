@@ -106,11 +106,11 @@ router.post('/Create', function(req, res, next) {
                 Game.find(function (err, games) 
                 {
                     if (err) return console.error(err);
-                    //console.log(games);
-                })
+                    console.log(games);
+                });
 
 
-                res.redirect('newgame');
+                res.redirect('Game');
             }
         }
     });
@@ -126,6 +126,57 @@ router.post('/Create', function(req, res, next) {
 router.get('/Join', function(req, res, next) {
     //console.log("i'm here in .get Join");
     res.render('Game/Join');
+});
+
+/* POST Join page. */
+router.post('/Join', function(req, res, next) {
+    //console.log("i'm here in .post .Join");
+    
+    console.log(req.body);
+
+    myInvalidCode='';
+
+    var isValid = true;
+
+    Game.findOne(
+    {
+        gameName: req.body.code
+    }, function(err, game) 
+    {
+        if (err) next(err);
+
+        if (game) 
+        {
+            console.log("gameName was found in database: " + game.gameName);
+            res.redirect('Game');    
+        }
+        else
+        {
+            console.log("gameName was not found in database");
+
+            Game.find(function (err, games) 
+            {
+                if (err) return console.error(err);
+                console.log(games);
+            });
+
+            myInvalidCode = "Game room code was not found, please try again"
+
+            res.render('Game/Join', {invalidCode: myInvalidCode});    
+        }
+    });
+
+    
+
+    
+
+    
+});
+
+/* GET Game page. */
+router.get('/Game', function(req, res, next) {
+    //console.log("i'm here in .get Game");
+    res.render('Game/Game');
 });
 
 
