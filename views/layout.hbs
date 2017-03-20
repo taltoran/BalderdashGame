@@ -22,7 +22,13 @@
           <li><a>User: <span id="myName"></span></a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+          <li>
+           <script type="text/javascript">
+            if(if userName == '')
+              <a href="/users/login"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+            else
+              <a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+          </script>
           </li>
         </ul>
       </div>

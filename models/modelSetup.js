@@ -37,3 +37,4 @@ var gamesSchema = new Schema({
 
 module.exports = mongoose.model('user', userSchema);
 module.exports = mongoose.model('questions', questionSchema);
+module.exports = mongoose.model('games', gamesSchema);

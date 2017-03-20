@@ -9,8 +9,7 @@ var utils = require('./utils');
 /* GET chat page. */
 router.get('/', utils.requireLogin, function(req, res, next) {
   res.render('window', {
-    userName: req.user.username,
-    csrfToken: req.csrfToken()
+    userName: req.user.username
   });
 });
 

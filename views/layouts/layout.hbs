@@ -2,10 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ title }}</title>
     <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic" rel="stylesheet" type="text/css">
 </head>
 <body>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header"><a href="/" class="navbar-brand">Project 3 : Group 4</a></div>
+        <ul class="nav navbar-nav">
+          <li><a href="/questions">Questions</a></li>
+        </ul>
+        <ul class="nav navbar-nav">
+          <li><a href="/join">Join Game</a></li>
+        </ul>
+        <ul class="nav navbar-nav">
+          <li><a href="/create">Create Game</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-nav-center">
+          <li>
+            <a id='user'>User: {{userName}}</a>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            {{# if loggedIn}}
+              <a href="/users/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+            {{ else }}              
+              <a href="/users/login"><span class="glyphicon glyphicon-log-in"></span> Login</a>              
+            {{/if}}          
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container"></div>
     {{{ body }}}
 </body>
 </html>

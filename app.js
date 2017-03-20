@@ -7,7 +7,8 @@ var bodyParser = require('body-parser');
 var hbs = require('express-handlebars');
 var mongoose = require('mongoose');
 
-var routes = require('./routes/index');
+var routes = require('./controllers/index');
+var users = require('./controllers/users');
 
 var app = express();
 
@@ -15,10 +16,11 @@ var app = express();
 app.engine('hbs', hbs({ extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layouts/' }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+
 //mongodb database connection setup
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/chatroom');
-require('./models/modelSetup')
+require('./models/schema')
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
 db.once('open', console.log.bind(console, 'connected to database'));
@@ -32,6 +34,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
+app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

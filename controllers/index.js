@@ -10,8 +10,18 @@ router.get('/', function(req, res, next) {
   if(req.user == null){
     req.user = noUser;
   }
+
+  var condition = false;
+  if(req.user.username == ''){
+    condition = false;
+  }
+  else{
+    conditon = true;
+  }
+
   res.render('index', { 
-    userName: req.user.username
+    userName: req.user.username,
+    loggedIn: condition
   });
 });
 
