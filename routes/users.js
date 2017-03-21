@@ -11,6 +11,7 @@ var router = express.Router();
 var noUser = {
   username: 'No User'
 };
+
 /* GET register page. */
 router.get('/register', function(req, res, next) {
   if(req.user == null){
@@ -38,7 +39,8 @@ router.post('/register', function(req, res, next) {
     username:   req.body.username,
     password:   hash,
   });
-  //console.log(user); 
+  
+  
   user.save(function(err) {
     //check for errors
     if (err) {
