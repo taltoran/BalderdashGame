@@ -1,0 +1,30 @@
+<script src="/scripts/_login.js"></script>
+<script src="//kendo.cdn.telerik.com/2017.1.118/js/kendo.all.min.js"></script>
+<div class="head">
+  <title>Dashboard :: Login</title>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdn.kendostatic.com/2013.3.1119/styles/kendo.common.min.css">
+  <link rel="stylesheet" href="//cdn.kendostatic.com/2013.3.1119/styles/kendo.bootstrap.min.css">
+  <link rel="stylesheet" href="/stylesheets/login.css">
+</div>
+<div class="body">
+  {{# if error}}
+      <p class='error'>ERROR: {{error}}</p>
+  {{/if}}
+  <form id="register-form" method="POST" action="">
+    <div class="box">
+      <h1>LOGIN</h1>
+      <div class="form-group"></div>
+      <input type="text" name="username" id="username" placeholder="Enter username" required data-required-msg="Username is required"
+        class="register">
+        <div class="form-group"></div>
+        <input type="password" name="password" id="password" placeholder="Enter password" required data-required-msg="Password is required"
+          class="password">
+          <div class="form-group"></div>
+          <button id="register" type="submit" class="btn">Login</button>
+          <a href="register">
+            <div id="btn2">Sign Up</div>
+          </a>
+    </div>
+  </form>
+</div>
