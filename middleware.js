@@ -1,5 +1,5 @@
 var models = require('./models/schema');
-var utils = require('./controllers/utils');
+var utils = require('./routes/utils');
 
 /**
  * authentication middleware for Express.

@@ -16,10 +16,10 @@ var middleware = require('./middleware');
 mongoose.connect('mongodb://localhost/chat');
 mongoose.Promise = Promise;
 
-// controllers
-var index = require('./controllers/index');
-var users = require('./controllers/users');
-var chat = require('./controllers/chat');
+// routes
+var index = require('./routes/index');
+var users = require('./routes/users');
+var chat = require('./routes/chat');
 
 // database connection
 var db = mongoose.connection;
