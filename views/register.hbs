@@ -10,6 +10,9 @@
   <link rel="stylesheet" href="/stylesheets/login.css">
 </div>
 <div class="body">
+  {{# if error}}
+      <p class='error'>ERROR: {{error}}</p>
+  {{/if}}
   <form id="register-form" method="POST" action="">
     <div class="box">
       <h1>REGISTER</h1>
