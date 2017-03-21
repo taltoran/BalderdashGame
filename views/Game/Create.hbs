@@ -1,0 +1,42 @@
+<script src="../js/createValidation.js" type="text/javascript"></script>
+
+<h1>Create a New Game</h1>
+
+<div class="creatediv">       
+  <div class="content" style="color:#ff5757"> <span class="value"></span></div>
+  <div id="create">
+    <h5 id="wc">Welcome!</h5>
+    <h5 id="ac">Please Create a New Game:</h5>
+    <div id="form_layout">
+      <form action="Create" method="post" id="myForm">
+            <label>Choose Number of Players:</label>
+            <input id="players" name="players" type="text"/>
+            <div class="content" style="color:#ff5757"><span class="invalidPlayers">{{invalidPlayers}}</span></div>
+        <p></p>
+            <label>Choose Number of Rounds:</label>
+            <input id="rounds" name="rounds" type="text"/>
+            <div class="content" style="color:#ff5757"><span class="invalidRounds">{{invalidRounds}}</span></div>
+        <p></p>
+            <label>Choose Category:</label>
+            <select name="categories">
+                <option value="ludicrousLaws">Ludicrous Laws</option>
+                <option value="definitions">Definitions</option>
+                <option value="famousPeople">Famous People</option>
+                <option value="acronyms">Acronyms</option>
+                <option value="movieHeadlines">Movie Headlines</option>
+                <option value="allCategories">All Categories</option>
+            </select>
+        <p></p>
+            <label>Choose Game Name (Optional):</label>
+            <input id="gameName" name="gameName" type="text"/>
+            <div class="content" style="color:#ff5757"><span class="invalidGameName">{{invalidGameName}}</span></div>
+        <p></p>
+        <div class="submitdiv">
+          <div class="center">
+            <input type="submit" id="submit" value="New Game"/>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
