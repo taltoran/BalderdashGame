@@ -7,8 +7,8 @@ var bodyParser = require('body-parser');
 var hbs = require('express-handlebars');
 var mongoose = require('mongoose');
 
-var routes = require('./controllers/index');
-var users = require('./controllers/users');
+var routes = require('./routes/index');
+var users = require('./routes/users');
 
 var app = express();
 
@@ -19,7 +19,7 @@ app.set('view engine', 'hbs');
 
 //mongodb database connection setup
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/chatroom');
+mongoose.connect('mongodb://localhost/chat');
 require('./models/schema')
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
