@@ -102,14 +102,14 @@ router.post('/Create', function(req, res, next) {
                     }
                 });
 
-
+/*
                 Game.find(function (err, games) 
                 {
                     if (err) return console.error(err);
                     console.log(games);
                 });
 
-
+*/
                 res.redirect('Game');
             }
         }
@@ -132,7 +132,7 @@ router.get('/Join', function(req, res, next) {
 router.post('/Join', function(req, res, next) {
     //console.log("i'm here in .post .Join");
     
-    console.log(req.body);
+    //console.log(req.body);
 
     myInvalidCode='';
 
@@ -147,18 +147,12 @@ router.post('/Join', function(req, res, next) {
 
         if (game) 
         {
-            console.log("gameName was found in database: " + game.gameName);
+           // console.log("gameName was found in database: " + game.gameName);
             res.redirect('Game');    
         }
         else
         {
-            console.log("gameName was not found in database");
-
-            Game.find(function (err, games) 
-            {
-                if (err) return console.error(err);
-                console.log(games);
-            });
+           // console.log("gameName was not found in database");
 
             myInvalidCode = "Game room code was not found, please try again"
 
