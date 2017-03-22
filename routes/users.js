@@ -17,8 +17,8 @@ router.get('/register', function(req, res, next) {
     req.user = noUser;
   }
   res.render('register', { 
-    userName: req.user.username,
-    csrfToken: req.csrfToken() });
+    userName: req.user.username
+  });
 });
 
 /**
@@ -63,8 +63,7 @@ router.get('/login', function(req, res, next) {
     req.user = noUser;
   }
   res.render('login', { 
-    userName: req.user.username,
-    csrfToken: req.csrfToken() 
+    userName: req.user.username
   });
 });
 
@@ -80,7 +79,7 @@ router.post('/login', function(req, res) {
     // console.log(user);
     // cant find user redirect to login with error msg displayed
     if (!user) {
-      res.render('login', { error: "Incorrect user name / password.", csrfToken: req.csrfToken() });
+      res.render('login', { error: "Incorrect user name / password."});
     } else {
       // if user found compare encrypted password to match
       if (bcrypt.compareSync(req.body.password, user.password)) {
@@ -89,13 +88,11 @@ router.post('/login', function(req, res) {
         res.redirect('/chat');
       } else {
         // if password is wrong redirecct to login with error msg displayed
-        res.render('login', { error: "Incorrect email / password.", csrfToken: req.csrfToken() });
+        res.render('login', { error: "Incorrect email / password." });
       }
     }
   });
 });
-
-
 
 
 module.exports = router;

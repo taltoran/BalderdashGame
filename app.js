@@ -63,7 +63,6 @@ app.use(session({
   duration: 30 * 60 * 1000,
   activeDuration: 5 * 60 * 1000,
 }));
-app.use(csrf());
 app.use(middleware.simpleAuth);
 
 
