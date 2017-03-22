@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
+var hbs = require('express-handlebars');
+
 // David: added for db validation
 var csrf = require('csurf');
 var session = require('client-sessions');
@@ -69,7 +71,7 @@ app.use(middleware.simpleAuth);
 app.use('/', index);
 app.use('/users', users);
 app.use('/chat', chat);
-app.use('Game', games);
+app.use('/Game', games);
 
 app.get('/logout', function(req, res) {
   req.session.reset();

@@ -19,6 +19,6 @@
     "morgan": "~1.7.0",
     "pug": "^2.0.0-beta11",
     "serve-favicon": "~2.3.2",
-    "socket.io": "^1.7.2"
+    "socket.io": "^1.7.3"
   }
 }
