@@ -13,13 +13,13 @@ router.get('/newgame', function(req, res, next) {
 
 /* GET Create page. */
 router.get('/Create', function(req, res, next) {
-    //console.log("i'm here in .get Create");
+    console.log("i'm here in .get Create");
     res.render('Game/Create');
 });
 
 /* POST Create page. */
 router.post('/Create', function(req, res, next) {
-    //console.log("i'm here in .post .Create");
+    console.log("i'm here in .post .Create");
     
 
     //console.log(req.body);
@@ -130,9 +130,9 @@ router.get('/Join', function(req, res, next) {
 
 /* POST Join page. */
 router.post('/Join', function(req, res, next) {
-    //console.log("i'm here in .post .Join");
+    console.log("i'm here in .post .Join");
     
-    //console.log(req.body);
+    console.log(req.body);
 
     myInvalidCode='';
 
@@ -147,12 +147,12 @@ router.post('/Join', function(req, res, next) {
 
         if (game) 
         {
-           // console.log("gameName was found in database: " + game.gameName);
+            console.log("gameName was found in database: " + game.gameName);
             res.redirect('Game');    
         }
         else
         {
-           // console.log("gameName was not found in database");
+            console.log("gameName was not found in database");
 
             myInvalidCode = "Game room code was not found, please try again"
 
@@ -170,8 +170,26 @@ router.post('/Join', function(req, res, next) {
 /* GET Game page. */
 router.get('/Game', function(req, res, next) {
     //console.log("i'm here in .get Game");
+
+    myQuestionOne = "this is my question one?";
+    myQuestionTwo = "this is my question two?";
+    myQuestionThree = "this is my question three?";
+    myQuestionFour = "this is my question four?";
+    myQuestionFive = "this is my question five?";
+    myQuestionSix = "this is my question six?";
+
+
+    res.render('Game/Game',{questionOne: myQuestionOne, questionTwo: myQuestionTwo, questionThree: myQuestionThree,
+        questionFour: myQuestionFour, questionFive: myQuestionFive, questionSix: myQuestionSix});
+});
+
+/* POST Game page. */
+router.post('/Game', function(req, res, next) {
+    //console.log("i'm here in .post .Game");
     res.render('Game/Game');
 });
+
+
 
 
 module.exports = router;
