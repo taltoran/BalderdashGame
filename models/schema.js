@@ -10,5 +10,13 @@ module.exports.User = mongoose.model('User', new schema({
   email:        { type: String, required: '{PATH} is required.', unique: true },
   username:     { type: String, required: '{PATH} is required.', unique: true },
   password:     { type: String, required: '{PATH} is required.' },
+  gameswon:     { type: String },
   data:         Object,
-}));
+}))
+
+module.exports.Question = mongoose.model('Question', new schema({
+    id:         ObjectId,
+    question:   { type: String, required: true, unique: true },
+    category:   { type: String, required: true },
+    answer:     { type: String, required: true }
+}))

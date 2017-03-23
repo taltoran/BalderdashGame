@@ -1,24 +1,24 @@
 var express = require('express');
 var bcrypt = require('bcryptjs');
-var schema = require('../models/modelSetup');
+var schema = require('../models/schema');
 var Game   = require('../models/game');
 var utils = require('./utils'); // has functions for creating user session
 var router = express.Router();
 
 /* GET newgame page. */
-router.get('/newgame', function(req, res, next) {
+router.get('/newgame', utils.requireLogin, function(req, res, next) {
     //console.log("i'm here in .get newgame");
     res.render('Game/newgame');
 });
 
 /* GET Create page. */
-router.get('/Create', function(req, res, next) {
+router.get('/Create', utils.requireLogin, function(req, res, next) {
     console.log("i'm here in .get Create");
     res.render('Game/Create');
 });
 
 /* POST Create page. */
-router.post('/Create', function(req, res, next) {
+router.post('/Create', utils.requireLogin, function(req, res, next) {
     console.log("i'm here in .post .Create");
     
 
@@ -123,7 +123,7 @@ router.post('/Create', function(req, res, next) {
 });
 
 /* GET Join page. */
-router.get('/Join', function(req, res, next) {
+router.get('/Join', utils.requireLogin, function(req, res, next) {
     //console.log("i'm here in .get Join");
     res.render('Game/Join');
 });
@@ -168,7 +168,7 @@ router.post('/Join', function(req, res, next) {
 });
 
 /* GET Game page. */
-router.get('/Game', function(req, res, next) {
+router.get('/Game', utils.requireLogin, function(req, res, next) {
     //console.log("i'm here in .get Game");
 
     myQuestionOne = "this is my question one?";

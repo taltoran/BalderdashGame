@@ -1,6 +1,6 @@
 var express = require('express');
 var bcrypt = require('bcryptjs');
-var schema = require('../models/modelSetup');
+var schema = require('../models/schema');
 var utils = require('./utils');   // has functions for creating user session
 var router = express.Router();
 
