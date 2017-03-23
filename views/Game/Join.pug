@@ -1,0 +1,19 @@
+script(src='../js/joinValidation.js', type='text/javascript')
+h1 Join a Game
+.joindiv
+  .content(style='color:#ff5757')
+    span.value
+  #join
+    h5#wc Welcome!
+    h5#ac Please Join a Game:
+    #form_layout
+      form#myForm(action='Join', method='post')
+        label Game Room Code:
+        |  
+        input#code(name='code', type='text')
+        .content(style='color:#ff5757')
+          span.invalidCode #{invalidCode}
+        p
+        .submitdiv
+          .center
+            input#submit(type='submit', value='Join Game')
