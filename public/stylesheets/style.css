@@ -1,19 +1,8 @@
-html {
-  height: 100%;
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-body {
-  /*NAV BAR STUFF HERE*/
-  background: url('../img/header.jpg') no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  min-height: 100%;
-  color: white;
-  margin: 0 auto, 0 auto
-}
-.navbar-nav-center { 
-  position: absolute;
-  left: 46%;
+a {
+  color: #00B7FF;
 }
