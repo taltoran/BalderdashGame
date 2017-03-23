@@ -1,5 +1,18 @@
-extends layout
-
+//extends layout
+head
+    title Boulderdash
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    //- bootstrap
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    //- stylesheets
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    //- script
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    //- Custom Fonts
+    link(href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800', rel='stylesheet', type='text/css')
+    link(href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic', rel='stylesheet', type='text/css')
 block content
   // Theme CSS
   link(href='/stylesheets/index.css', rel='stylesheet')
@@ -11,6 +24,6 @@ block content
     p game, the game will start. The reader picks a category, and then the question. All users put in a possible
     p answer to the question and then all players select from the list of answers for the question.
     p points are awarded by selecting the correct answer, and tricking other users into selecting your lie
+    a.btn.btn-primary.btn-xl(href='/users/login') Launch Application
     p Project 3 : Group 4
     p Group Members : Brady Adair, Bryan Winmill, Danny Xiong, David Mariluch, Glen Taylor, Morgan Dahl
-    a.btn.btn-primary.btn-xl(href='/users/login') ENTER

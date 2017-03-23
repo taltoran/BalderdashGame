@@ -52,7 +52,7 @@ router.post('/register', function(req, res, next) {
     } else {
       // if no errors we create a new user session and redirect to the chat
       utils.createUserSession(req, res, user);
-      res.redirect('/chat');
+      res.redirect('/menu');
     }
   });
 });
@@ -85,7 +85,7 @@ router.post('/login', function(req, res) {
       if (bcrypt.compareSync(req.body.password, user.password)) {
         // if input is validated create a new user session and redirect to chat
         utils.createUserSession(req, res, user);
-        res.redirect('/chat');
+        res.redirect('/menu');
       } else {
         // if password is wrong redirecct to login with error msg displayed
         res.render('login', { error: "Incorrect email / password." });
@@ -93,6 +93,13 @@ router.post('/login', function(req, res) {
     }
   });
 });
+
+router.post('/userProfile', function(req, res){
+  //pass the user credentials over to the userprofile page and display the info for the user
+  
+
+});
+
 
 
 module.exports = router;
