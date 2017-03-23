@@ -1,16 +1,5 @@
 extends layout
 
 block content
-  // Theme CSS
-  link(href='/stylesheets/index.css', rel='stylesheet')
-  div.body
-    h1#homeHeading BALDERDASH GAME
-    hr
-    p Users Users create a game room and other players join using the code used to create the room.
-    p The creator of the game selects the number of players for the game and when enough players have joined the
-    p game, the game will start. The reader picks a category, and then the question. All users put in a possible
-    p answer to the question and then all players select from the list of answers for the question.
-    p points are awarded by selecting the correct answer, and tricking other users into selecting your lie
-    p Project 3 : Group 4
-    p Group Members : Brady Adair, Bryan Winmill, Danny Xiong, David Mariluch, Glen Taylor, Morgan Dahl
-    a.btn.btn-primary.btn-xl(href='/users/login') ENTER
+  h1= title
+  p Welcome to #{title}
