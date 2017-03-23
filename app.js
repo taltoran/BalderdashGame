@@ -9,7 +9,6 @@ var mongoose = require('mongoose');
 var hbs = require('express-handlebars');
 
 // David: added for db validation
-var csrf = require('csurf');
 var session = require('client-sessions');
 var middleware = require('./middleware');
 
