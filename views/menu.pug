@@ -2,13 +2,14 @@ extends layout
 
 block content
   // Theme CSS
-  link(href='/stylesheets/index.css', rel='stylesheet')
+  link(href='/stylesheets/menu.css', rel='stylesheet')
   div.body
     h1#Heading Balderdash Menu
 
-    div.createGame
-        a.btn.btn-primary.btn-xl(href='/Game/Create') Create Game
-    div.joinGame
-        a.btn.btn-primary.btn-xl(href='/Game/Join') Join Game
+    div.gameOptions
+        div.createGame
+            a.btn.btn-primary.btn-xl(href='/Game/Create') Create Game
+        div.joinGame
+            a.btn.btn-primary.btn-xl(href='/Game/Join') Join Game
     div.questionManag
         a.btn.btn-primary.btn-xl(href='/Game/Questions') Question Management

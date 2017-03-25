@@ -21,6 +21,7 @@ router.get('/register', function(req, res, next) {
   });
 });
 
+
 /**
  * POST register from regisation form 
  * Create a new user account.
@@ -94,12 +95,24 @@ router.post('/login', function(req, res) {
   });
 });
 
-router.post('/userProfile', function(req, res){
-  //pass the user credentials over to the userprofile page and display the info for the user
-  
 
+/* GET profile page. */
+router.get('/profile', function(req, res, next) {
+  console.log('running get for user');
+  var currentUsers = schema.User.find()
+    .then(function(doc) {
+      res.render('profile', {users: currentUsers})
+    })
 });
 
+router.post('/profile', function(req, res){
+  console.log('running post for user');
+  //pass the user credentials over to the userprofile page and display the info for the user
+  schema.User.find({User: req.user}, function(req, user) {
+    if(err) res.json(err);
+    else res.render('profile',{user:username})
+  });
+});
 
-
+  
 module.exports = router;
