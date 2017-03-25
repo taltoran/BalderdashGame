@@ -170,7 +170,24 @@ router.post('/Join', function(req, res, next) {
 /* GET Game page. */
 router.get('/Game', utils.requireLogin, function(req, res, next) {
     //console.log("i'm here in .get Game");
+/*
+    myQuestionOne = "this is my question one?";
+    myQuestionTwo = "this is my question two?";
+    myQuestionThree = "this is my question three?";
+    myQuestionFour = "this is my question four?";
+    myQuestionFive = "this is my question five?";
+    myQuestionSix = "this is my question six?";
+*/
+    var myQuestionOne = ['this is my question one?', 'this is my question2?', 'this is my question3?', 'this is my question4?']
 
+
+    res.render('Game/Game',{questionOne: myQuestionOne });//, questionTwo: myQuestionTwo, questionThree: myQuestionThree,
+        //questionFour: myQuestionFour, questionFive: myQuestionFive, questionSix: myQuestionSix});
+});
+
+/* POST Game page. */
+router.post('/Game', function(req, res, next) {
+    //console.log("i'm here in .post .Game");
     myQuestionOne = "this is my question one?";
     myQuestionTwo = "this is my question two?";
     myQuestionThree = "this is my question three?";
@@ -178,15 +195,8 @@ router.get('/Game', utils.requireLogin, function(req, res, next) {
     myQuestionFive = "this is my question five?";
     myQuestionSix = "this is my question six?";
 
-
     res.render('Game/Game',{questionOne: myQuestionOne, questionTwo: myQuestionTwo, questionThree: myQuestionThree,
         questionFour: myQuestionFour, questionFive: myQuestionFive, questionSix: myQuestionSix});
-});
-
-/* POST Game page. */
-router.post('/Game', function(req, res, next) {
-    //console.log("i'm here in .post .Game");
-    res.render('Game/Game');
 });
 
 
