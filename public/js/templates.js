@@ -48,7 +48,8 @@ window.onload = function() {
         console.log("answer");
         console.log(inputAnswer.value);
         alert(inputAnswer.value);
-        answers.innerHTML = inputAnswer.value;
+        answers.innerHTML += inputAnswer.value.toLowerCase();
+        answers.innerHTML += '<br /><hr />';
         //chosenQuestion.innerHTML = sendAnswer.value;
     }
 };
