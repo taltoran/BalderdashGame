@@ -1,6 +1,31 @@
 window.onload = () => {
+//Brady stuff
+    var sendButton = document.getElementsByClassName("sendQuestion");
+    var chosenQuestion = document.getElementById("chosenQuestion");
+    //var sendAnswer = document.getElementById("sendAnswer");
+    var inputAnswer = document.getElementById("inputAnswer");
+    var answers = document.getElementById("answers");
+
+    for (var i = 0; i < sendButton.length; i++) {
+        sendButton[i].onclick = function() {
+                console.log("hello");
+                alert(this.name);
+                chosenQuestion.innerHTML = this.name;
+        }
+    }
+/*
+    sendAnswer.onclick = function() {
+        console.log("answer");
+        console.log(inputAnswer.value);
+        alert(inputAnswer.value);
+        answers.innerHTML += inputAnswer.value.toLowerCase();
+        answers.innerHTML += '<br /><hr />';
+    }
+    */
 
 
+
+//Not Brady's Stuff
     let user = document.getElementsByTagName('p')[0].textContent;
 
     let socket = io.connect();

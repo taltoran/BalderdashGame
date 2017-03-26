@@ -45,7 +45,7 @@ module.exports = (io) => {
                 stamp = stamp.substring(0, 5) + ' ' + stamp.substring(9, 11)
             }
             io.emit('message', {
-                username: 'Chat It Up', 
+                //username: 'Chat It Up', //Brady removed this
                 text: msg.username + ' has left Room', //Chat', //Brady changed this
                 time: stamp
             });
