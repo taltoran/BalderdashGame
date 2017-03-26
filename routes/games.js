@@ -181,7 +181,7 @@ router.get('/Game', utils.requireLogin, function(req, res, next) {
     var myQuestionOne = ['this is my question one?', 'this is my question2?', 'this is my question3?', 'this is my question4?']
 
 
-    res.render('Game/Game',{questionOne: myQuestionOne });//, questionTwo: myQuestionTwo, questionThree: myQuestionThree,
+    res.render('Game/Game',{questionOne: myQuestionOne, userName: req.user.username });//, questionTwo: myQuestionTwo, questionThree: myQuestionThree,
         //questionFour: myQuestionFour, questionFive: myQuestionFive, questionSix: myQuestionSix});
 });
 

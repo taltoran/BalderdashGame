@@ -8,6 +8,8 @@ window.onload = function() {
     var sendAnswer = document.getElementById("sendAnswer");
     var inputAnswer = document.getElementById("inputAnswer");
     var answers = document.getElementById("answers");
+
+    //let socket = io.connect();
     //var chat = document.getElementById("chat-messages");
     //var name = document.getElementById("myName");
     //field.focus();
@@ -34,6 +36,7 @@ window.onload = function() {
         sendButton[i].onclick = function() {
             // var text = field.value;
                 console.log("hello");
+                alert(this.name);
                 chosenQuestion.innerHTML = this.name;
                 //console.log(sendButton[0].name);
                 //socket.emit('send', { message: text});//, username: name.value });

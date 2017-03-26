@@ -7,10 +7,10 @@ module.exports = (io) => {
     io.on('connection', function (socket) {
         userCount++;
         console.log('a user connected ' + userCount + ' user(s)');
-        socket.emit('message',{
+        /*socket.emit('message',{
             username: 'Chat It Up', 
             text: 'Welcome to Chat', 
-        });
+        });*/ //Brady took out
         socket.on('send', function (msg) {
             var stamp = new Date().toLocaleTimeString();
             if(stamp.length == 10 ){
@@ -32,8 +32,8 @@ module.exports = (io) => {
                 stamp = stamp.substring(0, 5) + ' ' + stamp.substring(9, 11)
             }
             io.emit('message', {
-                username: 'Chat It Up', 
-                text: msg.username + ' has joined Chat', 
+                //username: 'Chat It Up', //Brady took this out
+                text: msg.username + ' has joined Room',//Chat',  //Brady changed this
                 time: stamp
             });
         });
@@ -46,7 +46,7 @@ module.exports = (io) => {
             }
             io.emit('message', {
                 username: 'Chat It Up', 
-                text: msg.username + ' has left Chat', 
+                text: msg.username + ' has left Room', //Chat', //Brady changed this
                 time: stamp
             });
         });
