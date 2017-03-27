@@ -12,13 +12,13 @@ app.set('view engine', 'handlebars');
 /* GET newgame page. */
 router.get('/', function(req, res, next) {
     //console.log("i'm here in .get newgame");
-    res.render('newgame');
+    res.render('newgame.hbs');
 });
 
 /* GET Create page. */
 router.get('/Create', function(req, res, next) {
     //console.log("i'm here in .get Create");
-    res.render('Create');
+    res.render('Create.hbs');
 });
 
 /* POST Create page. */
@@ -77,7 +77,7 @@ router.post('/Create',function(req, res, next) {
             //console.log("gameName was found in database: " + game.gameName);
             myGameName = "Game name already exists, please try again"
 
-            res.render('Create', {invalidPlayers: myPlayers, invalidRounds:myRounds, invalidGameName: myGameName});
+            res.render('Create.hbs', {invalidPlayers: myPlayers, invalidRounds:myRounds, invalidGameName: myGameName});
             
         }
         else
@@ -85,7 +85,7 @@ router.post('/Create',function(req, res, next) {
             if(!isValid)
             {
                 //console.log("i'm in !isValid");
-                res.render('Create', {invalidPlayers: myPlayers, invalidRounds:myRounds, invalidGameName: myGameName});
+                res.render('Create.hbs', {invalidPlayers: myPlayers, invalidRounds:myRounds, invalidGameName: myGameName});
             }
             else
             {
@@ -129,7 +129,7 @@ router.post('/Create',function(req, res, next) {
 /* GET Join page. */
 router.get('/Join', function(req, res, next) {
     //console.log("i'm here in .get Join");
-    res.render('Join');
+    res.render('Join.hbs');
 });
 
 /* POST Join page. */
@@ -152,7 +152,7 @@ router.post('/Join', function(req, res, next) {
         if (game) 
         {
            // console.log("gameName was found in database: " + game.gameName);
-            res.redirect('Game');    
+            res.redirect('/Game');    
         }
         else
         {
@@ -160,7 +160,7 @@ router.post('/Join', function(req, res, next) {
 
             myInvalidCode = "Game room code was not found, please try again"
 
-            res.render('Join', {invalidCode: myInvalidCode});    
+            res.render('Join.hbs', {invalidCode: myInvalidCode});    
         }
     });
 
@@ -174,7 +174,7 @@ router.post('/Join', function(req, res, next) {
 /* GET Game page. */
 router.get('/Game', function(req, res, next) {
     //console.log("i'm here in .get Game");
-    res.render('Game');
+    res.render('Game.hbs');
 });
 
 

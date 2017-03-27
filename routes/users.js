@@ -20,7 +20,7 @@ router.get('/register', function(req, res, next) {
   if(req.user == null){
     req.user = noUser;
   }
-  res.render('register', { 
+  res.render('register.pug', { 
     userName: req.user.username
   });
 });
@@ -49,10 +49,10 @@ router.post('/register', function(req, res, next) {
       var error = 'Something bad happened! Please try again.';
 
       if (err.code === 11000) {
-       res.render('register',{ error: "That email is already registered" });
+       res.render('register.pug',{ error: "That email is already registered" });
       }
       return next(err);
-      res.render('register', { error: error });
+      res.render('register.pug', { error: error });
     } else {
       // if no errors we create a new user session and redirect to the chat
       utils.createUserSession(req, res, user);
@@ -66,7 +66,7 @@ router.get('/login', function(req, res, next) {
   if(req.user == null){
     req.user = noUser;
   }
-  res.render('login', { 
+  res.render('login.pug', { 
     userName: req.user.username
   });
 });
@@ -83,7 +83,7 @@ router.post('/login', function(req, res) {
     // console.log(user);
     // cant find user redirect to login with error msg displayed
     if (!user) {
-      res.render('login', { error: "Incorrect user name / password."});
+      res.render('login.pug', { error: "Incorrect user name / password."});
     } else {
       // if user found compare encrypted password to match
       if (bcrypt.compareSync(req.body.password, user.password)) {
@@ -92,7 +92,7 @@ router.post('/login', function(req, res) {
         res.redirect('/chat');
       } else {
         // if password is wrong redirecct to login with error msg displayed
-        res.render('login', { error: "Incorrect email / password." });
+        res.render('login.pug', { error: "Incorrect email / password." });
       }
     }
   });
