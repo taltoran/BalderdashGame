@@ -2,6 +2,7 @@ var mongoose  = require('mongoose');
 var Schema    = mongoose.Schema;
 
 module.exports = mongoose.model('Game', new Schema({
+  //gameHost: String,
   playerNumber: String,
   rounds:  String,
   category: String,

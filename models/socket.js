@@ -6,6 +6,8 @@ module.exports = (io) => {
     // socket.io events
     io.on('connection', function (socket) {
         userCount++;
+
+        
         console.log('a user connected ' + userCount + ' user(s)');
         /*socket.emit('message',{
             username: 'Chat It Up', 
@@ -43,6 +45,14 @@ module.exports = (io) => {
                 text: msg.username + ' has joined Room',//Chat',  //Brady changed this
                 time: stamp
             });
+            //Brady added to check if it's the host, and set the host name
+            if (userCount == 1)
+            {
+                io.emit('setHost', { 
+                    username: msg.username,
+                    time: stamp
+                });
+            }
         });
         socket.on('leave', function (msg) {
             var stamp = new Date().toLocaleTimeString();

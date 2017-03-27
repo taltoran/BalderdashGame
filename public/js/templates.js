@@ -1,3 +1,9 @@
+//BRADY: I'M NOT EVEN USING THIS TEMPLATES.JS ANYMORE. LOOK AT _GAME.JS UNDER SCRIPTS
+
+
+
+
+
 window.onload = function() {
 
     //var messages = [];

@@ -8,20 +8,23 @@ window.onload = () => {
 
     var answerMessagesButton = document.getElementsByClassName("answerMessages");
 
+    
+
     for (var i = 0; i < answerMessagesButton.length; i++) {
         answerMessagesButton[i].onclick = function() {
-                alert(this.textContent);
+            alert(this.textContent);
         }
     }
     
 
     for (var i = 0; i < sendButton.length; i++) {
         sendButton[i].onclick = function() {
-                console.log("hello");
-                alert(this.name);
-                chosenQuestion.innerHTML = this.name;
+            console.log("hello");
+            alert(this.name);
+            chosenQuestion.innerHTML = this.name;
 
-                document.getElementById("elementId").style.display="none"
+            //testing the jquery hide() function in javascript
+            document.getElementById("gamediv").style.display="none";
         }
     }
 /*
@@ -45,6 +48,39 @@ window.onload = () => {
             username: document.getElementsByTagName('p')[0].textContent
         })
     };
+
+
+    socket.on('setHost', (msg)=>{
+        console.log('set hostname')
+        console.log(msg.username);
+        var $hosts, host;
+
+        $('.message_input').val('');
+        
+        $hosts = $('.hosts');
+        console.log('you: ' + user + 'sender: ' + msg.username)
+
+        host = new Host({
+            user: msg.username
+        });
+
+        document.getElementById("loadingScreen").style.display="none";
+        document.getElementById("gamediv").style.display="unset";
+        //document.getElementById("div.mainScreen").style.display="none";
+
+        host.draw();
+        return $hosts.animate({ scrollTop: $hosts.prop('scrollHeight') }, 300);
+    });
+
+
+
+
+
+
+
+
+
+
 
     socket.on('answerMessage', (msg)=>{
         console.log('get message')
@@ -167,6 +203,29 @@ window.onload = () => {
 
                 return setTimeout(function () {
                     return $answerMessage.addClass('appeared');
+                }, 0);
+            };
+        }(this);
+        return this;
+    };
+
+    //brady added this function, a modification of Message
+    var Host = function (arg) {
+        this.user = arg.user;//, this.time = arg.time, this.text = arg.text, this.message_side = arg.message_side;
+        this.draw = function (_this) {
+            return function () {
+                var $host;
+                $host = $($('.message_template').clone().html());
+                //$host.addClass(_this.message_side).find('.text').html(_this.text);
+                $host.addClass(_this.message_side).find('.user').html(_this.user);
+                //$answerMessage.addClass(_this.message_side).find('.time').html(_this.time);
+                //console.log('text: '+_this.text+' user: '+_this.user+' time: '+_this.time);
+                
+                //what brady added
+                $('.hosts').append($host);
+
+                return setTimeout(function () {
+                    return $host.addClass('appeared');
                 }, 0);
             };
         }(this);

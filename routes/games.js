@@ -180,8 +180,27 @@ router.get('/Game', utils.requireLogin, function(req, res, next) {
 */
     var myQuestionOne = ['this is my question one?', 'this is my question2?', 'this is my question3?', 'this is my question4?']
 
+/*
+    Game.findOne(
+    {
+        gameHost: "bradyadair"
+    }, function(err, game) 
+    {
+        if (err) next(err);
 
-    res.render('Game/Game',{questionOne: myQuestionOne, userName: req.user.username });//, questionTwo: myQuestionTwo, questionThree: myQuestionThree,
+        if (game) 
+        {
+            myIsHost = "yes you are the host";
+            console.log("you are the host are were found in the database: " + myIsHost);  
+        }
+        else
+        {
+            myIsHost = "no you are not the host";
+        }
+    });
+    */
+
+    res.render('Game/Game',{questionOne: myQuestionOne, userName: req.user.username});//, isHost: myIsHost });//, questionTwo: myQuestionTwo, questionThree: myQuestionThree,
         //questionFour: myQuestionFour, questionFive: myQuestionFive, questionSix: myQuestionSix});
 });
 
