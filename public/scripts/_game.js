@@ -220,6 +220,8 @@ window.onload = () => {
                 for (var i = 0; i < answerMessagesButton.length; i++) {
                     answerMessagesButton[i].onclick = function() {
                         alert(this.innerHTML);//textContent);//innerHTML);//textContent);//Content);
+                        $("#loadingScreen").show();
+                        $("div.gamediv3").hide();
                     }
                 }
 
