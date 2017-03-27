@@ -19,7 +19,10 @@ html(lang='en')
     nav.navbar.navbar-inverse
       .container-fluid
         .navbar-header
-          a.navbar-brand(href='/') Project 3 : Group 4
+            if userName == 'No User'
+              a.navbar-brand(href='/') Project 3 : Group 4
+            else 
+              a.navbar-brand(href='/games') Project 3 : Group 4
         ul.nav.navbar-nav
           li
             a(href='/questions') Questions
@@ -27,7 +30,7 @@ html(lang='en')
             a(href='/games/Create') Create Game
           li
             a(href='/games/Join') Join Game
-          li
+          //-li
             a User: 
               span#myName= userName
         //- ul.nav.navbar-nav.navbar-nav-center          

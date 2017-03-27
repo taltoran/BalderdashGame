@@ -12,13 +12,13 @@ var app = express();
 /* GET newgame page. */
 router.get('/', function(req, res, next) {
     //console.log("i'm here in .get newgame");
-    res.render('newgame.hbs');
+    res.render('newgame.pug');
 });
 
 /* GET Create page. */
 router.get('/Create', function(req, res, next) {
     //console.log("i'm here in .get Create");
-    res.render('Create.hbs');
+    res.render('Create.pug');
 });
 
 /* POST Create page. */
@@ -77,7 +77,7 @@ router.post('/Create',function(req, res, next) {
             //console.log("gameName was found in database: " + game.gameName);
             myGameName = "Game name already exists, please try again"
 
-            res.render('Create.hbs', {invalidPlayers: myPlayers, invalidRounds:myRounds, invalidGameName: myGameName});
+            res.render('Create.pug', {invalidPlayers: myPlayers, invalidRounds:myRounds, invalidGameName: myGameName});
             
         }
         else
@@ -85,7 +85,7 @@ router.post('/Create',function(req, res, next) {
             if(!isValid)
             {
                 //console.log("i'm in !isValid");
-                res.render('Create.hbs', {invalidPlayers: myPlayers, invalidRounds:myRounds, invalidGameName: myGameName});
+                res.render('Create.pug', {invalidPlayers: myPlayers, invalidRounds:myRounds, invalidGameName: myGameName});
             }
             else
             {
@@ -129,7 +129,7 @@ router.post('/Create',function(req, res, next) {
 /* GET Join page. */
 router.get('/Join', function(req, res, next) {
     //console.log("i'm here in .get Join");
-    res.render('Join.hbs');
+    res.render('Join.pug');
 });
 
 /* POST Join page. */
@@ -160,7 +160,7 @@ router.post('/Join', function(req, res, next) {
 
             myInvalidCode = "Game room code was not found, please try again"
 
-            res.render('Join.hbs', {invalidCode: myInvalidCode});    
+            res.render('Join.pug', {invalidCode: myInvalidCode});    
         }
     });
 
@@ -174,7 +174,7 @@ router.post('/Join', function(req, res, next) {
 /* GET Game page. */
 router.get('/Game', function(req, res, next) {
     //console.log("i'm here in .get Game");
-    res.render('Game.hbs');
+    res.render('/Game.hbs');
 });
 
 
