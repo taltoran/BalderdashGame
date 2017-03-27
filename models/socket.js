@@ -20,11 +20,13 @@ module.exports = (io) => {
             }else{
                 stamp = stamp.substring(0, 5) + ' ' + stamp.substring(9, 11)
             }
+            /*
             io.emit('message', { 
                 username: msg.username, 
                 text: msg.text, 
                 time: stamp
             });
+            */
             
             //Brady Added
             io.emit('answerMessage', { 
@@ -33,6 +35,16 @@ module.exports = (io) => {
                 time: stamp
             });
         });
+
+        socket.on('sendQuestion', function (msg) {
+            
+            //Brady Added
+            io.emit('questionMessage', { 
+                text: msg.text
+            });
+
+        });
+
         socket.on('join', function (msg) {
             var stamp = new Date().toLocaleTimeString();
             if(stamp.length == 10 ){
@@ -42,7 +54,7 @@ module.exports = (io) => {
             }
             io.emit('message', {
                 //username: 'Chat It Up', //Brady took this out
-                text: msg.username + ' has joined Room',//Chat',  //Brady changed this
+                text: msg.username + ' has joined Room: '+ userCount + ' Users are logged in.',//Chat',  //Brady changed this
                 time: stamp
             });
             //Brady added to check if it's the host, and set the host name
@@ -61,9 +73,11 @@ module.exports = (io) => {
             }else{
                 stamp = stamp.substring(0, 5) + ' ' + stamp.substring(9, 11)
             }
+            var tempUserCount = userCount -1;
             io.emit('message', {
                 //username: 'Chat It Up', //Brady removed this
-                text: msg.username + ' has left Room', //Chat', //Brady changed this
+                
+                text: msg.username + ' has left Room: '+ tempUserCount + ' Users are logged in.', //Chat', //Brady changed this
                 time: stamp
             });
         });

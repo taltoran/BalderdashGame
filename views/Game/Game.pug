@@ -43,7 +43,7 @@ block content
         }
 
     body
-      div(id="loadingScreen")
+      div#loadingScreen
         //.mainScreen
         div.loadScreen
           h1.centered Waiting For Players! (Room Join Code = CODE)
@@ -74,7 +74,7 @@ block content
   div
   .gamediv2
       div
-      p(id="chosenQuestion")
+      p#chosenQuestion
       //input#inputAnswer(placeholder='Type your answer')
       //input#sendAnswer(type='button', value='send')
       .chat_window
@@ -86,24 +86,31 @@ block content
             input#mes_input.message_input(placeholder='Type your message here...')
           #send_btn.send_message
             .icon
-            .text Send
+            button.text Send
 
   div
   .gamediv3
       div
-        //p(id="answers")
-          - var languages = {'php': -1, 'node': 2, 'ruby':1}
-        //div   
-        //each value, key in languages
-            p= key + ": " + value
-          .chat_window
-          .top_menu
-            .title Chat
-        div.answerMessages
-        
-        //- var myTry = bradyTry
-        //each value in myTry
-          button=value
+        h1#chosenQuestionTwo
+        h3 Choose Which Answer You Believe Is Correct
+              //p(id="answers")
+                - var languages = {'php': -1, 'node': 2, 'ruby':1}
+              //div   
+              //each value, key in languages
+                  p= key + ": " + value
+                .chat_window
+                .top_menu
+                  .title Chat
+        ul.myAnswers
+        .answerTemplate
+          .answerMessages
+            .answerMessage
+              .answerAvatar
+                .answerUserID
+                  .answerUser(style="visibility:hidden")
+                  .answerTime
+              .answerText_wrapper
+                button.answerText
         //ul.messages
         //div
 
@@ -124,10 +131,13 @@ block scripts
     $("#gamediv").hide();
     $("div.gamediv2").hide();
     $("div.gamediv3").hide();
+
+    //added for just a second
+    //$("#loadingScreen").hide();
     
 
     $(".sendQuestion").click(function(){
-      $("div.mainScreen").hide();
+      $("#loadingScreen").hide();
       $("div.gamediv2").show();
     });
 

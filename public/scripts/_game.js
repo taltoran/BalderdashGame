@@ -2,29 +2,28 @@ window.onload = () => {
 //Brady stuff
     var sendButton = document.getElementsByClassName("sendQuestion");
     var chosenQuestion = document.getElementById("chosenQuestion");
+    var chosenQuestionTwo = document.getElementById("chosenQuestionTwo");
     //var sendAnswer = document.getElementById("sendAnswer");
     var inputAnswer = document.getElementById("inputAnswer");
     var answers = document.getElementById("answers");
 
-    var answerMessagesButton = document.getElementsByClassName("answerMessages");
-
     
-
-    for (var i = 0; i < answerMessagesButton.length; i++) {
-        answerMessagesButton[i].onclick = function() {
-            alert(this.textContent);
-        }
-    }
+    
     
 
     for (var i = 0; i < sendButton.length; i++) {
         sendButton[i].onclick = function() {
             console.log("hello");
             alert(this.name);
-            chosenQuestion.innerHTML = this.name;
+
+            //chosenQuestion.innerHTML = this.name;
 
             //testing the jquery hide() function in javascript
             document.getElementById("gamediv").style.display="none";
+
+            socket.emit('sendQuestion', { 
+                text: this.name 
+            });
         }
     }
 /*
@@ -75,6 +74,28 @@ window.onload = () => {
 
 
 
+//host chooses the first question, and then everybody moves from loading screen to answer question
+    socket.on('questionMessage', (msg)=>{
+        console.log('get question message:')
+        console.log(msg.text);
+        
+        if (msg.text.trim() === '') {
+            return;
+        }
+
+        //adds to gamediv2
+        chosenQuestion.innerHTML = msg.text;
+
+        //adds to gamediv3
+        chosenQuestionTwo.innerHTML = msg.text;
+
+        $("#loadingScreen").hide();
+        $("div.gamediv2").show();
+    });
+
+
+
+
 
 
 
@@ -86,14 +107,17 @@ window.onload = () => {
         console.log('get message')
         console.log(msg.username);
         console.log(msg.text);
+
         //Brady added
+        
         var $answerMessages, answerMessage;
         if (msg.text.trim() === '') {
             return;
-        }
-        $('.message_input').val('');
+        } 
+        //$('.answerMessages').val(''); 
         //Bradyadded
-        $answerMessages = $('.answerMessages');
+        //$answerMessages = $('.answerMessages');
+        $answerMessages = $('.myAnswers');
         console.log('you: ' + user + 'sender: ' + msg.username)
         if(msg.username == user ){
             message_side = 'right';
@@ -105,15 +129,16 @@ window.onload = () => {
         answerMessage = new AnswerMessage({
             user: msg.username,
             time: msg.time,
-            text: "<button name="+msg.text.toLowerCase()+"\">" + msg.text.toLowerCase() +"</button>",
+            text: msg.text,//name="+msg.text.toLowerCase()+"\">" + msg.text.toLowerCase() +"</button></br>",
             message_side: message_side
         });
 
-        console.log("Brady: <button name=\""+msg.text.toLowerCase()+"\">" + msg.text.toLowerCase() +"</button>")
+        //console.log("Brady: <button name=\""+msg.text.toLowerCase()+"\">" + msg.text.toLowerCase() +"</button>")
 
         //bradyadded
         answerMessage.draw();
         return $answerMessages.animate({ scrollTop: $answerMessages.prop('scrollHeight') }, 300);
+    
     });
 
 
@@ -122,15 +147,13 @@ window.onload = () => {
         console.log(msg.username);
         console.log(msg.text);
         var $messages, message;
-        //Brady added
-        //var $answerMessages, answerMessage;
+
         if (msg.text.trim() === '') {
             return;
         }
         $('.message_input').val('');
         $messages = $('.messages');
-        //Bradyadded
-        //$answerMessages = $('.answerMessages');
+
         console.log('you: ' + user + 'sender: ' + msg.username)
         if(msg.username == user ){
             message_side = 'right';
@@ -144,22 +167,9 @@ window.onload = () => {
             text: msg.text,
             message_side: message_side
         });
-        //bradyadded
-        /*
-        answerMessage = new AnswerMessage({
-            user: '',//msg.username,
-            time: '',//msg.time,
-            text: msg.text+"distinction",
-            message_side: message_side
-        });
-        */
 
         message.draw();
-        //bradyadded
-        //answerMessage.draw();
-        //bradytookout then added
         return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
-        //return $answerMessages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
     });
 
     socket.emit('join', {
@@ -192,18 +202,31 @@ window.onload = () => {
         this.draw = function (_this) {
             return function () {
                 var $answerMessage;
-                $answerMessage = $($('.message_template').clone().html());
-                $answerMessage.addClass(_this.message_side).find('.text').html(_this.text);
-                //$answerMessage.addClass(_this.message_side).find('.user').html(_this.user);
+                //$answerMessage = $($('.answerMessages').clone().html());
+                $answerMessage = $($('.answerTemplate').clone().html());
+                $answerMessage.addClass(_this.text).find('.answerText').html(_this.text);
+                $answerMessage.addClass(_this.text).find('.answerUser').html(_this.user);
                 //$answerMessage.addClass(_this.message_side).find('.time').html(_this.time);
                 console.log('text: '+_this.text+' user: '+_this.user+' time: '+_this.time);
-                
+                console.log("here is my answermessage: ");
+                console.log($answerMessage);
                 //what brady added
-                $('.answerMessages').append($answerMessage);
+                //$('.answerMessages').append($answerMessage);
+                $('.myAnswers').append($answerMessage);
+
+                var answerMessagesButton = document.getElementsByClassName("answerText");
+
+
+                for (var i = 0; i < answerMessagesButton.length; i++) {
+                    answerMessagesButton[i].onclick = function() {
+                        alert(this.innerHTML);//textContent);//innerHTML);//textContent);//Content);
+                    }
+                }
 
                 return setTimeout(function () {
                     return $answerMessage.addClass('appeared');
                 }, 0);
+                
             };
         }(this);
         return this;
@@ -232,6 +255,32 @@ window.onload = () => {
         return this;
     };
 
+
+/*
+    //brady added this function, a modification of Message
+    var QuestionMessage = function (arg) {
+        this.text = arg.text;//, this.message_side = arg.message_side;
+        this.draw = function (_this) {
+            return function () {
+                var $questionMessage;
+                //$host = $($('.message_template').clone().html());
+                $questionMessage = $($('chosenQuestion').clone().html());
+                $questionMessage.addClass(_this.message_side).find('.text').html(_this.text);
+                
+                //this adds to gamediv2
+                $('chosenQuestion').append($questionMessage);
+                //this adds to gamediv3 
+                $('chosenQuestionTwo').append($questionMessage);
+
+                return setTimeout(function () {
+                    return $questionMessage.addClass('appeared');
+                }, 0);
+            };
+        }(this);
+        return this;
+    };
+    */
+
     $(function () {
         var getMessageText, message_side, sendMessage;
         message_side = 'right';
@@ -247,9 +296,31 @@ window.onload = () => {
                 text: text 
             });
         };
+
+/*
+        //Brady added
+        getQuestionText = function () {
+            var $message_input;
+            $message_input = $('.sendQuestion');
+            return $sendQuestion.val();
+        };
+
+        sendQuestion = function (text) {
+            console.log('sendQuestion: ' + text);
+            socket.emit('sendQuestion', { 
+                username: user,
+                text: text 
+            });
+            */
+        
+        
         $('.send_message').click(function (e) {
             return sendMessage(getMessageText());
         });
+
+        
+            
+        
         $('.message_input').keyup(function (e) {
             if (e.which === 13) {
                 //Brady took this out

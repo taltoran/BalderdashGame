@@ -85,7 +85,7 @@ router.post('/login', function(req, res) {
       if (bcrypt.compareSync(req.body.password, user.password)) {
         // if input is validated create a new user session and redirect to chat
         utils.createUserSession(req, res, user);
-        res.redirect('/chat');
+        res.redirect('/Game/Game');
       } else {
         // if password is wrong redirecct to login with error msg displayed
         res.render('login', { error: "Incorrect email / password." });
