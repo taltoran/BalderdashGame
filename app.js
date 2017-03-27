@@ -43,8 +43,8 @@ var routes = require('./models/socket')(app.io);
 
 // view engine setup
 app.engine('pug', cons.pug);
-//app.engine('handlebars', cons.handlebars);
-app.engine('handlebars', exphbs({ extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layouts/' }));
+app.engine('handlebars', cons.handlebars);
+app.engine('hbs', hbs({ extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layouts/' }));
 app.set('views', path.join(__dirname, 'views'));
 //app.set('view engine', 'pug');
 

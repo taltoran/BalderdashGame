@@ -6,7 +6,7 @@ var router = express.Router();
 var app = express();
 
 // assign swig engine to .hbs files
-app.set('view engine', 'pug');
+//app.set('view engine', 'pug');
 
 // /* GET users listing. */
 // router.get('/', function(req, res, next) {
@@ -56,7 +56,7 @@ router.post('/register', function(req, res, next) {
     } else {
       // if no errors we create a new user session and redirect to the chat
       utils.createUserSession(req, res, user);
-      res.redirect('/chat');
+      res.redirect('/games');
     }
   });
 });
@@ -89,7 +89,7 @@ router.post('/login', function(req, res) {
       if (bcrypt.compareSync(req.body.password, user.password)) {
         // if input is validated create a new user session and redirect to chat
         utils.createUserSession(req, res, user);
-        res.redirect('/chat');
+        res.redirect('/games');
       } else {
         // if password is wrong redirecct to login with error msg displayed
         res.render('login.pug', { error: "Incorrect email / password." });

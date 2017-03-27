@@ -7,7 +7,7 @@ var router = express.Router();
 var app = express();
 
 // assign swig engine to .hbs files
-app.set('view engine', 'handlebars');
+//app.set('view engine', 'handlebars');
 
 /* GET newgame page. */
 router.get('/', function(req, res, next) {

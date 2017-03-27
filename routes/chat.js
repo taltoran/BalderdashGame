@@ -8,7 +8,7 @@ var utils = require('./utils');
 
 /* GET chat page. */
 router.get('/', utils.requireLogin, function(req, res, next) {
-  res.render('window', {
+  res.render('window.pug', {
     userName: req.user.username
   });
 });
