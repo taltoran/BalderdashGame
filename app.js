@@ -23,6 +23,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var chat = require('./routes/chat');
 var games = require('./routes/games');
+var questions = require('./routes/questions');
 
 // database connection
 var db = mongoose.connection;
@@ -46,8 +47,6 @@ app.engine('pug', cons.pug);
 app.engine('handlebars', cons.handlebars);
 app.engine('hbs', hbs({ extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layouts/' }));
 app.set('views', path.join(__dirname, 'views'));
-//app.set('view engine', 'pug');
-
 
 
 // uncomment after placing your favicon in /public
@@ -75,6 +74,7 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/chat', chat);
 app.use('/games', games);
+app.use('/questions', questions);
 
 
 app.get('/logout', function(req, res) {

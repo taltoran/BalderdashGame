@@ -4,19 +4,20 @@ var schema = require('../models/schema');
 var Game   = require('../models/game');
 var utils = require('./utils'); // has functions for creating user session
 var router = express.Router();
-var app = express();
 
 // assign swig engine to .hbs files
 //app.set('view engine', 'handlebars');
 
 /* GET newgame page. */
-router.get('/', function(req, res, next) {
+router.get('/', utils.requireLogin, function(req, res, next) {
     //console.log("i'm here in .get newgame");
-    res.render('newgame.pug');
+    res.render('newgame.pug', {
+        userName: req.user.username
+    });
 });
 
 /* GET Create page. */
-router.get('/Create', function(req, res, next) {
+router.get('/Create', utils.requireLogin,  function(req, res, next) {
     //console.log("i'm here in .get Create");
     res.render('Create.pug');
 });
@@ -114,7 +115,7 @@ router.post('/Create',function(req, res, next) {
                 });
 
 */
-                res.redirect('Game');
+                res.redirect('/games/Game');
             }
         }
     });
@@ -127,7 +128,7 @@ router.post('/Create',function(req, res, next) {
 });
 
 /* GET Join page. */
-router.get('/Join', function(req, res, next) {
+router.get('/Join', utils.requireLogin, function(req, res, next) {
     //console.log("i'm here in .get Join");
     res.render('Join.pug');
 });
@@ -152,7 +153,7 @@ router.post('/Join', function(req, res, next) {
         if (game) 
         {
            // console.log("gameName was found in database: " + game.gameName);
-            res.redirect('/Game');    
+            res.redirect('/games/Game');    
         }
         else
         {
@@ -172,9 +173,9 @@ router.post('/Join', function(req, res, next) {
 });
 
 /* GET Game page. */
-router.get('/Game', function(req, res, next) {
+router.get('/Game', utils.requireLogin, function(req, res, next) {
     //console.log("i'm here in .get Game");
-    res.render('/Game.hbs');
+    res.render('Game.hbs');
 });
 
 

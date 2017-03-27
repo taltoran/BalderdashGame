@@ -3,10 +3,6 @@ var bcrypt = require('bcryptjs');
 var schema = require('../models/schema');
 var utils = require('./utils');   // has functions for creating user session
 var router = express.Router();
-var app = express();
-
-// assign swig engine to .hbs files
-//app.set('view engine', 'pug');
 
 // /* GET users listing. */
 // router.get('/', function(req, res, next) {
