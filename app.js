@@ -43,8 +43,9 @@ var routes = require('./models/socket')(app.io);
 
 // view engine setup
 app.engine('pug', cons.pug);
-app.set('view engine', 'pug');
+app.engine('handlebars', cons.handlebars);
 app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 
 
 

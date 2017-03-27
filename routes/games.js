@@ -1,18 +1,16 @@
 var express = require('express');
 var bcrypt = require('bcryptjs');
-var schema = require('../models/modelSetup');
+var schema = require('../models/schema');
 var Game   = require('../models/game');
 var utils = require('./utils'); // has functions for creating user session
 var router = express.Router();
-var cons = require('consolidate');
 var app = express();
 
 // assign swig engine to .hbs files
-app.engine('hbs', cons.hbs);
-app.set('view engine', 'hbs')
+app.set('view engine', 'handlebars');
 
 /* GET newgame page. */
-router.get('/newgame', function(req, res, next) {
+router.get('/', function(req, res, next) {
     //console.log("i'm here in .get newgame");
     res.render('newgame');
 });
