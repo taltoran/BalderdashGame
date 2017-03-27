@@ -6,11 +6,22 @@ window.onload = () => {
     var inputAnswer = document.getElementById("inputAnswer");
     var answers = document.getElementById("answers");
 
+    var answerMessagesButton = document.getElementsByClassName("answerMessages");
+
+    for (var i = 0; i < answerMessagesButton.length; i++) {
+        answerMessagesButton[i].onclick = function() {
+                alert(this.textContent);
+        }
+    }
+    
+
     for (var i = 0; i < sendButton.length; i++) {
         sendButton[i].onclick = function() {
                 console.log("hello");
                 alert(this.name);
                 chosenQuestion.innerHTML = this.name;
+
+                document.getElementById("elementId").style.display="none"
         }
     }
 /*
@@ -34,14 +45,56 @@ window.onload = () => {
             username: document.getElementsByTagName('p')[0].textContent
         })
     };
+
+    socket.on('answerMessage', (msg)=>{
+        console.log('get message')
+        console.log(msg.username);
+        console.log(msg.text);
+        //Brady added
+        var $answerMessages, answerMessage;
+        if (msg.text.trim() === '') {
+            return;
+        }
+        $('.message_input').val('');
+        //Bradyadded
+        $answerMessages = $('.answerMessages');
+        console.log('you: ' + user + 'sender: ' + msg.username)
+        if(msg.username == user ){
+            message_side = 'right';
+        }else{
+            message_side = 'left';
+        }
+
+        //bradyadded
+        answerMessage = new AnswerMessage({
+            user: msg.username,
+            time: msg.time,
+            text: "<button name="+msg.text.toLowerCase()+"\">" + msg.text.toLowerCase() +"</button>",
+            message_side: message_side
+        });
+
+        console.log("Brady: <button name=\""+msg.text.toLowerCase()+"\">" + msg.text.toLowerCase() +"</button>")
+
+        //bradyadded
+        answerMessage.draw();
+        return $answerMessages.animate({ scrollTop: $answerMessages.prop('scrollHeight') }, 300);
+    });
+
+
     socket.on('message', (msg)=>{
         console.log('get message')
+        console.log(msg.username);
+        console.log(msg.text);
         var $messages, message;
+        //Brady added
+        //var $answerMessages, answerMessage;
         if (msg.text.trim() === '') {
             return;
         }
         $('.message_input').val('');
         $messages = $('.messages');
+        //Bradyadded
+        //$answerMessages = $('.answerMessages');
         console.log('you: ' + user + 'sender: ' + msg.username)
         if(msg.username == user ){
             message_side = 'right';
@@ -55,8 +108,22 @@ window.onload = () => {
             text: msg.text,
             message_side: message_side
         });
+        //bradyadded
+        /*
+        answerMessage = new AnswerMessage({
+            user: '',//msg.username,
+            time: '',//msg.time,
+            text: msg.text+"distinction",
+            message_side: message_side
+        });
+        */
+
         message.draw();
+        //bradyadded
+        //answerMessage.draw();
+        //bradytookout then added
         return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
+        //return $answerMessages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
     });
 
     socket.emit('join', {
@@ -74,6 +141,7 @@ window.onload = () => {
                 $message.addClass(_this.message_side).find('.time').html(_this.time);
                 console.log('text: '+_this.text+' user: '+_this.user+' time: '+_this.time);
                 $('.messages').append($message);
+
                 return setTimeout(function () {
                     return $message.addClass('appeared');
                 }, 0);
@@ -81,6 +149,30 @@ window.onload = () => {
         }(this);
         return this;
     };
+
+//brady added this function, a modification of Message
+    var AnswerMessage = function (arg) {
+        this.user = arg.user, this.time = arg.time, this.text = arg.text, this.message_side = arg.message_side;
+        this.draw = function (_this) {
+            return function () {
+                var $answerMessage;
+                $answerMessage = $($('.message_template').clone().html());
+                $answerMessage.addClass(_this.message_side).find('.text').html(_this.text);
+                //$answerMessage.addClass(_this.message_side).find('.user').html(_this.user);
+                //$answerMessage.addClass(_this.message_side).find('.time').html(_this.time);
+                console.log('text: '+_this.text+' user: '+_this.user+' time: '+_this.time);
+                
+                //what brady added
+                $('.answerMessages').append($answerMessage);
+
+                return setTimeout(function () {
+                    return $answerMessage.addClass('appeared');
+                }, 0);
+            };
+        }(this);
+        return this;
+    };
+
     $(function () {
         var getMessageText, message_side, sendMessage;
         message_side = 'right';
@@ -101,7 +193,8 @@ window.onload = () => {
         });
         $('.message_input').keyup(function (e) {
             if (e.which === 13) {
-                return sendMessage(getMessageText());
+                //Brady took this out
+                //return sendMessage(getMessageText());
             }
         });
         // sendMessage('Hello Philip! :)');

@@ -23,6 +23,13 @@ module.exports = (io) => {
                 text: msg.text, 
                 time: stamp
             });
+            
+            //Brady Added
+            io.emit('answerMessage', { 
+                username: msg.username, 
+                text: msg.text, 
+                time: stamp
+            });
         });
         socket.on('join', function (msg) {
             var stamp = new Date().toLocaleTimeString();
