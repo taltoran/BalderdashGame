@@ -15,7 +15,7 @@ var middleware = require('./middleware');
 
 
 // database dependencies
-mongoose.connect('mongodb://localhost/balderdash');
+mongoose.connect('mongodb://localhost/BalderDash');
 mongoose.Promise = Promise;
 
 // routes
@@ -26,11 +26,9 @@ var games = require('./routes/games');
 var questions = require('./routes/questions');
 
 // database connection
-var db = mongoose.connection;
+var db = mongoose.createConnection('mongodb://localhost/BalderDash');
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  // we're connected!
-});
+db.once('open', console.log.bind(console, 'Connected to Database'));
 
 // express
 var app = express();

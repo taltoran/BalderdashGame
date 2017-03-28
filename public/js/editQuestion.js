@@ -14,7 +14,7 @@ function init() {
         if (submitOk) {
             editQuestion();
         }
-    
+    }
     
     function modalDisplay(){
         var modal = document.getElementById('myModal');
@@ -52,7 +52,7 @@ function init() {
             };
         console.log(postData);
         $.ajax({
-            url: '/questions/' + idInput,
+            url: '/questions/questions/' + idInput,
             type: 'PATCH',
             contentType: 'application/json',
             dataType: 'json',
