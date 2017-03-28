@@ -2,15 +2,23 @@ extends layout
 
 block content
   // Theme CSS
-  link(href='/stylesheets/index.css', rel='stylesheet')
+  //- stylesheets
+  link(rel='stylesheet', href='/stylesheets/menu.css')
   div.body
     h1#homeHeading= userName
     h1#homeHeading Welcome to The Game of Balderdash
     hr
     p Select an option below or with the navigation bar
-    p 
-    a.btn.btn-primary.btn-xl(href='/games/Create') Create a New Game
-    p
-    a.btn.btn-primary.btn-xl(href='/games/Join') Join a Game
-    p
-    a.btn.btn-primary.btn-xl(href='/categories') View or Edit Questions
+    //p 
+    //a.btn.btn-primary.btn-xl(href='/games/Create') Create a New Game
+    //p
+    //a.btn.btn-primary.btn-xl(href='/games/Join') Join a Game
+    //p
+    //a.btn.btn-primary.btn-xl(href='/categories') View or Edit Questions
+    div.gameOptions
+        div.createGame
+            a.btn.btn-primary.btn-xl(href='/Game/Create') Create Game
+        div.joinGame
+            a.btn.btn-primary.btn-xl(href='/Game/Join') Join Game
+    div.questionManag
+        a.btn.btn-primary.btn-xl(href='/Game/Questions') Question Management

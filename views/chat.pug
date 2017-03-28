@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  input.userName(type="hidden" value=user)
+  input.userEmail(type="hidden" value=email)
+  ul.pages
+    li.chat.page
+      div.chatArea
+        ul.messages
+      input.inputMessage(placeholder="Type here...")
+      button.sendMessage Send
+    li.login.page
+
+  script(src="https://code.jquery.com/jquery-1.10.2.min.js")
+  script(src="/scripts/socket.io.js")
+  script(src="/scripts/mainChat.js").

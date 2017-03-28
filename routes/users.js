@@ -118,7 +118,7 @@ router.post('/profile', function(req, res){
     if(err) 
       res.json(err);
     else 
-      res.render('profile',{user:username})
+      res.render('profile.pug',{user:username})
   });
 });
 
