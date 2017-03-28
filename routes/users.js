@@ -97,10 +97,18 @@ router.post('/login', function(req, res) {
 /* GET profile page. */
 router.get('/profile', function(req, res, next) {
   console.log('running get for user');
-  schema.User.find()
-    .then(function(doc) {
-      res.render('profile', {users: currentUsers})
-    })
+  res.render('profile.pug', {
+    firstname: req.user.fname,
+    lastname: req.user.lname,
+    username: req.user.username,
+    gameWins: req.user.gamewins
+  });
+  /*schema.User.findById(req.params.id, function(err,user){
+    if(err)
+      res.status(500).send(err);
+    else
+      res.json(books);
+  });*/
 });
 
 router.post('/profile', function(req, res){
@@ -110,7 +118,7 @@ router.post('/profile', function(req, res){
     if(err) 
       res.json(err);
     else 
-      res.render('profile',{user:username})
+      res.render('profile.pug',{user:username})
   });
 });
 

@@ -10,7 +10,7 @@ module.exports.User = mongoose.model('User', new schema({
   email:        { type: String, required: '{PATH} is required.', unique: true },
   username:     { type: String, required: '{PATH} is required.', unique: true },
   password:     { type: String, required: '{PATH} is required.' },
-  gameswon:     { type: String },
+  gameswon:     { type: Number },
   data:         Object,
 }))
 

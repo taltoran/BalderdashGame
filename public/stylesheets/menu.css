@@ -17,7 +17,7 @@ div.body {
 hr {
   border-color: #F05F40;
   border-width: 3px;
-  max-width: 175px;
+  max-width: 250px;
 }
 hr.light {
   border-color: white;
@@ -41,10 +41,11 @@ h6 {
   font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
 }
 p {
-  font-size: 20px;
+  font-size: 16px;
   line-height: 1.5;
   margin-bottom: 20px;
   color: #418ccb;
+  font-weight:600;
 }
 .bg-primary {
   background-color: #F05F40;
@@ -309,6 +310,20 @@ fieldset[disabled] .btn-primary.active {
   border-radius: 300px;
   font-weight: 700;
   text-transform: uppercase;
+  -moz-box-shadow: inset 0px 1px 0px 0px #14d802;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #14d802;
+  box-shadow: inset 0px 1px 0px 0px #14d802;
+  background-color: #07330f;
+  border: 1px solid #14d802;
+  display: inline-block;
+  cursor: pointer;
+  color: #FFFFFF;
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 14px;
+  padding: 8px 18px;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #29a03a;
 }
 .btn-xl {
   padding: 15px 30px;
@@ -342,11 +357,17 @@ body {
     width:960px;
 }
 
-.siteDesc{
-  margin-bottom: 20px;
-  font-weight:600;
+.gameOptions{
+  /*display: inline-block;*/
+  width: auto;
+  margin: 10px;
 }
 
-.group{
-  margin-top: 40px;  
+.createGame{
+  display: inline-block;
+  margin-right: 10px;
+}
+.joinGame{
+  display: inline-block;
+  margin-left: 10px;
 }
