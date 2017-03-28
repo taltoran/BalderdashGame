@@ -37,6 +37,13 @@ html(lang='en')
         ul.nav.navbar-nav.navbar-right
           li
             if userName == 'No User'
+             //not loged in
+            else
+              a(href='/users/profile')
+                span.glyphicon.glyphicon-UserProfile
+                | Profile
+          li
+            if userName == 'No User'
               a(href='/users/login')
                 span.glyphicon.glyphicon-log-in
                 |  Login

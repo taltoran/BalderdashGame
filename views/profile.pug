@@ -1,0 +1,20 @@
+extends layout
+
+block scripts
+    script(src='/scripts/_login.js')
+    script(src='//kendo.cdn.telerik.com/2017.1.118/js/kendo.all.min.js')
+
+block content
+    div.head
+        title Dashboard :: User Profile
+        link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css')
+        link(rel='stylesheet', href='//cdn.kendostatic.com/2013.3.1119/styles/kendo.common.min.css')
+        link(rel='stylesheet', href='//cdn.kendostatic.com/2013.3.1119/styles/kendo.bootstrap.min.css')
+        link(rel='stylesheet', href='/stylesheets/login.css')
+    div.body
+        
+        if error
+            p.error ERROR: #{error}
+
+            ul
+                #{currentUsers[0].username}
