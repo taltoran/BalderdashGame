@@ -8,7 +8,7 @@ var router = express.Router();
 /* GET newgame page. */
 router.get('/', utils.requireLogin, function(req, res, next) {
     //console.log("i'm here in .get newgame");
-    res.render('newgame.pug');
+    res.render('menu.pug');
 });
 
 /* GET Create page. */

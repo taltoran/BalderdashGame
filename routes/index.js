@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
   if(req.user == null){
     req.user = noUser;
   }
-  res.render('index', { 
+  res.render('index.pug', { 
     userName: req.user.username
   });
 });
