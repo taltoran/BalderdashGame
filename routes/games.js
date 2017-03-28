@@ -14,7 +14,7 @@ router.get('/newgame', utils.requireLogin, function(req, res, next) {
 /* GET Create page. */
 router.get('/Create', utils.requireLogin, function(req, res, next) {
     console.log("i'm here in .get Create");
-    res.render('Game/Create');
+    res.render('Game/Create.pug');
 });
 
 /* POST Create page. */
@@ -73,7 +73,7 @@ router.post('/Create', utils.requireLogin, function(req, res, next) {
             //console.log("gameName was found in database: " + game.gameName);
             myGameName = "Game name already exists, please try again"
 
-            res.render('Game/Create', {invalidPlayers: myPlayers, invalidRounds:myRounds, invalidGameName: myGameName});
+            res.render('Game/Create.pug', {invalidPlayers: myPlayers, invalidRounds:myRounds, invalidGameName: myGameName});
             
         }
         else
@@ -81,7 +81,7 @@ router.post('/Create', utils.requireLogin, function(req, res, next) {
             if(!isValid)
             {
                 //console.log("i'm in !isValid");
-                res.render('Game/Create', {invalidPlayers: myPlayers, invalidRounds:myRounds, invalidGameName: myGameName});
+                res.render('Game/Create.pug', {invalidPlayers: myPlayers, invalidRounds:myRounds, invalidGameName: myGameName});
             }
             else
             {
@@ -125,7 +125,7 @@ router.post('/Create', utils.requireLogin, function(req, res, next) {
 /* GET Join page. */
 router.get('/Join', utils.requireLogin, function(req, res, next) {
     //console.log("i'm here in .get Join");
-    res.render('Game/Join');
+    res.render('Game/Join.pug');
 });
 
 /* POST Join page. */
@@ -156,7 +156,7 @@ router.post('/Join', function(req, res, next) {
 
             myInvalidCode = "Game room code was not found, please try again"
 
-            res.render('Game/Join', {invalidCode: myInvalidCode});    
+            res.render('Game/Join.pug', {invalidCode: myInvalidCode});    
         }
     });
 
@@ -200,7 +200,7 @@ router.get('/Game', utils.requireLogin, function(req, res, next) {
     });
     */
 
-    res.render('Game/Game',{questionOne: myQuestionOne, userName: req.user.username});//, isHost: myIsHost });//, questionTwo: myQuestionTwo, questionThree: myQuestionThree,
+    res.render('Game/Game.pug',{questionOne: myQuestionOne, userName: req.user.username});//, isHost: myIsHost });//, questionTwo: myQuestionTwo, questionThree: myQuestionThree,
         //questionFour: myQuestionFour, questionFive: myQuestionFive, questionSix: myQuestionSix});
 });
 
@@ -214,7 +214,7 @@ router.post('/Game', function(req, res, next) {
     myQuestionFive = "this is my question five?";
     myQuestionSix = "this is my question six?";
 
-    res.render('Game/Game',{questionOne: myQuestionOne, questionTwo: myQuestionTwo, questionThree: myQuestionThree,
+    res.render('Game/Game.pug',{questionOne: myQuestionOne, questionTwo: myQuestionTwo, questionThree: myQuestionThree,
         questionFour: myQuestionFour, questionFive: myQuestionFive, questionSix: myQuestionSix});
 });
 
