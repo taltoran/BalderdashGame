@@ -1,0 +1,77 @@
+
+<h1 id="homeHeading">{{ title }}</h1>
+<hr>
+<h2>Create a Question</h2>
+<br>
+<div>
+    <div>
+        <span id="chooseCat">Choose Category:</span>
+        <select id="category" name="category">
+        <option value="words">Weird Words</option>
+        <option value="people">Peculiar People</option>
+        <option value="initials">Incredible Initials</option>
+        <option value="movies">Marvelous Movies</option>
+        <option value="laws">Laughable Laws</option>
+        </select>
+        <br>
+        <br>
+        <span id="createQuestion">Your Question:</span>
+        <input type="text", id="question" value=""></input>
+        <br>
+        <div class="modal" id="myModal">
+            <div class="modal-content">
+                <span>Question successfully added!</span>
+            </div>
+        </div>
+        <br>
+        <span id="createAnswer">Your Answer:</span>
+        <input type="text", id="answer" value=""></input>
+        <br>
+        <br>
+        <button name="submit" id="submitQuestionFinal">Submit</button>
+    </div>
+</div>
+<section class="get">
+    <div class="dropdown">
+        <button class="dropbtn">Weird Words</button>
+        <div class="dropdown-content">
+            {{#each wordsList}}
+                <a href="/editQuestion/{{_id}}">{{ question }}</a>
+            {{/each}}
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Peculiar People</button>
+        <div class="dropdown-content">
+            {{#each peopleList}}
+                <a href="/editQuestion/{{_id}}">{{ question }}</a>
+            {{/each}}
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Incredible Initials</button>
+        <div class="dropdown-content">
+            {{#each initialsList}}
+                <a href="/editQuestion/{{_id}}">{{ question }}</a>
+            {{/each}}
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Marvelous Movies</button>
+        <div class="dropdown-content">
+            {{#each moviesList}}
+                <a href="/editQuestion/{{_id}}">{{ question }}</a>
+            {{/each}}
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Laughable Laws</button>
+        <div class="dropdown-content">
+            {{#each lawsList}}
+                <a href="/editQuestion/{{_id}}">{{ question }}</a>
+            {{/each}}
+        </div>
+    </div>
+</section>
+
+<script src='/js/createQuestion.js'></script>
