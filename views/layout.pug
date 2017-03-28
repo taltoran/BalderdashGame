@@ -2,7 +2,7 @@
 doctype html
 html(lang='en')
   head
-    title Chat It Up
+    title Balderdash
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     //- bootstrap
@@ -19,18 +19,21 @@ html(lang='en')
     nav.navbar.navbar-inverse
       .container-fluid
         .navbar-header
-          a.navbar-brand(href='/') Project 3 : Group 4
+            if userName == 'No User'
+              a.navbar-brand(href='/') Project 3 : Group 4
+            else 
+              a.navbar-brand(href='/games') Project 3 : Group 4
         ul.nav.navbar-nav
           li
             a(href='/questions') Questions
           li
-            a(href='/Game/Create') Create Game
+            a(href='/games/Create') Create Game
           li
-            a(href='/Game/Join') Join Game
-        ul.nav.navbar-nav.navbar-nav-center
-          li
+            a(href='/games/Join') Join Game
+          //-li
             a User: 
               span#myName= userName
+        //- ul.nav.navbar-nav.navbar-nav-center          
         ul.nav.navbar-nav.navbar-right
           li
             if userName == 'No User'
