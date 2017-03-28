@@ -1,4 +1,6 @@
 window.onload = () => {
+
+
     let user = document.getElementsByTagName('p')[0].textContent;
 
     let socket = io.connect();

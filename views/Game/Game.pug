@@ -1,23 +1,149 @@
-script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js')
-h1  Round One
-div  Select your question:
-.gamediv
-  .content(style='color:#ff5757')
-    span.value
-  #game
-    #form_layout
-      form#myForm(action='GamePlay', method='post')
-        select(name='questions')
-          option(value='questionOne') #{questionOne}
-          option(value='questionTwo') #{questionTwo}
-          option(value='questionThree') #{questionThree}
-          option(value='questionFour') #{questionFour}
-          option(value='questionFive') #{questionFive}
-          option(value='questionSix') #{questionSix}
-        .submitdiv
-          .center
-            input#submit(type='submit', value='Submit')
-script.
-  $("submit").click(function(){
-  $("div").hide();
-  });
+//extends ../layout
+
+block content
+  html
+    head
+      style.
+        .loader {
+        border: 10px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 10px solid #3498db;
+        width: 80px;
+        height: 80px;
+        -webkit-animation: spin 1.5s linear infinite;
+        animation: spin 1.5s linear infinite;
+        margin:0 auto;"
+        }
+
+        @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+        }
+
+        h1.centered {
+        padding-top: 1cm;
+        text-align: center;
+        }
+
+        div.mainScreen {
+        
+        }
+
+        div.loadScreen {
+
+        }
+
+        div.roundOne {
+
+        }
+
+    body
+      div#loadingScreen
+        //.mainScreen
+        div.loadScreen
+          h1.centered Waiting For Players! (Room Join Code = CODE)
+          .loader
+          h1.centered Joined Players
+        p(style="visibility:hidden")= userName
+        p.hosts
+          ul.messages
+        .message_template
+          .message
+            .avatar
+              .userID
+                .user
+                .time
+            .text_wrapper
+              .text
+
+  div#gamediv
+      //(id="gamediv")
+      //.gamediv
+      - var questions = questionOne
+      div
+      each value, index in questions
+          button.sendQuestion(name=value)= (index+1) + ". " + value
+          br
+          br
+
+  div
+  .gamediv2
+      div
+      p#chosenQuestion
+      //input#inputAnswer(placeholder='Type your answer')
+      //input#sendAnswer(type='button', value='send')
+      .chat_window
+        //.top_menu
+          .title Chat
+        //ul.messages
+        .bottom_wrapper.clearfix
+          .message_input_wrapper
+            input#mes_input.message_input(placeholder='Type your message here...')
+          #send_btn.send_message
+            .icon
+            button.text Send
+
+  div
+  .gamediv3
+      div
+        h1#chosenQuestionTwo
+              //p(id="answers")
+                - var languages = {'php': -1, 'node': 2, 'ruby':1}
+              //div   
+              //each value, key in languages
+                  p= key + ": " + value
+                .chat_window
+                .top_menu
+                  .title Chat
+        ul.myAnswers
+        .answerTemplate
+          .answerMessages
+            .answerMessage
+              .answerAvatar
+                .answerUserID
+                  .answerUser(style="visibility:hidden")
+                  .answerTime
+              .answerText_wrapper
+                button.answerText
+        //ul.messages
+        //div
+
+        
+
+
+
+
+        
+
+block scripts
+  script(src='/scripts/_game.js', type='text/javascript')
+  script(src='/socket.io/socket.io.js')
+  script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js')
+  //script(src='../js/templates.js', type='text/javascript')
+
+  script.
+    $("#gamediv").hide();
+    $("div.gamediv2").hide();
+    $("div.gamediv3").hide();
+
+    //added for just a second
+    //$("#loadingScreen").hide();
+    
+
+    $(".sendQuestion").click(function(){
+      $("#loadingScreen").hide();
+      $("div.gamediv2").show();
+    });
+
+    $("#send_btn").click(function(){
+      $("div.gamediv2").hide();
+      $("div.gamediv3").show();
+    });
+
+
+      
