@@ -1,6 +1,16 @@
-<h1 id="homeHeading">#{ title }</h1>
-<hr>
-<a id="create" href="Create">Create New Game</a>
-</br>
-<a id="join" href="Join">Join a Game</a>
+extends layout
 
+block content
+  // Theme CSS
+  link(href='/stylesheets/index.css', rel='stylesheet')
+  div.body
+    h1#homeHeading= userName
+    h1#homeHeading Welcome to The Game of Balderdash
+    hr
+    p Select an option below or with the navigation bar
+    p 
+    a.btn.btn-primary.btn-xl(href='/games/Create') Create a New Game
+    p
+    a.btn.btn-primary.btn-xl(href='/games/Join') Join a Game
+    p
+    a.btn.btn-primary.btn-xl(href='/categories') View or Edit Questions
