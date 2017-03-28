@@ -16,5 +16,9 @@ block content
         if error
             p.error ERROR: #{error}
 
-            ul
-                #{currentUsers[0].username}
+        
+        div#fname= firstname
+        div#lname= lastname
+        div#uname= username
+        div#wins= gamewins
+            
