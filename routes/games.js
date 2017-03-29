@@ -171,6 +171,10 @@ router.post('/Join', function(req, res, next) {
     
 });
 
+
+/******************************** GAME LOGIC  ************************************/
+
+
 /* GET Game page. */
 router.get('/Game', utils.requireLogin, function(req, res, next) {
     //console.log("i'm here in .get Game");
