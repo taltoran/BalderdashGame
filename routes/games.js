@@ -230,7 +230,7 @@ router.post('/Game', function(req, res, next) {
 /******************************** QUESTIONS LOGIC  ************************************/
 
 /* GET questions management page. */
-router.get('/questions', function(req, res, next) {
+router.get('/questions', utils.requireLogin, function(req, res, next) {
     
     Question.find({ category: /^words/ })
         .then(function(words) {
@@ -293,7 +293,7 @@ function doesUserExist(question, fn) {
         });
 }
 
-router.post('/questions', function(req, res) {
+router.post('/questions', utils.requireLogin, function(req, res) {
     var question = req.body.question;
     var category = req.body.category;
     var answer = req.body.answer;
@@ -313,7 +313,7 @@ router.post('/questions', function(req, res) {
     });
 });
 
-router.get('/editQuestion/:id', function(req, res) {
+router.get('/editQuestion/:id', utils.requireLogin, function(req, res) {
 
     var theId = req.params.id;
 
