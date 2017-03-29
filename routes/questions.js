@@ -6,11 +6,6 @@ var router = express.Router();
 var Question = require('../models/Question.js');
 
 
-/* GET questions page. */
-router.get('/', utils.requireLogin, function(req, res, next) {
-  res.render('questions.pug');
-});
-
 /* GET questions view page. */
 router.get('/View', utils.requireLogin, function(req, res, next) {
     // get a single user from their username entered on the webpage
@@ -25,7 +20,7 @@ router.get('/Create', utils.requireLogin, function(req, res, next) {
   res.render('questionCreate.pug');
 });
 
-router.get('/createQuestion', function(req, res, next) {
+router.get('/', function(req, res, next) {
     
     Question.find({ category: /^words/ })
         .then(function(words) {
@@ -88,7 +83,7 @@ function doesUserExist(question, fn) {
         });
 }
 
-router.post('/questions', function(req, res) {
+router.post('/', function(req, res) {
     var question = req.body.question;
     var category = req.body.category;
     var answer = req.body.answer;

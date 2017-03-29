@@ -52,7 +52,7 @@ function init() {
             };
         console.log(postData);
         $.ajax({
-            url: '/questions/questions/' + idInput,
+            url: '/questions/' + idInput,
             type: 'PATCH',
             contentType: 'application/json',
             dataType: 'json',
