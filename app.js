@@ -21,10 +21,9 @@ mongoose.Promise = Promise;
 // routes
 var index = require('./routes/index');
 var users = require('./routes/users');
-<<<<<<< HEAD
+
 //var chat = require('./routes/chat');
-=======
->>>>>>> square1
+
 var games = require('./routes/games');
 
 // database connection
@@ -74,10 +73,8 @@ app.use(middleware.simpleAuth);
 //routes
 app.use('/', index);
 app.use('/users', users);
-<<<<<<< HEAD
 //app.use('/chat', chat);
-=======
->>>>>>> square1
+
 app.use('/games', games);
 
 

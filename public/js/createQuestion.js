@@ -29,7 +29,7 @@ function init() {
         
         //open the modal 
         modal.style.display = "block";
-        setTimeout(function(){window.location = '../questions'}, delayMillis);    
+        setTimeout(function(){window.location = '../games/questions'}, delayMillis);    
 
         // // When the user clicks on <span> (x), close the modal
         // span.onclick = function() {
@@ -59,7 +59,7 @@ function init() {
             };
         console.log(postData);
         $.ajax({
-            url: '/questions',
+            url: '../games/questions',
             type: 'POST',
             contentType: 'application/json',
             dataType: 'json',
