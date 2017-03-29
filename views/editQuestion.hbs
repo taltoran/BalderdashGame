@@ -1,0 +1,31 @@
+<h1 id="homeHeading" style='color:black; text-shadow:-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;'>{{ title }}</h1>
+<hr>
+<br>
+<div style='color:black'>
+    <div>
+        <br>
+        <br>
+        <span>The Question: {{ question.question }}</span>
+        <br>
+        <span>The Answer: {{ question.answer }}</span>
+        <br>
+        <div class="modal" id="myModal">
+            <div class="modal-content">
+                <span>Answer successfully edited!</span>
+            </div>
+        </div>
+        <br>
+        <span>Edit Answer:</span>
+        <input type="hidden" id="answerId" value="{{question._id}}"/>
+        <input type="text" id="editAnswer" value="{{ question.answer }}"/>
+        <br>
+        <br>
+        <button name="submit" id="editQuestionFinal">Submit</button>
+        <br>
+        <br>
+        <a href="/games/questions", title="createQuestion">Go back</a>
+    </div>
+</div>
+
+
+<script src='/js/editQuestion.js'></script>

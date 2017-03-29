@@ -1,0 +1,83 @@
+
+<h1 id="homeHeading" style='color:black; text-shadow:-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;'>{{ title }}</h1>
+<hr>
+<h2 style='color:black; text-shadow:-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;'>Create a Question</h2>
+<br>
+<div>
+    <div style='color:black'>
+        <span id="chooseCat">Choose Category:</span>
+        <select id="category" name="category">
+        <option value="words">Weird Words</option>
+        <option value="people">Peculiar People</option>
+        <option value="initials">Incredible Initials</option>
+        <option value="movies">Marvelous Movies</option>
+        <option value="laws">Laughable Laws</option>
+        </select>
+        <br>
+        <br>
+        <span id="createQuestion">Your Question:</span>
+        <input type="text", id="question" value=""></input>
+        <br>
+        <div class="modal" id="myModal">
+            <div class="modal-content">
+                <span>Question successfully added!</span>
+            </div>
+        </div>
+        <br>
+        <span id="createAnswer">Your Answer:</span>
+        <input type="text", id="answer" value=""></input>
+        <br>
+        <br>
+        <button name="submit" id="submitQuestionFinal" style='color:black'>Submit</button>
+    </div>
+</div>
+<div style='padding-top:20px'></div>
+<hr>
+<h2 style='color:black; text-shadow:-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;'>Edit a Question</h2>
+<br>
+<p style='color:red'> To edit a question mouse over a category field below and click on the question you would like to edit
+<br>
+<section class="get">
+    <div class="dropdown">
+        <button class="dropbtn">Weird Words</button>
+        <div class="dropdown-content">
+            {{#each wordsList}}
+                <a href="/games/editQuestion/{{_id}}">{{ question }}</a>
+            {{/each}}
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Peculiar People</button>
+        <div class="dropdown-content">
+            {{#each peopleList}}
+                <a href="/games/editQuestion/{{_id}}">{{ question }}</a>
+            {{/each}}
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Incredible Initials</button>
+        <div class="dropdown-content">
+            {{#each initialsList}}
+                <a href="/games/editQuestion/{{_id}}">{{ question }}</a>
+            {{/each}}
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Marvelous Movies</button>
+        <div class="dropdown-content">
+            {{#each moviesList}}
+                <a href="/games/editQuestion/{{_id}}">{{ question }}</a>
+            {{/each}}
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Laughable Laws</button>
+        <div class="dropdown-content">
+            {{#each lawsList}}
+                <a href="/games/editQuestion/{{_id}}">{{ question }}</a>
+            {{/each}}
+        </div>
+    </div>
+</section>
+
+<script src='/js/createQuestion.js'></script>

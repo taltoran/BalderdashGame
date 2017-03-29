@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  //- stylesheets
+  link(rel='stylesheet', href='/stylesheets/menu.css')
+  div.body
+    h1#homeHeading= userName
+    h1#homeHeading Welcome to The Game of Balderdash
+    hr
+    p Select an option below or with the navigation bar
+    div.gameOptions
+        div.createGame
+            a.btn.btn-primary.btn-xl(href='/games/Create') Create Game
+        div.joinGame
+            a.btn.btn-primary.btn-xl(href='/games/Join') Join Game
+    div.questionManag
+        a.btn.btn-primary.btn-xl(href='/games/questions') Question Management

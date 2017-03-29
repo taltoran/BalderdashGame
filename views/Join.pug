@@ -1,0 +1,25 @@
+extends layout
+
+block content
+
+  h1.creatediv(style='text-align:center') Join a Game
+  .joindiv.creatediv(style='text-align:center; color:black')
+    .content(style='color:#ff5757')
+      span.value
+    #join
+      h5#wc Welcome!
+      h5#ac Please Join a Game:
+      #form_layout
+        form#myForm(action='Join', method='post')
+          label Game Room Code:
+          |  
+          input#code(name='code', type='text')
+          .content(style='color:#ff5757')
+            span.invalidCode #{invalidCode}
+          p
+          .submitdiv
+            .center
+              input#submit(type='submit', value='Join Game')
+
+block scripts
+  script(src='../js/joinValidation.js', type='text/javascript')

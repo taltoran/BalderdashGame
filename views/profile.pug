@@ -1,0 +1,34 @@
+extends layout
+
+block scripts
+    script(src='/scripts/_login.js')
+    script(src='//kendo.cdn.telerik.com/2017.1.118/js/kendo.all.min.js')
+
+block content
+    div.head
+        title Dashboard :: User Profile
+        link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css')
+        link(rel='stylesheet', href='//cdn.kendostatic.com/2013.3.1119/styles/kendo.common.min.css')
+        link(rel='stylesheet', href='//cdn.kendostatic.com/2013.3.1119/styles/kendo.bootstrap.min.css')
+        link(rel='stylesheet', href='/stylesheets/profile.css')
+    div.body
+        
+        if error
+            p.error ERROR: #{error}
+
+        h1 Player Profile
+        hr
+        div.container.transparent
+            div.set
+                h4.left-div First Name:
+                div.right-div.profileInfo#fname= firstname
+            div.set
+                h4.left-div Last Name:
+                div.right-div.profileInfo#lname= lastname
+            div.set
+                h4.left-div Username:
+                div.right-div.profileInfo#uname= username
+            div.set
+                h4.left-div Win Record:
+                div.right-div.profileInfo#wins= gamewins
+            
