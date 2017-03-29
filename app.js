@@ -22,7 +22,6 @@ mongoose.Promise = Promise;
 var index = require('./routes/index');
 var users = require('./routes/users');
 var games = require('./routes/games');
-var questions = require('./routes/questions');
 
 // database connection
 var db = mongoose.connection;
@@ -72,7 +71,6 @@ app.use(middleware.simpleAuth);
 app.use('/', index);
 app.use('/users', users);
 app.use('/games', games);
-app.use('/questions', questions);
 
 
 app.get('/logout', function(req, res) {
