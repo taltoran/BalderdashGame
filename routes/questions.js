@@ -6,7 +6,7 @@ var router = express.Router();
 var Question = require('../models/Question.js');
 
 
-/* GET questions view page. */
+
 router.get('/View', utils.requireLogin, function(req, res, next) {
     // get a single user from their username entered on the webpage
   res.render('questionView.pug',
@@ -20,6 +20,8 @@ router.get('/Create', utils.requireLogin, function(req, res, next) {
   res.render('questionCreate.pug');
 });
 
+
+/* GET questions management page. */
 router.get('/', function(req, res, next) {
     
     Question.find({ category: /^words/ })
