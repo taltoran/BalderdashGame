@@ -1,7 +1,6 @@
 extends layout
 
 block content
-  // Theme CSS
   //- stylesheets
   link(rel='stylesheet', href='/stylesheets/menu.css')
   div.body
@@ -9,12 +8,6 @@ block content
     h1#homeHeading Welcome to The Game of Balderdash
     hr
     p Select an option below or with the navigation bar
-    //p 
-    //a.btn.btn-primary.btn-xl(href='/games/Create') Create a New Game
-    //p
-    //a.btn.btn-primary.btn-xl(href='/games/Join') Join a Game
-    //p
-    //a.btn.btn-primary.btn-xl(href='/categories') View or Edit Questions
     div.gameOptions
         div.createGame
             a.btn.btn-primary.btn-xl(href='/games/Create') Create Game
