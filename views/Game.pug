@@ -116,6 +116,21 @@ block content
   div
   #scores
 
+
+
+  
+  div#answerWait
+    h1(text-align: center) Waiting For Players to Enter Answers
+    .loader
+
+  div#answerChosen
+    h1(text-align: center) Waiting For Players to Choose Answers
+    .loader
+
+  div#questionWait
+    h1(text-align: center) Waiting For Host to Choose Question
+    .loader
+
   
 
         
@@ -132,13 +147,14 @@ block scripts
   //script(src='../js/templates.js', type='text/javascript')
 
   script.
+    $("#answerWait").hide();
+    $("#answerChosen").hide();
+    $("#questionWait").hide();
     $("#gamediv").hide();
     $("div.gamediv2").hide();
     $("div.gamediv3").hide();
     $(".answerUser").hide();
 
-    //added for just a second
-    //$("#loadingScreen").hide();
     
 
     $(".sendQuestion").click(function(){
@@ -148,8 +164,10 @@ block scripts
 
     $("#send_btn").click(function(){
       $("div.gamediv2").hide();
-      $("#loadingScreen").show();
+      $("#answerWait").show();
     });
+
+    
 
 
       

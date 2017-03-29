@@ -101,6 +101,7 @@ window.onload = () => {
         
         $("#gamediv").hide();
         $("#loadingScreen").hide();
+        $("#questionWait").hide();
         $("div.gamediv2").show();
     });
 
@@ -198,7 +199,7 @@ window.onload = () => {
 
     socket.on('hideLoading', function (msg) {
         $("div.gamediv3").show();
-        $("#loadingScreen").hide();
+        $("#answerWait").hide();
     });
 /*
     function displayLoading()
@@ -273,7 +274,7 @@ window.onload = () => {
         if(msg.usersCount == usersChosenAnswer)
         {
             console.log("They are equal!");
-            $("#loadingScreen").hide();
+            $("#answerChosen").hide();
             //$("div.gamediv3").show();
             //$(".answerUser").show();
             usersChosenAnswer = 0;
@@ -283,6 +284,12 @@ window.onload = () => {
                            
             });
         }
+    });
+
+    socket.on('hostFirstScreen', function (msg) {
+        console.log("i'm in game to show host first screen");
+        $("#gamediv").show();
+        $("#questionWait").hide();
     });
 
     socket.on('showScores', function (msg) {
@@ -295,7 +302,12 @@ window.onload = () => {
         function startOver()
         {
             $("#scores").hide();
-            $("#gamediv").show();
+            //$("#gamediv").show();
+            $("#questionWait").show();
+
+            socket.emit('showHostFirstScreen', {
+            
+            });
 
             var $answerMessage;
             $answerMessage = $($('.answerTemplate').clone().html());
@@ -344,7 +356,7 @@ window.onload = () => {
                         alert(this.innerHTML);//textContent);//innerHTML);//textContent);//Content);
                         
                         console.log("I'm in answer messages button");
-                        $("#loadingScreen").show();
+                        $("#answerChosen").show();
                         $("div.gamediv3").hide();
 
                         

@@ -5,6 +5,7 @@ module.exports = (io) => {
     var userCount = 0;
     var userPointsDict = {};
     var userAnswersDict = {};
+    var userIdDict = {};
     var myScoresHtml = ""; 
     var answersDisplayed = 0;
 
@@ -13,6 +14,8 @@ module.exports = (io) => {
 
     // socket.io events
     io.on('connection', function (socket) {
+        var sessionid = socket.id;
+
         userCount++;
 
         
@@ -21,6 +24,14 @@ module.exports = (io) => {
             username: 'Chat It Up', 
             text: 'Welcome to Chat', 
         });*/ //Brady took out
+
+        socket.on('showHostFirstScreen', function (msg) {
+
+            console.log("i'm in socket to show host first screen and host id is: "+userIdDict["host"]);
+            //io.to(io.clients[userIdDict["host"]]).emit('hostFirstScreen');//send host to first screen
+            io.sockets.connected[userIdDict["host"]].emit('hostFirstScreen');
+            
+        });
 
         socket.on('emptyUserAnswers', function (msg) {
             userAnswersDict = {}
@@ -141,6 +152,9 @@ module.exports = (io) => {
                 time: stamp
             });
 
+            
+            //userPointsDict[msg.username] = sessionid;
+
             //Brady added to check if it's the host, and set the host name
             if (userCount == 1)
             {
@@ -148,7 +162,16 @@ module.exports = (io) => {
                     username: msg.username,
                     time: stamp
                 });
+
+                userIdDict["host"] = sessionid;
+
+                console.log("host session id is: "+userIdDict["host"]);
             }
+
+            //console.log("your session id is: "+sessionid);
+
+            
+
         });
         socket.on('leave', function (msg) {
             var stamp = new Date().toLocaleTimeString();
