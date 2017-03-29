@@ -106,12 +106,17 @@ block content
             .answerMessage
               .answerAvatar
                 .answerUserID
-                  .answerUser(style="visibility:hidden")
+                  .answerUser
                   .answerTime
               .answerText_wrapper
                 button.answerText
         //ul.messages
         //div
+
+  div
+  #scores
+
+  
 
         
 
@@ -130,6 +135,7 @@ block scripts
     $("#gamediv").hide();
     $("div.gamediv2").hide();
     $("div.gamediv3").hide();
+    $(".answerUser").hide();
 
     //added for just a second
     //$("#loadingScreen").hide();
@@ -142,7 +148,7 @@ block scripts
 
     $("#send_btn").click(function(){
       $("div.gamediv2").hide();
-      $("div.gamediv3").show();
+      $("#loadingScreen").show();
     });
 
 
