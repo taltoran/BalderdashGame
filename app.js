@@ -15,15 +15,17 @@ var middleware = require('./middleware');
 
 
 // database dependencies
-mongoose.connect('mongodb://localhost/balderdash1');
+mongoose.connect('mongodb://localhost/balderdash');
 mongoose.Promise = Promise;
 
 // routes
 var index = require('./routes/index');
 var users = require('./routes/users');
+<<<<<<< HEAD
 //var chat = require('./routes/chat');
+=======
+>>>>>>> square1
 var games = require('./routes/games');
-var questions = require('./routes/questions');
 
 // database connection
 var db = mongoose.connection;
@@ -72,9 +74,11 @@ app.use(middleware.simpleAuth);
 //routes
 app.use('/', index);
 app.use('/users', users);
+<<<<<<< HEAD
 //app.use('/chat', chat);
+=======
+>>>>>>> square1
 app.use('/games', games);
-app.use('/questions', questions);
 
 
 app.get('/logout', function(req, res) {
