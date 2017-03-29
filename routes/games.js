@@ -279,7 +279,7 @@ router.get('/questions', utils.requireLogin, function(req, res, next) {
         res.render('createQuestion', {items: resultArray, title: 'Question Creator'});
     });  */   
 
-function doesUserExist(question, fn) {
+function doesQuestionExist(question, fn) {
     Question.findOne({
             question: question.toLowerCase()
         },
@@ -298,7 +298,7 @@ router.post('/questions', utils.requireLogin, function(req, res) {
     var category = req.body.category;
     var answer = req.body.answer;
 
-    doesUserExist(question, function(err, q) {
+    doesQuestionExist(question, function(err, q) {
         if (q) {
             res.status(409).json({ message: "Question already exists" }); //Changed these out to status codes
 
