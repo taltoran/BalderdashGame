@@ -64,13 +64,19 @@ block content
   div#gamediv
       //(id="gamediv")
       //.gamediv
-      - var questions = questionOne
+      //- var questions = questionOne
+      //div
+        each value, index in questions
+            button.sendQuestion(name=value)= (index+1) + ". " + value
+            br
+            br
+      - var myWords = wordsList
       div
-      each value, index in questions
-          button.sendQuestion(name=value)= (index+1) + ". " + value
-          br
-          br
-
+      each value in myWords
+        button.sendQuestion(name=value.question)= value.question
+        p.sendAnswer(name=value.answer style="visibility:hidden")=value.answer
+        br
+        br
   div
   .gamediv2
       div

@@ -208,8 +208,42 @@ router.get('/Game', utils.requireLogin, function(req, res, next) {
     });
     */
 
-    res.render('Game.pug',{questionOne: myQuestionOne, userName: req.user.username});//, isHost: myIsHost });//, questionTwo: myQuestionTwo, questionThree: myQuestionThree,
+    //res.render('Game.pug',{questionOne: myQuestionOne, userName: req.user.username});//, isHost: myIsHost });//, questionTwo: myQuestionTwo, questionThree: myQuestionThree,
         //questionFour: myQuestionFour, questionFive: myQuestionFive, questionSix: myQuestionSix});
+
+
+
+    Question.find({ category: /^words/ })
+        .then(function(words) {
+            console.log(words);
+
+            Question.find({ category: /^people/ })
+            .then(function(people) {
+                console.log(people);
+
+                    Question.find({ category: /^initials/ })
+                    .then(function(initials) {
+                        console.log(initials);
+
+                            Question.find({ category: /^movies/ })
+                            .then(function(movies) {
+                                console.log(movies);
+
+                                    Question.find({ category: /^laws/ })
+                                    .then(function(laws) {
+                                        console.log(laws);
+
+                        res.render('Game.pug', {title: 'Question Creator', questionOne: myQuestionOne, userName: req.user.username,
+                          wordsList: words, 
+                          peopleList: people,
+                          initialsList: initials,
+                          moviesList: movies,
+                          lawsList: laws});
+                    });
+                });
+            });
+        });
+    });
 });
 
 /* POST Game page. */
@@ -224,6 +258,10 @@ router.post('/Game', function(req, res, next) {
 
     res.render('Game.pug',{questionOne: myQuestionOne, questionTwo: myQuestionTwo, questionThree: myQuestionThree,
         questionFour: myQuestionFour, questionFive: myQuestionFive, questionSix: myQuestionSix});
+
+
+
+
 });
 
 

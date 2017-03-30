@@ -477,7 +477,7 @@ window.onload = () => {
         $('.message_input').keyup(function (e) {
             if (e.which === 13) {
                 //Brady took this out
-                //return sendMessage(getMessageText());
+                //return sendMessage(getMessageText()); 
             }
         });
         // sendMessage('Hello Philip! :)');
