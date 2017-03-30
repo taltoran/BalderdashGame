@@ -49,6 +49,7 @@ block content
           h1.centered Waiting For Players! (Room Join Code = CODE)
           .loader
           h1.centered Joined Players
+          button Begin Game
         p(style="visibility:hidden")= userName
         p.hosts
           ul.messages
@@ -61,15 +62,7 @@ block content
             .text_wrapper
               .text
 
-  div#gamediv
-      //(id="gamediv")
-      //.gamediv
-      - var questions = questionOne
-      div
-      each value, index in questions
-          button.sendQuestion(name=value)= (index+1) + ". " + value
-          br
-          br
+  
 
   div
   .gamediv2

@@ -7,6 +7,18 @@ window.onload = () => {
     var inputAnswer = document.getElementById("inputAnswer");
     var answers = document.getElementById("answers");
 
+
+//(id="gamediv")
+      //.gamediv
+
+      //- var questions = questionOne \
+
+    var gamediv = 'div \
+          each value, index in questions \
+          button.sendQuestion(name=value)= (index+1) + ". " + value \
+          br  \
+          br';
+
     
     
     
@@ -63,8 +75,15 @@ window.onload = () => {
             user: msg.username
         });
 
-        document.getElementById("loadingScreen").style.display="none";
-        document.getElementById("gamediv").style.display="unset";
+
+        $('#loadingScreen').html(gamediv);
+        //document.getElementById('#loadingScreen').innerHTML = gamediv;
+
+        //$("#loadingScreen").hide();
+        //$("#gamediv").show();
+
+        //document.getElementById("loadingScreen").style.display="none";
+        //document.getElementById("gamediv").style.display="unset";
         //document.getElementById("div.mainScreen").style.display="none";
 
         host.draw();
