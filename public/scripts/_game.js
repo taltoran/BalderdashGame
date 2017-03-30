@@ -7,8 +7,16 @@ window.onload = () => {
     var inputAnswer = document.getElementById("inputAnswer");
     var answers = document.getElementById("answers");
 
+    //***used to see if all users have chosen an answer
+    var usersChosenAnswer = 0;
+
+    var scores = document.getElementById("scores");
     
-    
+    var buttonHtml = "";
+    var buttonNumber = 0;
+
+    //used to see if everybodys entered an answer
+    var usersAnswered = 0;
     
 
     for (var i = 0; i < sendButton.length; i++) {
@@ -22,6 +30,7 @@ window.onload = () => {
             document.getElementById("gamediv").style.display="none";
 
             socket.emit('sendQuestion', { 
+                username: user,
                 text: this.name 
             });
         }
@@ -89,7 +98,10 @@ window.onload = () => {
         //adds to gamediv3
         chosenQuestionTwo.innerHTML = msg.text;
 
+        
+        $("#gamediv").hide();
         $("#loadingScreen").hide();
+        $("#questionWait").hide();
         $("div.gamediv2").show();
     });
 
@@ -125,21 +137,76 @@ window.onload = () => {
             message_side = 'left';
         }
 
+//my attempt to use innerHTML for answer buttons
+/*
+        var btnNumber = buttonNumber +"";
+        buttonHtml = "<button id=\""+btnNumber+"\" value=\""+msg.text+"\">"+msg.text+"</button>";
+        $('.myAnswers').innerHTML += buttonHtml;
+
+        console.log(buttonHtml);
+
+        var answerMessagesButton = document.getElementById(btnNumber);
+
+
+        
+        answerMessagesButton.onclick = function() {
+            alert(this.innerHTML);//textContent);//innerHTML);//textContent);//Content);
+            
+            console.log("I'm in answer messages button");
+            $("#loadingScreen").show();
+            $("div.gamediv3").hide();
+
+            
+
+            socket.emit('addToChosenAnswer', { 
+                text: this.innerHTML,
+                username: user
+            });
+
+            console.log("usersCount: " + arg.usersCount);
+            console.log("usersChosenAnswer count: " + usersChosenAnswer);
+        };
+        */
+
+// removed for a second
+
         //bradyadded
         answerMessage = new AnswerMessage({
             user: msg.username,
             time: msg.time,
             text: msg.text,//name="+msg.text.toLowerCase()+"\">" + msg.text.toLowerCase() +"</button></br>",
-            message_side: message_side
+            message_side: message_side,
+            usersCount: msg.usersCount
         });
-
-        //console.log("Brady: <button name=\""+msg.text.toLowerCase()+"\">" + msg.text.toLowerCase() +"</button>")
+/*
+        usersAnswered +=1;
+        if (usersAnswered == msg.usersCount)
+        {
+            $("div.gamediv3").show();
+        }
+        else
+        {
+            displayLoading();
+        }
+        */
 
         //bradyadded
         answerMessage.draw();
         return $answerMessages.animate({ scrollTop: $answerMessages.prop('scrollHeight') }, 300);
+        
     
     });
+
+    socket.on('hideLoading', function (msg) {
+        $("div.gamediv3").show();
+        $("#answerWait").hide();
+    });
+/*
+    function displayLoading()
+    {
+        $("#loadingScreen").show();
+    }
+    */
 
 
     socket.on('message', (msg)=>{
@@ -196,9 +263,70 @@ window.onload = () => {
         return this;
     };
 
+    
+
+    socket.on('addOneChosenAnswer', function (msg) {
+        usersChosenAnswer += 1;
+
+        
+        console.log("Game: how many users have chosen answer: " + usersChosenAnswer);
+
+        if(msg.usersCount == usersChosenAnswer)
+        {
+            console.log("They are equal!");
+            $("#answerChosen").hide();
+            //$("div.gamediv3").show();
+            //$(".answerUser").show();
+            usersChosenAnswer = 0;
+
+            console.log("I'm about to show users answers");
+            socket.emit('emptyUserAnswers', { 
+                           
+            });
+        }
+    });
+
+    socket.on('hostFirstScreen', function (msg) {
+        console.log("i'm in game to show host first screen");
+        $("#gamediv").show();
+        $("#questionWait").hide();
+    });
+
+    socket.on('showScores', function (msg) {
+        console.log("I'm in show scores. heres the innerHTML:");
+        //alert(scores.innerHTML);
+        scores.innerHTML = msg.text;
+
+        $("#scores").show();
+
+        function startOver()
+        {
+            $("#scores").hide();
+            //$("#gamediv").show();
+            $("#questionWait").show();
+
+            socket.emit('showHostFirstScreen', {
+            
+            });
+
+            var $answerMessage;
+            $answerMessage = $($('.answerTemplate').clone().html());
+            
+            $('.myAnswers').empty();
+            scores.innerHTML = "";
+
+        }
+
+        setTimeout(startOver, 5000);
+    });
+
+
+
+    
+
 //brady added this function, a modification of Message
     var AnswerMessage = function (arg) {
-        this.user = arg.user, this.time = arg.time, this.text = arg.text, this.message_side = arg.message_side;
+        this.user = arg.user, this.usersCount = arg.usersCount, this.time = arg.time, this.text = arg.text, this.message_side = arg.message_side;
         this.draw = function (_this) {
             return function () {
                 var $answerMessage;
@@ -214,14 +342,37 @@ window.onload = () => {
                 //$('.answerMessages').append($answerMessage);
                 $('.myAnswers').append($answerMessage);
 
+                //shuffle answer buttons
+                var ul = document.querySelector('ul.myAnswers');
+                for (var i = ul.children.length; i >= 0; i--) {
+                    ul.appendChild(ul.children[Math.random() * i | 0]);
+                }
+
                 var answerMessagesButton = document.getElementsByClassName("answerText");
 
 
                 for (var i = 0; i < answerMessagesButton.length; i++) {
                     answerMessagesButton[i].onclick = function() {
                         alert(this.innerHTML);//textContent);//innerHTML);//textContent);//Content);
-                        $("#loadingScreen").show();
+                        
+                        console.log("I'm in answer messages button");
+                        $("#answerChosen").show();
                         $("div.gamediv3").hide();
+
+                        
+
+                        socket.emit('addToChosenAnswer', { 
+                           text: this.innerHTML,
+                           username: user
+                        });
+
+                        console.log("usersCount: " + arg.usersCount);
+                        console.log("usersChosenAnswer count: " + usersChosenAnswer);
+                        
+
+                        
+
+
                     }
                 }
 
@@ -326,7 +477,7 @@ window.onload = () => {
         $('.message_input').keyup(function (e) {
             if (e.which === 13) {
                 //Brady took this out
-                //return sendMessage(getMessageText());
+                //return sendMessage(getMessageText()); 
             }
         });
         // sendMessage('Hello Philip! :)');

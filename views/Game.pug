@@ -64,13 +64,22 @@ block content
   div#gamediv
       //(id="gamediv")
       //.gamediv
-      - var questions = questionOne
+      //- var questions = questionOne
+      //div
+        each value, index in questions
+            button.sendQuestion(name=value)= (index+1) + ". " + value
+            br
+            br
+      - var myWords = wordsList
       div
-      each value, index in questions
-          button.sendQuestion(name=value)= (index+1) + ". " + value
-          br
-          br
-
+      p=myWords[0]
+      - for (var i = 0; i<myWords.length; i++)
+        button.sendQuestion(name=myWords[i].question)= myWords[i].question
+      //each value in myWords
+        button.sendQuestion(name=value.question)= value.question
+        p.sendAnswer(name=value.answer style="visibility:hidden")=value.answer
+        br
+        br
   div
   .gamediv2
       div
@@ -106,12 +115,32 @@ block content
             .answerMessage
               .answerAvatar
                 .answerUserID
-                  .answerUser(style="visibility:hidden")
+                  .answerUser
                   .answerTime
               .answerText_wrapper
                 button.answerText
         //ul.messages
         //div
+
+  div
+  #scores
+
+
+
+  
+  div#answerWait
+    h1(text-align: center) Waiting For Players to Enter Answers
+    .loader
+
+  div#answerChosen
+    h1(text-align: center) Waiting For Players to Choose Answers
+    .loader
+
+  div#questionWait
+    h1(text-align: center) Waiting For Host to Choose Question
+    .loader
+
+  
 
         
 
@@ -127,12 +156,14 @@ block scripts
   //script(src='../js/templates.js', type='text/javascript')
 
   script.
+    $("#answerWait").hide();
+    $("#answerChosen").hide();
+    $("#questionWait").hide();
     $("#gamediv").hide();
     $("div.gamediv2").hide();
     $("div.gamediv3").hide();
+    $(".answerUser").hide();
 
-    //added for just a second
-    //$("#loadingScreen").hide();
     
 
     $(".sendQuestion").click(function(){
@@ -142,8 +173,10 @@ block scripts
 
     $("#send_btn").click(function(){
       $("div.gamediv2").hide();
-      $("div.gamediv3").show();
+      $("#answerWait").show();
     });
+
+    
 
 
       
