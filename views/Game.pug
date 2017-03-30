@@ -72,7 +72,10 @@ block content
             br
       - var myWords = wordsList
       div
-      each value in myWords
+      p=myWords[0]
+      - for (var i = 0; i<myWords.length; i++)
+        button.sendQuestion(name=myWords[i].question)= myWords[i].question
+      //each value in myWords
         button.sendQuestion(name=value.question)= value.question
         p.sendAnswer(name=value.answer style="visibility:hidden")=value.answer
         br
