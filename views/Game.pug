@@ -49,6 +49,8 @@ block content
           h1.centered Waiting For Players! (Room Join Code = CODE)
           .loader
           h1.centered Joined Players
+          #send_btn.start_game
+            .icon
           button Begin Game
         p(style="visibility:hidden")= userName
         p.hosts
@@ -62,6 +64,15 @@ block content
             .text_wrapper
               .text
 
+
+  div
+  .gamediv
+      div
+      each value, index in questions
+        button.sendQuestion(name=value)= (index+1) + . + value
+          br
+          br
+
   
 
   div
@@ -71,9 +82,6 @@ block content
       //input#inputAnswer(placeholder='Type your answer')
       //input#sendAnswer(type='button', value='send')
       .chat_window
-        //.top_menu
-          .title Chat
-        //ul.messages
         .bottom_wrapper.clearfix
           .message_input_wrapper
             input#mes_input.message_input(placeholder='Type your message here...')

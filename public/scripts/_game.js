@@ -14,10 +14,33 @@ window.onload = () => {
       //- var questions = questionOne \
 
     var gamediv = 'div \
-          each value, index in questions \
-          button.sendQuestion(name=value)= (index+1) + ". " + value \
-          br  \
+      each value, index in questions \
+      button.sendQuestion(name=value)= (index+1) + ". " + value \
+        br  \
           br';
+
+    var gamediv2 = 'div \
+      p#chosenQuestion \
+      .chat_window \
+        .bottom_wrapper.clearfix \
+          .message_input_wrapper \
+            input#mes_input.message_input(placeholder="Type your message here...") \
+          #send_btn.send_message \
+            .icon \
+            button.text Send'
+
+    var gamediv3 = 'div \
+        h1#chosenQuestionTwo \
+        ul.myAnswers \
+        .answerTemplate \
+          .answerMessages \
+            .answerMessage \
+              .answerAvatar \
+                .answerUserID \
+                  .answerUser(style="visibility:hidden") \
+                  .answerTime \
+              .answerText_wrapper \
+                button.answerText'
 
     
     
@@ -76,11 +99,13 @@ window.onload = () => {
         });
 
 
-        $('#loadingScreen').html(gamediv);
+
+        //$('#loadingScreen').show();
+        //$('#loadingScreen').html(gamediv2);
         //document.getElementById('#loadingScreen').innerHTML = gamediv;
 
-        //$("#loadingScreen").hide();
-        //$("#gamediv").show();
+        $("#loadingScreen").hide();
+        $("#gamediv").show();
 
         //document.getElementById("loadingScreen").style.display="none";
         //document.getElementById("gamediv").style.display="unset";
@@ -337,6 +362,11 @@ window.onload = () => {
         
         $('.send_message').click(function (e) {
             return sendMessage(getMessageText());
+        });
+
+
+        $('.start_game').click(function (e) {
+            $('#loadingScreen').html(gamediv);
         });
 
         
