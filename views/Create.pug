@@ -27,13 +27,21 @@ block content
           |  
           label Choose Category:
           |  
-          select(name='categories')
-            option(value='ludicrousLaws') Ludicrous Laws
-            option(value='definitions') Definitions
-            option(value='famousPeople') Famous People
-            option(value='acronyms') Acronyms
-            option(value='movieHeadlines') Movie Headlines
-            option(value='allCategories') All Categories
+          p.confirm
+          input(type="checkbox", value="ludicrousLaws")
+          I Ludicrous Laws
+          br
+          input(type="checkbox", value="definitions")
+          I Definitions
+          br
+          input(type="checkbox", value="famousPeople")
+          I Famous People
+          br
+          input(type="checkbox", value="acronyms")
+          I Acronyms
+          br
+          input(type="checkbox", value="movieHeadlines")
+          I Movie Headlines
           p
           |  
           label Choose Game Name (Optional):
