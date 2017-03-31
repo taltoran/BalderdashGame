@@ -19,7 +19,7 @@ window.onload = () => {
     //used to see if everybodys entered an answer
     var usersAnswered = 0;
 
-    var currentChosenQuetion = "";
+    var currentChosenQuestion = "";
 
 
     //just using to see if I got data from Game.pug
@@ -162,7 +162,7 @@ window.onload = () => {
                 text: $(this).text() //this.name 
             });
 
-            currentChosenQuestion = $(this).text();
+            
 
             
             for (var i = 0; i<4; i++)
@@ -249,6 +249,9 @@ window.onload = () => {
     socket.on('questionMessage', (msg)=>{
         console.log('get question message:')
         console.log(msg.text);
+
+        //set the current question for all players?
+        currentChosenQuestion = msg.text; //$(this).text();
         
         if (msg.text.trim() === '') {
             return;
@@ -362,18 +365,9 @@ window.onload = () => {
     socket.on('hideLoading', function (msg) {
         
         console.log("hiding waiting for users to answer and showing gamediv3.");
-        $("#answerWait").hide();
-        $("div.gamediv3").show();
-
-        socket.emit('reallyHideLoading', {
-            
-        });
         
-        
-    });
-
-    socket.on('reallyReallyHideLoading', function (msg) {
-
+/*
+        console.log("the answer i'm sending: "+myWordsDict[currentChosenQuestion]);
 
         answerMessage = new AnswerMessage({
             user: "Computer",
@@ -383,6 +377,23 @@ window.onload = () => {
         
 
         answerMessage.draw();
+*/
+        $("#answerWait").hide();
+        $("div.gamediv3").show();
+
+/*
+        socket.emit('reallyHideLoading', {
+
+        });
+        */
+        
+        
+    });
+
+    socket.on('reallyReallyHideLoading', function (msg) {
+
+
+        
 
         $("#answerWait").hide();
         $("div.gamediv3").show();
@@ -509,7 +520,7 @@ window.onload = () => {
 
 
 
-    
+    var firstTimeThroughAnswer = 0;    
 
 //brady added this function, a modification of Message
     var AnswerMessage = function (arg) {
@@ -519,6 +530,7 @@ window.onload = () => {
                 var $answerMessage;
                 //$answerMessage = $($('.answerMessages').clone().html());
                 $answerMessage = $($('.answerTemplate').clone().html());
+                console.log("the text i'm adding to the answer button: " + _this.text);
                 $answerMessage.addClass(_this.text).find('.answerText').html(_this.text);
                 $answerMessage.addClass(_this.text).find('.answerUser').html(_this.user);
                 //$answerMessage.addClass(_this.message_side).find('.time').html(_this.time);
@@ -537,6 +549,27 @@ window.onload = () => {
 
                 var answerMessagesButton = document.getElementsByClassName("answerText");
 
+
+                if (firstTimeThroughAnswer == 0)
+                {
+                    console.log("this is my first time thourgh answer");
+                    console.log("this is the answer: " + myWordsDict[currentChosenQuestion]);
+
+                    $answerMessage = $($('.answerTemplate').clone().html());
+                    $answerMessage.addClass(_this.text).find('.answerText').html(myWordsDict[currentChosenQuestion]);
+                    $answerMessage.addClass(_this.text).find('.answerUser').html("Computer");
+                    
+                    $('.myAnswers').append($answerMessage);
+
+                    //shuffle answer buttons
+                    //var ul = document.querySelector('ul.myAnswers');
+                    for (var i = ul.children.length; i >= 0; i--) {
+                        ul.appendChild(ul.children[Math.random() * i | 0]);
+                    }
+                    firstTimeThroughAnswer +=1;
+                }
+                
+
                 
 
                 for (var i = 0; i < answerMessagesButton.length; i++) {
@@ -547,6 +580,7 @@ window.onload = () => {
                         console.log("I'm in answer messages button");
                         $("#answerChosen").show();
                         $("div.gamediv3").hide();
+                        firstTimeThroughAnswer = 0;
                 
                         
                         socket.emit('addToChosenAnswer', { 
