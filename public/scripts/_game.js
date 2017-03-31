@@ -36,6 +36,8 @@ window.onload = () => {
 
     var myWordsDict= {}; 
 
+    
+
 
     for (var i = 0; i<myWordsList.length; i++)
     {
@@ -46,24 +48,50 @@ window.onload = () => {
         console.log("answer: " +myWordsDict[question]);
     }
 
-    for (var i = 0; i < sendButton.length; i++) {
-        sendButton[i].onclick = function() {
-            console.log("hello");
-            alert(this.name);
+    var gamediv = document.getElementById("gamediv");
 
-            //chosenQuestion.innerHTML = this.name;
+    gamediv.innerHTML = "<h1> Choose Question For the Round </h1>";
+    
+    var myChosenWords = {};
+    var count = 0;
+    for (var i = 0; i<4; i++)
+    {
+        var randomNum= Math.floor(Math.random() * (myWordsList.length))
+        var myQuestion = myWordsList[randomNum].question
 
-            //testing the jquery hide() function in javascript
-            document.getElementById("gamediv").style.display="none";
-
-            socket.emit('sendQuestion', { 
-                username: user,
-                text: this.name 
-            });
-
-            currentChosenQuestion = this.name;
+        if (myChosenWords[myQuestion] == "true")
+        {
+          var myCount = 0
+          while (myChosenWords[myQuestion] == "true" && myCount <50)
+          {
+            randomNum= Math.floor(Math.random() * (myWordsList.length));
+            myQuestion = myWordsList[randomNum].question
+            myCount +=1;
+          }
+          myChosenWords[myQuestion] = "true"
+          if (myCount ==50)
+          {
+              for (var i =0; i<myChosenWords.length; i++)
+              {
+                  myChosenWords[myQuestion] = "false";
+              }
+          }
+          myCount = 0;
         }
+        else
+        {
+          myChosenWords[myQuestion] = "true"
+        }
+        var myString= "<button class=sendQuestion name=\""+myQuestion+"\">"+ myQuestion + "</button>";
+        console.log(myString);
+        gamediv.innerHTML += "<button class=sendQuestion name=\" "+myQuestion+"\">"+ myQuestion + "</button>";
+        
     }
+    
+
+    
+    
+
 /*
     sendAnswer.onclick = function() {
         console.log("answer");
@@ -75,8 +103,6 @@ window.onload = () => {
     */
 
 
-
-//Not Brady's Stuff
     let user = document.getElementsByTagName('p')[0].textContent;
 
     let socket = io.connect();
@@ -85,6 +111,84 @@ window.onload = () => {
             username: document.getElementsByTagName('p')[0].textContent
         })
     };
+
+
+
+
+    
+    socket.emit('sendWordsDict', { 
+        wordList: myWordsList
+    });
+
+    for (var i = 0; i < sendButton.length; i++) {
+        sendButton[i].onclick = function() {
+            console.log("hello");
+            alert($(this).text());
+            //chosenQuestion.innerHTML = this.name;
+
+            //testing the jquery hide() function in javascript
+            document.getElementById("gamediv").style.display="none";
+
+            socket.emit('sendQuestion', { 
+                username: user,
+                text: $(this).text() //this.name 
+            });
+
+            currentChosenQuestion = $(this).text();
+
+
+            for (var i = 0; i<4; i++)
+            {
+                var randomNum= Math.floor(Math.random() * (myWordsList.length))
+                var myQuestion = myWordsList[randomNum].question
+
+                if (myChosenWords[myQuestion] == "true")
+                {
+                    var myCount = 0
+                    while (myChosenWords[myQuestion] == "true" && myCount <50)
+                    {
+                        randomNum= Math.floor(Math.random() * (myWordsList.length));
+                        myQuestion = myWordsList[randomNum].question
+                        myCount +=1;
+                    }
+                    myChosenWords[myQuestion] = "true"
+                    if (myCount ==50)
+                    {
+                        for (var i =0; i<myChosenWords.length; i++)
+                        {
+                            myChosenWords[myQuestion] = "false";
+                        }
+                    }
+                    myCount = 0;
+                }
+                else
+                {
+                    myChosenWords[myQuestion] = "true"
+                }
+
+/*
+                var your_div = document.getElementById('gamediv');
+
+                var text_to_change = your_div.childNodes[i];
+
+                text_to_change.nodeValue = myQuestion;
+                */
+
+                $(sendButton[i]).text(myQuestion);
+
+                //var currentOne = 'button.sendQuestion['+i+']';
+                //$('button.sendQuestion').text('Hello');
+                //$('button.sendQuestion').name('Hello');
+                //$(this).innerHTML = myQuestion;
+                //var myString= "<button class=sendQuestion name=\""+myQuestion+"\">"+ myQuestion + "</button>";
+                //console.log(myString);
+                //gamediv.innerHTML += "<button class=sendQuestion name=\" "+myQuestion+"\">"+ myQuestion + "</button>";
+                
+            }
+
+            
+        }
+    }
 
 
     socket.on('setHost', (msg)=>{

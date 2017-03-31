@@ -68,20 +68,8 @@ block content
   
 
   div#gamediv
-      //(id="gamediv")
-      //.gamediv
-      //- var questions = questionOne
       //div
-        each value, index in questions
-            button.sendQuestion(name=value)= (index+1) + ". " + value
-            br
-            br
-      
-
-      
-      
-      div
-      - for (var i = 0; i<3; i++)
+      //- for (var i = 0; i<4; i++)
         -var randomNum= Math.floor(Math.random() * (myWords.length))
         -var myQuestion = myWords[randomNum].question
 
