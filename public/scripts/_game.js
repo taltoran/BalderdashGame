@@ -1,5 +1,6 @@
 window.onload = () => {
 //Brady stuff
+
     var sendButton = document.getElementsByClassName("sendQuestion");
     var chosenQuestion = document.getElementById("chosenQuestion");
     var chosenQuestionTwo = document.getElementById("chosenQuestionTwo");
@@ -17,24 +18,108 @@ window.onload = () => {
 
     //used to see if everybodys entered an answer
     var usersAnswered = 0;
-    
 
-    for (var i = 0; i < sendButton.length; i++) {
-        sendButton[i].onclick = function() {
-            console.log("hello");
-            alert(this.name);
+    var currentChosenQuestion = "";
 
-            //chosenQuestion.innerHTML = this.name;
 
-            //testing the jquery hide() function in javascript
-            document.getElementById("gamediv").style.display="none";
+    //just using to see if I got data from Game.pug
+    /*
+    console.log("my local data: " +myWordsList);
 
-            socket.emit('sendQuestion', { 
-                username: user,
-                text: this.name 
-            });
+    for (var i = 0; i<3; i++)
+    {
+        var randomNum= Math.floor(Math.random() * (myWordsList.length))
+        var myQuestion = myWordsList[randomNum].question
+        console.log("my questions " +myWordsList[randomNum].question)
+    }
+    */
+
+    var myWordsDict= {}; 
+
+    //used to make it so only words in Category are chosen as questions (gets rid of other categories in list)
+    for (var i = 0; i<myWordsList.length; i++)
+    {
+        var foundIt = "false";
+        for (var j = 0; j<myCategories.length; j++)
+        {
+            if (myCategories[j] == myWordsList[i].category)
+            {
+                foundIt = "true";
+            }
+        }
+        if (foundIt == "false")
+        {
+            myWordsList.splice(i, 1);
+            i = i-1;
         }
     }
+
+/*
+    for (var i = 0; i<myWordsList.length; i++)
+    {
+        console.log(myWordsList[i].category + " :" +myWordsList[i].question);
+    }
+    */
+
+    
+
+
+    for (var i = 0; i<myWordsList.length; i++)
+    {
+        var question = myWordsList[i].question;
+        var answer = myWordsList[i].answer;
+        myWordsDict[question] = answer;
+
+        console.log("answer: " +myWordsDict[question]);
+    }
+
+    console.log("my categories: " + myCategories[0]);
+
+    var gamediv = document.getElementById("gamediv");
+
+    gamediv.innerHTML = "<h1> Choose Question For the Round </h1>";
+    
+    var myChosenWords = {};
+    var count = 0;
+    for (var i = 0; i<4; i++)
+    {
+        var randomNum= Math.floor(Math.random() * (myWordsList.length))
+        var myQuestion = myWordsList[randomNum].question
+
+
+        if (myChosenWords[myQuestion] == "true")
+        {
+          var myCount = 0
+          while (myChosenWords[myQuestion] == "true" && myCount <20)
+          {
+            randomNum= Math.floor(Math.random() * (myWordsList.length));
+            myQuestion = myWordsList[randomNum].question
+            myCount +=1;
+          }
+          myChosenWords[myQuestion] = "true"
+          if (myCount ==20)
+          {
+              for (var j =0; j<myChosenWords.length; j++)
+              {
+                  myChosenWords[myQuestion] = "false";
+              }
+          }
+          myCount = 0;
+        }
+        else
+        {
+          myChosenWords[myQuestion] = "true"
+        }
+        var myString= "<button class=sendQuestion name=\""+myQuestion+"\">"+ myQuestion + "</button>";
+        console.log(myString);
+        gamediv.innerHTML += "<button class=sendQuestion name=\" "+myQuestion+"\">"+ myQuestion + "</button>";
+        
+    }
+    
+
+    
+    
+
 /*
     sendAnswer.onclick = function() {
         console.log("answer");
@@ -46,8 +131,6 @@ window.onload = () => {
     */
 
 
-
-//Not Brady's Stuff
     let user = document.getElementsByTagName('p')[0].textContent;
 
     let socket = io.connect();
@@ -56,6 +139,85 @@ window.onload = () => {
             username: document.getElementsByTagName('p')[0].textContent
         })
     };
+
+
+
+
+    
+    socket.emit('sendWordsDict', { 
+        wordList: myWordsList
+    });
+
+    for (var i = 0; i < sendButton.length; i++) {
+        sendButton[i].onclick = function() {
+            console.log("hello");
+            alert($(this).text());
+            //chosenQuestion.innerHTML = this.name;
+
+            //testing the jquery hide() function in javascript
+            document.getElementById("gamediv").style.display="none";
+
+            socket.emit('sendQuestion', { 
+                username: user,
+                text: $(this).text() //this.name 
+            });
+
+            
+
+            
+            for (var i = 0; i<4; i++)
+            {
+                
+                var randomNum= Math.floor(Math.random() * (myWordsList.length))
+                var myQuestion = myWordsList[randomNum].question
+
+                if (myChosenWords[myQuestion] == "true")
+                {
+                    var myCount = 0
+                    while (myChosenWords[myQuestion] == "true" && myCount <20)
+                    {
+                        randomNum= Math.floor(Math.random() * (myWordsList.length));
+                        myQuestion = myWordsList[randomNum].question
+                        myCount +=1;
+                    }
+                    myChosenWords[myQuestion] = "true"
+                    if (myCount ==20)
+                    {
+                        for (var j=0; j<myChosenWords.length; j++)
+                        {
+                            myChosenWords[myQuestion] = "false";
+                        }
+                    }
+                    myCount = 0;
+                }
+                else
+                {
+                    myChosenWords[myQuestion] = "true"
+                }
+
+/*
+                var your_div = document.getElementById('gamediv');
+
+                var text_to_change = your_div.childNodes[i];
+
+                text_to_change.nodeValue = myQuestion;
+                */
+
+                $(sendButton[i]).text(myQuestion);
+
+                //var currentOne = 'button.sendQuestion['+i+']';
+                //$('button.sendQuestion').text('Hello');
+                //$('button.sendQuestion').name('Hello');
+                //$(this).innerHTML = myQuestion;
+                //var myString= "<button class=sendQuestion name=\""+myQuestion+"\">"+ myQuestion + "</button>";
+                //console.log(myString);
+                //gamediv.innerHTML += "<button class=sendQuestion name=\" "+myQuestion+"\">"+ myQuestion + "</button>";
+                
+            }
+
+            
+        }
+    }
 
 
     socket.on('setHost', (msg)=>{
@@ -87,6 +249,9 @@ window.onload = () => {
     socket.on('questionMessage', (msg)=>{
         console.log('get question message:')
         console.log(msg.text);
+
+        //set the current question for all players?
+        currentChosenQuestion = msg.text; //$(this).text();
         
         if (msg.text.trim() === '') {
             return;
@@ -198,8 +363,41 @@ window.onload = () => {
     });
 
     socket.on('hideLoading', function (msg) {
-        $("div.gamediv3").show();
+        
+        console.log("hiding waiting for users to answer and showing gamediv3.");
+        
+/*
+        console.log("the answer i'm sending: "+myWordsDict[currentChosenQuestion]);
+
+        answerMessage = new AnswerMessage({
+            user: "Computer",
+            text: myWordsDict[currentChosenQuestion]
+        });
+
+        
+
+        answerMessage.draw();
+*/
         $("#answerWait").hide();
+        $("div.gamediv3").show();
+
+/*
+        socket.emit('reallyHideLoading', {
+
+        });
+        */
+        
+        
+    });
+
+    socket.on('reallyReallyHideLoading', function (msg) {
+
+
+        
+
+        $("#answerWait").hide();
+        $("div.gamediv3").show();
+        
     });
 /*
     function displayLoading()
@@ -322,7 +520,7 @@ window.onload = () => {
 
 
 
-    
+    var firstTimeThroughAnswer = 0;    
 
 //brady added this function, a modification of Message
     var AnswerMessage = function (arg) {
@@ -332,6 +530,7 @@ window.onload = () => {
                 var $answerMessage;
                 //$answerMessage = $($('.answerMessages').clone().html());
                 $answerMessage = $($('.answerTemplate').clone().html());
+                console.log("the text i'm adding to the answer button: " + _this.text);
                 $answerMessage.addClass(_this.text).find('.answerText').html(_this.text);
                 $answerMessage.addClass(_this.text).find('.answerUser').html(_this.user);
                 //$answerMessage.addClass(_this.message_side).find('.time').html(_this.time);
@@ -351,29 +550,51 @@ window.onload = () => {
                 var answerMessagesButton = document.getElementsByClassName("answerText");
 
 
+                if (firstTimeThroughAnswer == 0)
+                {
+                    console.log("this is my first time thourgh answer");
+                    console.log("this is the answer: " + myWordsDict[currentChosenQuestion]);
+
+                    $answerMessage = $($('.answerTemplate').clone().html());
+                    $answerMessage.addClass(_this.text).find('.answerText').html(myWordsDict[currentChosenQuestion]);
+                    $answerMessage.addClass(_this.text).find('.answerUser').html("Computer");
+                    
+                    $('.myAnswers').append($answerMessage);
+
+                    //shuffle answer buttons
+                    //var ul = document.querySelector('ul.myAnswers');
+                    for (var i = ul.children.length; i >= 0; i--) {
+                        ul.appendChild(ul.children[Math.random() * i | 0]);
+                    }
+                    firstTimeThroughAnswer +=1;
+                }
+                
+
+                
+
                 for (var i = 0; i < answerMessagesButton.length; i++) {
                     answerMessagesButton[i].onclick = function() {
-                        alert(this.innerHTML);//textContent);//innerHTML);//textContent);//Content);
-                        
+                        //alert(this.innerHTML);//textContent);//innerHTML);//textContent);//Content);
+                        $temp = $($('.answerTemplate').clone().html());
+                        alert(this.innerHTML);
                         console.log("I'm in answer messages button");
                         $("#answerChosen").show();
                         $("div.gamediv3").hide();
-
+                        firstTimeThroughAnswer = 0;
+                
                         
-
                         socket.emit('addToChosenAnswer', { 
-                           text: this.innerHTML,
-                           username: user
+                        text: this.innerHTML,
+                        username: user
                         });
+                        
 
                         console.log("usersCount: " + arg.usersCount);
                         console.log("usersChosenAnswer count: " + usersChosenAnswer);
-                        
-
-                        
-
-
                     }
+
+                    $(answerMessagesButton[i]).show();
+                    $(answerMessagesButton[answerMessagesButton.length-1]).hide();
                 }
 
                 return setTimeout(function () {
@@ -488,6 +709,7 @@ window.onload = () => {
         //     return sendMessage('I\'m fine, thank you!');
         // }, 2000);
     });
+
 }
 
 
@@ -550,3 +772,4 @@ window.onload = () => {
 //         }, 2000);
 //     });
 // }.call(this));
+

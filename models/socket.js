@@ -8,6 +8,8 @@ module.exports = (io) => {
     var userIdDict = {};
     var myScoresHtml = ""; 
     var answersDisplayed = 0;
+    var myWordDict = {};
+    var myCurrentChosenQuestion;
 
     //how many users have answered question.
     var usersAnswered = 0;
@@ -25,6 +27,21 @@ module.exports = (io) => {
             text: 'Welcome to Chat', 
         });*/ //Brady took out
 
+        socket.on('sendWordsDict', function (msg) {
+            var myWordsList = msg.wordList;
+
+            for (var i = 0; i<myWordsList.length; i++)
+            {
+                var question = myWordsList[i].question;
+                var answer = myWordsList[i].answer;
+                myWordDict[question] = answer;
+
+                //console.log("socket answer: " +myWordDict[question]);
+            }
+
+            console.log("got word dict in socket: "+myWordDict);
+        });
+
         socket.on('showHostFirstScreen', function (msg) {
 
             console.log("i'm in socket to show host first screen and host id is: "+userIdDict["host"]);
@@ -41,7 +58,7 @@ module.exports = (io) => {
             
             if (answersDisplayed == 0)
             {
-                    answersDisplayed += 1;
+                answersDisplayed += 1;
 
                 myScoresHtml = "<h1>Points Scored During the Round</h1>"+myScoresHtml
                 myScoresHtml += "<h1> Total Scores: </h1>";
@@ -67,15 +84,40 @@ module.exports = (io) => {
 
         socket.on('addToChosenAnswer', function (msg) {
 
-            //first give user points 
-            userPointsDict[userAnswersDict[msg.text]] += 1;
+             
+            
+            console.log("the answer for currentChosenQuestion is: "+myWordDict[myCurrentChosenQuestion] + " and user chose the answer: "+msg.text);
+            if (myWordDict[myCurrentChosenQuestion]==msg.text)
+            {
+                userPointsDict[msg.username] += 2; 
+                myScoresHtml +="<p>"+msg.username + " picked the Real Correct answer: " + msg.text+ ", so "+msg.username + " scored 2 points!</p>";//" +userPointsDict[userAnswersDict[msg.text]] +" 
 
-            console.log("<p>"+userAnswersDict[msg.text] + " points: " +userPointsDict[userAnswersDict[msg.text]] +"</p>");
+                console.log("user chose correct answer and won 2 points");
+            }
+            else
+            {
+                //give user whose answer it was, a point
+                userPointsDict[userAnswersDict[msg.text]] += 1;
 
-            myScoresHtml +="<p>"+msg.username + " picked the answer " + msg.text+ " so "+userAnswersDict[msg.text] + " scored 1 point</p>";//" +userPointsDict[userAnswersDict[msg.text]] +" 
+                console.log("answer did not exist in answers");
 
+                console.log("<p>"+userAnswersDict[msg.text] + " points: " +userPointsDict[userAnswersDict[msg.text]] +"</p>");
+
+                myScoresHtml +="<p>"+msg.username + " picked the answer: " + msg.text+ ", so "+userAnswersDict[msg.text] + " scored 1 point</p>";//" +userPointsDict[userAnswersDict[msg.text]] +" 
+
+            }
+            
+            
+            
+
+            
             io.emit('addOneChosenAnswer', { 
                  usersCount: userCount
+            });
+        });
+
+        socket.on('reallyHideLoading', function (msg) {
+            io.emit('reallyReallyHideLoading', { 
             });
         });
        
@@ -100,6 +142,15 @@ module.exports = (io) => {
 
             usersAnswered += 1;
 
+            //Brady Added
+            io.emit('answerMessage', { 
+                username: msg.username, 
+                text: msg.text, 
+                time: stamp,
+                //usersCount: userCount
+            });
+
+
             if (usersAnswered == userCount)
             {
                 io.emit('hideLoading', { 
@@ -110,20 +161,16 @@ module.exports = (io) => {
 
             
             
-            //Brady Added
-            io.emit('answerMessage', { 
-                username: msg.username, 
-                text: msg.text, 
-                time: stamp,
-                //usersCount: userCount
-            });
+            
 
             userAnswersDict[msg.text] = msg.username;
 
         });
 
         socket.on('sendQuestion', function (msg) {
+            myCurrentChosenQuestion = msg.text
 
+            console.log("mycurrent question is: " + msg.text);
             
             
             //Brady Added
