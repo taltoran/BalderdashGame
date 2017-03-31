@@ -1,5 +1,6 @@
 window.onload = () => {
 //Brady stuff
+
     var sendButton = document.getElementsByClassName("sendQuestion");
     var chosenQuestion = document.getElementById("chosenQuestion");
     var chosenQuestionTwo = document.getElementById("chosenQuestionTwo");
@@ -17,7 +18,33 @@ window.onload = () => {
 
     //used to see if everybodys entered an answer
     var usersAnswered = 0;
-    
+
+    var currentChosenQuetion = "";
+
+
+    //just using to see if I got data from Game.pug
+    /*
+    console.log("my local data: " +myWordsList);
+
+    for (var i = 0; i<3; i++)
+    {
+        var randomNum= Math.floor(Math.random() * (myWordsList.length))
+        var myQuestion = myWordsList[randomNum].question
+        console.log("my questions " +myWordsList[randomNum].question)
+    }
+    */
+
+    var myWordsDict= {}; 
+
+
+    for (var i = 0; i<myWordsList.length; i++)
+    {
+        var question = myWordsList[i].question;
+        var answer = myWordsList[i].answer;
+        myWordsDict[question] = answer;
+
+        console.log("answer: " +myWordsDict[question]);
+    }
 
     for (var i = 0; i < sendButton.length; i++) {
         sendButton[i].onclick = function() {
@@ -33,6 +60,8 @@ window.onload = () => {
                 username: user,
                 text: this.name 
             });
+
+            currentChosenQuestion = this.name;
         }
     }
 /*
@@ -198,6 +227,14 @@ window.onload = () => {
     });
 
     socket.on('hideLoading', function (msg) {
+
+        answerMessage = new AnswerMessage({
+            user: "Computer",
+            text: myWordsDict[currentChosenQuestion]
+        });
+
+        answerMessage.draw();
+        
         $("div.gamediv3").show();
         $("#answerWait").hide();
     });
@@ -350,17 +387,17 @@ window.onload = () => {
 
                 var answerMessagesButton = document.getElementsByClassName("answerText");
 
+                
 
                 for (var i = 0; i < answerMessagesButton.length; i++) {
                     answerMessagesButton[i].onclick = function() {
-                        alert(this.innerHTML);//textContent);//innerHTML);//textContent);//Content);
-                        
+                        //alert(this.innerHTML);//textContent);//innerHTML);//textContent);//Content);
+                        $temp = $($('.answerTemplate').clone().html());
+                        alert(this.innerHTML);
                         console.log("I'm in answer messages button");
                         $("#answerChosen").show();
                         $("div.gamediv3").hide();
-
-                        
-
+                
                         socket.emit('addToChosenAnswer', { 
                            text: this.innerHTML,
                            username: user
@@ -368,12 +405,10 @@ window.onload = () => {
 
                         console.log("usersCount: " + arg.usersCount);
                         console.log("usersChosenAnswer count: " + usersChosenAnswer);
-                        
-
-                        
-
-
                     }
+
+                    $(answerMessagesButton[i]).show();
+                    $(answerMessagesButton[answerMessagesButton.length-1]).hide();
                 }
 
                 return setTimeout(function () {
@@ -488,6 +523,7 @@ window.onload = () => {
         //     return sendMessage('I\'m fine, thank you!');
         // }, 2000);
     });
+
 }
 
 
@@ -550,3 +586,4 @@ window.onload = () => {
 //         }, 2000);
 //     });
 // }.call(this));
+
