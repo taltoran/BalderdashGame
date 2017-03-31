@@ -360,16 +360,33 @@ window.onload = () => {
     });
 
     socket.on('hideLoading', function (msg) {
+        
+        console.log("hiding waiting for users to answer and showing gamediv3.");
+        $("#answerWait").hide();
+        $("div.gamediv3").show();
+
+        socket.emit('reallyHideLoading', {
+            
+        });
+        
+        
+    });
+
+    socket.on('reallyReallyHideLoading', function (msg) {
+
 
         answerMessage = new AnswerMessage({
             user: "Computer",
             text: myWordsDict[currentChosenQuestion]
         });
 
-        answerMessage.draw();
         
-        $("div.gamediv3").show();
+
+        answerMessage.draw();
+
         $("#answerWait").hide();
+        $("div.gamediv3").show();
+        
     });
 /*
     function displayLoading()
@@ -531,10 +548,12 @@ window.onload = () => {
                         $("#answerChosen").show();
                         $("div.gamediv3").hide();
                 
+                        
                         socket.emit('addToChosenAnswer', { 
-                           text: this.innerHTML,
-                           username: user
+                        text: this.innerHTML,
+                        username: user
                         });
+                        
 
                         console.log("usersCount: " + arg.usersCount);
                         console.log("usersChosenAnswer count: " + usersChosenAnswer);

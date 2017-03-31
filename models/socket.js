@@ -36,7 +36,7 @@ module.exports = (io) => {
                 var answer = myWordsList[i].answer;
                 myWordDict[question] = answer;
 
-                console.log("socket answer: " +myWordDict[question]);
+                //console.log("socket answer: " +myWordDict[question]);
             }
 
             console.log("got word dict in socket: "+myWordDict);
@@ -115,6 +115,11 @@ module.exports = (io) => {
                  usersCount: userCount
             });
         });
+
+        socket.on('reallyHideLoading', function (msg) {
+            io.emit('reallyReallyHideLoading', { 
+            });
+        });
        
 
         socket.on('send', function (msg) {
@@ -137,6 +142,15 @@ module.exports = (io) => {
 
             usersAnswered += 1;
 
+            //Brady Added
+            io.emit('answerMessage', { 
+                username: msg.username, 
+                text: msg.text, 
+                time: stamp,
+                //usersCount: userCount
+            });
+
+
             if (usersAnswered == userCount)
             {
                 io.emit('hideLoading', { 
@@ -147,13 +161,7 @@ module.exports = (io) => {
 
             
             
-            //Brady Added
-            io.emit('answerMessage', { 
-                username: msg.username, 
-                text: msg.text, 
-                time: stamp,
-                //usersCount: userCount
-            });
+            
 
             userAnswersDict[msg.text] = msg.username;
 

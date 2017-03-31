@@ -215,7 +215,7 @@ router.get('/Game', utils.requireLogin, function(req, res, next) {
 
     Question.find()//{ category: /^words/ })
         .then(function(words) {
-            console.log(words);
+            //console.log(words);
 /*
             Question.find({ category: /^people/ })
             .then(function(people) {
