@@ -213,10 +213,10 @@ router.get('/Game', utils.requireLogin, function(req, res, next) {
 
 
 
-    Question.find({ category: /^words/ })
+    Question.find()//{ category: /^words/ })
         .then(function(words) {
-            console.log(words);
-
+            //console.log(words);
+/*
             Question.find({ category: /^people/ })
             .then(function(people) {
                 console.log(people);
@@ -232,17 +232,21 @@ router.get('/Game', utils.requireLogin, function(req, res, next) {
                                     Question.find({ category: /^laws/ })
                                     .then(function(laws) {
                                         console.log(laws);
+                                        */
+                                        //questionOne: myQuestionOne,
 
-                        res.render('Game.pug', {title: 'Question Creator', questionOne: myQuestionOne, userName: req.user.username,
-                          wordsList: words, 
+                        res.render('Game.pug', {title: 'Question Creator',  userName: req.user.username,
+                          wordsList: words, categories:["words"]});//, 
+                          /*
                           peopleList: people,
                           initialsList: initials,
                           moviesList: movies,
                           lawsList: laws});
-                    });
-                });
-            });
-        });
+                          */
+                    //});
+                //});
+            //});
+        //});
     });
 });
 
