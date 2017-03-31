@@ -236,7 +236,7 @@ router.get('/Game', utils.requireLogin, function(req, res, next) {
                                         //questionOne: myQuestionOne,
 
                         res.render('Game.pug', {title: 'Question Creator',  userName: req.user.username,
-                          wordsList: words});//, 
+                          wordsList: words, categories:["words"]});//, 
                           /*
                           peopleList: people,
                           initialsList: initials,

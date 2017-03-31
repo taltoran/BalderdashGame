@@ -36,6 +36,31 @@ window.onload = () => {
 
     var myWordsDict= {}; 
 
+    //used to make it so only words in Category are chosen as questions (gets rid of other categories in list)
+    for (var i = 0; i<myWordsList.length; i++)
+    {
+        var foundIt = "false";
+        for (var j = 0; j<myCategories.length; j++)
+        {
+            if (myCategories[j] == myWordsList[i].category)
+            {
+                foundIt = "true";
+            }
+        }
+        if (foundIt == "false")
+        {
+            myWordsList.splice(i, 1);
+            i = i-1;
+        }
+    }
+
+/*
+    for (var i = 0; i<myWordsList.length; i++)
+    {
+        console.log(myWordsList[i].category + " :" +myWordsList[i].question);
+    }
+    */
+
     
 
 
@@ -48,6 +73,8 @@ window.onload = () => {
         console.log("answer: " +myWordsDict[question]);
     }
 
+    console.log("my categories: " + myCategories[0]);
+
     var gamediv = document.getElementById("gamediv");
 
     gamediv.innerHTML = "<h1> Choose Question For the Round </h1>";
@@ -59,19 +86,20 @@ window.onload = () => {
         var randomNum= Math.floor(Math.random() * (myWordsList.length))
         var myQuestion = myWordsList[randomNum].question
 
+
         if (myChosenWords[myQuestion] == "true")
         {
           var myCount = 0
-          while (myChosenWords[myQuestion] == "true" && myCount <50)
+          while (myChosenWords[myQuestion] == "true" && myCount <20)
           {
             randomNum= Math.floor(Math.random() * (myWordsList.length));
             myQuestion = myWordsList[randomNum].question
             myCount +=1;
           }
           myChosenWords[myQuestion] = "true"
-          if (myCount ==50)
+          if (myCount ==20)
           {
-              for (var i =0; i<myChosenWords.length; i++)
+              for (var j =0; j<myChosenWords.length; j++)
               {
                   myChosenWords[myQuestion] = "false";
               }
@@ -136,25 +164,26 @@ window.onload = () => {
 
             currentChosenQuestion = $(this).text();
 
-
+            
             for (var i = 0; i<4; i++)
             {
+                
                 var randomNum= Math.floor(Math.random() * (myWordsList.length))
                 var myQuestion = myWordsList[randomNum].question
 
                 if (myChosenWords[myQuestion] == "true")
                 {
                     var myCount = 0
-                    while (myChosenWords[myQuestion] == "true" && myCount <50)
+                    while (myChosenWords[myQuestion] == "true" && myCount <20)
                     {
                         randomNum= Math.floor(Math.random() * (myWordsList.length));
                         myQuestion = myWordsList[randomNum].question
                         myCount +=1;
                     }
                     myChosenWords[myQuestion] = "true"
-                    if (myCount ==50)
+                    if (myCount ==20)
                     {
-                        for (var i =0; i<myChosenWords.length; i++)
+                        for (var j=0; j<myChosenWords.length; j++)
                         {
                             myChosenWords[myQuestion] = "false";
                         }
