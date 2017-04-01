@@ -56,6 +56,11 @@ module.exports = (io) => {
             
         });
 
+        socket.on('hideYesNo', function (msg) {
+            io.emit('hideYesNoButtons', { 
+            });
+        });
+
         socket.on('emptyUserAnswers', function (msg) {
             userAnswersDict = {}
 

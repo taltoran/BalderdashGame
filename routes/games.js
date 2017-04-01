@@ -12,7 +12,11 @@ router.get('/', utils.requireLogin, function(req, res, next) {
 
     console.log("I'm in this part?");
     
+    res.render('newgame.pug', {
+            userName: req.user.username
+        });
 
+        /*
     if (req.session['hasGameName'] == 'true')
     {
         console.log("Restarting a game!");
@@ -31,6 +35,7 @@ router.get('/', utils.requireLogin, function(req, res, next) {
             userName: req.user.username
         });
     }
+    */
     
 });
 
@@ -228,8 +233,8 @@ router.get('/Game', utils.requireLogin, function(req, res, next) {
                 Question.find()
                     .then(function(words) {
                         res.render('Game.pug', {title: 'Question Creator',  userName: req.user.username,
-                        wordsList: words, categories:game.category, rounds:game.rounds, numberOfPlayers: game.playerNumber, gameName:game.gameName}); 
-                });
+                        wordsList: words, categories:["words","people"], rounds:game.rounds, numberOfPlayers: game.playerNumber, gameName:game.gameName}); 
+                }); //game.category
             }
             else
             {
@@ -267,8 +272,8 @@ router.get('/Game', utils.requireLogin, function(req, res, next) {
                     Question.find()
                         .then(function(words) {
                             res.render('Game.pug', {title: 'Question Creator',  userName: req.user.username,
-                            wordsList: words, categories:game.category, rounds:game.rounds, numberOfPlayers: game.playerNumber, gameName:game.gameName}); 
-                    });
+                            wordsList: words, categories:["words","people"], rounds:game.rounds, numberOfPlayers: game.playerNumber, gameName:game.gameName}); 
+                    });//game.category
                 }
                 else
                 {
@@ -297,6 +302,8 @@ router.post('/Game', function(req, res, next) {
     console.log("I'm in the Game post");
     console.log(req.body.myChoice);
 
+    res.redirect('/');
+/*
     if (req.body.myChoice == 'choseNo')
     {
         res.render('newgame.pug', {
@@ -314,6 +321,7 @@ router.post('/Game', function(req, res, next) {
 
         console.log("yes I get here");
     }
+    */
 });
 
 

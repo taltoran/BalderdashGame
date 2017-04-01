@@ -567,7 +567,7 @@ window.onload = () => {
         alert(finalscores.innerHTML);
         finalscores.innerHTML = msg.text;
 
-        finalscores.innerHTML += "</br></br><h1> Would you like to start a New Game? </h1>";
+        finalscores.innerHTML += "</br></br><h1> Would you like to Continue Game for Another Round? </h1>";
 
 
     
@@ -601,12 +601,31 @@ window.onload = () => {
             //$.post("", { 'myChoice': myGameName });
         }
         choseNo.onclick = function() {
-            finalscores.innerHTML += "<p> You chose No </p>";
+            //finalscores.innerHTML += "<p> You chose No </p>";
+            $('#choseYes').hide();
+            $('#choseNo').hide();
+
+            socket.emit('hideYesNo', {
+            
+            });
         }
 
 
         $("#scores").hide();
         $("#finalscores").show();
+    });
+
+    socket.on('hideYesNoButtons', function (msg) {
+        console.log("i'm in hide yes no buttons");
+
+        finalscores.innerHTML += "<p>A Player Chose To Not Continue Game. Thanks for Playing! Click Button Below to Return to Home Page. </p>";
+        $('#choseYes').hide();
+        $('#choseNo').hide();
+
+        finalscores.innerHTML += "<form id='myForm' action='' method='post'><button id='choseYes' value="+myGameName+" name='myChoice' type='text'> Return Home </button></form>";
+
+
+        //$.get("Join", { 'myChoice': myGameName });
     });
 
 
