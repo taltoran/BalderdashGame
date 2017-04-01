@@ -42,18 +42,6 @@ window.onload = () => {
     var currentChosenQuestion = "";
 
 
-    //just using to see if I got data from Game.pug
-    /*
-    console.log("my local data: " +myWordsList);
-
-    for (var i = 0; i<3; i++)
-    {
-        var randomNum= Math.floor(Math.random() * (myWordsList.length))
-        var myQuestion = myWordsList[randomNum].question
-        console.log("my questions " +myWordsList[randomNum].question)
-    }
-    */
-
     //used to save questions and answers
     var myWordsDict= {}; 
 
@@ -226,7 +214,7 @@ window.onload = () => {
             }
 
             //used to give users 15 seconds to enter their answers
-            setTimeout(timesUpShowAnswers, 15000);
+            //setTimeout(timesUpShowAnswers, 15000);
             
         }
     }
