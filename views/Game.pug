@@ -46,7 +46,7 @@ block content
       div#loadingScreen
         //.mainScreen
         div.loadScreen
-          h1.centered Waiting For Players! (Room Join Code = CODE)
+          h1.centered= 'Waiting For Players! (Room Join Code = '+gameName+')'
           .loader
           h1.centered Joined Players
         p(style="visibility:hidden")= userName
@@ -141,6 +141,9 @@ block content
   div
   #scores
 
+  div
+  #finalscores
+
   
   div#answerWait
     h1(text-align: center) Waiting For Players to Enter Answers
@@ -169,6 +172,8 @@ block scripts
   script(type='text/javascript')                                         
     | var myWordsList =!{JSON.stringify(wordsList)}; 
     | var myCategories =!{JSON.stringify(categories)}; 
+    | var myRounds = !{JSON.stringify(rounds)}; 
+    | var myNumberOfPlayers = !{JSON.stringify(numberOfPlayers)}; 
   script(src='/scripts/_game.js') 
    
   script(src='/socket.io/socket.io.js')
