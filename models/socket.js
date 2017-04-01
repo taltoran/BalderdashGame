@@ -50,7 +50,7 @@ module.exports = (io) => {
 
         socket.on('showHostFirstScreen', function (msg) {
 
-            console.log("i'm in socket to show host first screen and host id is: "+userIdDict[myHostName]);
+            //console.log("i'm in socket to show host first screen and host id is: "+userIdDict[myHostName]);
             //io.to(io.clients[userIdDict["host"]]).emit('hostFirstScreen');//send host to first screen
             io.sockets.connected[userIdDict[myHostName]].emit('hostFirstScreen');
             

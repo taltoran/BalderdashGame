@@ -17,6 +17,15 @@ window.onload = () => {
     var buttonHtml = "";
     var buttonNumber = 0;
 
+    var myHtmlRoundNumber = 1;
+    var roundHtml = document.getElementsByClassName("roundNumber");
+
+    for (var i = 0; i < roundHtml.length; i++) {
+        roundHtml[i].innerHTML = "<p> Round Number: "+myHtmlRoundNumber+"</p>";
+    }
+
+
+
     //used to see if everybodys entered an answer
     var usersAnswered = 0;
 
@@ -499,15 +508,32 @@ window.onload = () => {
         $("#questionWait").hide();
     });
 
+    //used for showscores
+    var myTempCount = 0;
+
     socket.on('showScores', function (msg) {
         console.log("I'm in show scores. heres the innerHTML:");
         //alert(scores.innerHTML);
         scores.innerHTML = msg.text;
 
+        $('.message_input').val('');
+
+        if (myTempCount == 0)
+        {
+            myHtmlRoundNumber += 1;
+
+            myTempCount +=1;
+        }
+        
+        for (var i = 0; i < roundHtml.length; i++) {
+            roundHtml[i].innerHTML = "<p> Round Number: "+myHtmlRoundNumber+"</p>";
+        }
+
         $("#scores").show();
 
         function startOver()
         {
+            myTempCount = 0;
             $("#scores").hide();
             //$("#gamediv").show();
             $("#questionWait").show();
