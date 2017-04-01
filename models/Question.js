@@ -9,16 +9,5 @@ var questionSchema = new mongoose.Schema({
     answer: { type: String, required: true }
 });
 
-var categorySchema = new mongoose.Schema({
-  categories:[{
-  ludicrousLaws: String,
-  definitions: String,
-  famousPeople: String,
-  acronyms: String,
-  movieHeadlines: String}]
-})
-
-var Category = mongoose.model('categories', categorySchema);
 var Question = mongoose.model('questions', questionSchema);
 module.exports = Question;
-module.exports = Category;

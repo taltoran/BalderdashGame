@@ -5,7 +5,13 @@ module.exports = mongoose.model('Game', new Schema({
   //gameHost: String,
   playerNumber: String,
   rounds:  String,
-  category: String,
+  category:[{
+    ludicrousLaws: String,
+    definitions: String,
+    famousPeople: String,
+    acronyms: String,
+    movieHeadlines: String
+  }],
   gameName: String,
   winner: String,
   questions: Number,
