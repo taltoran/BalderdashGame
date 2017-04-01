@@ -61,6 +61,11 @@ module.exports = (io) => {
             });
         });
 
+        socket.on('showAnswers', function (msg) {
+             io.emit('showAnswersTimeout', { 
+            });
+        });
+
         socket.on('emptyUserAnswers', function (msg) {
             userAnswersDict = {}
 
@@ -183,11 +188,6 @@ module.exports = (io) => {
             
             io.emit('addOneChosenAnswer', { 
                  usersCount: userCount
-            });
-        });
-
-        socket.on('reallyHideLoading', function (msg) {
-            io.emit('reallyReallyHideLoading', { 
             });
         });
        
