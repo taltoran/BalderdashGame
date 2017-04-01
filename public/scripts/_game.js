@@ -134,7 +134,7 @@ window.onload = () => {
 
     let user = document.getElementsByTagName('p')[0].textContent;
 
-    let socket = io.connect();
+    var socket = io.connect();
     window.onbeforeunload = () => {
         socket.emit('leave',{
             username: document.getElementsByTagName('p')[0].textContent

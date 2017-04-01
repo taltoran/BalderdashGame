@@ -1,7 +1,9 @@
 
 module.exports = (io) => {
+    /*
     var app = require('express');
     var router = app.Router();
+    */
     var userCount = 0;
     var userPointsDict = {};
     var userAnswersDict = {};
@@ -19,6 +21,7 @@ module.exports = (io) => {
 
     //how many users have answered question.
     var usersAnswered = 0;
+    
 
     // socket.io events
     io.on('connection', function (socket) {
@@ -320,5 +323,5 @@ module.exports = (io) => {
         });
     });
 
-    return router;
+    //return router;
 }

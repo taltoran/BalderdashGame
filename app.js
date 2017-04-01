@@ -33,12 +33,14 @@ db.once('open', function() {
 // express
 var app = express();
 
+/* Moved socket.io to bin/www
 // socket.io 
 var socket_io = require('socket.io');
 var io = socket_io();
 app.io = io;
 
 var routes = require('./models/socket')(app.io);
+*/
 
 // view engine setup
 app.engine('pug', cons.pug);
