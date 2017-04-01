@@ -218,7 +218,6 @@ router.get('/Game', utils.requireLogin, function(req, res, next) {
     else
     {
         console.log("No a user did not just create a game.");
-
         /*
         Question.find()
         .then(function(words) {
