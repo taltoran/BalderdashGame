@@ -93,6 +93,7 @@ router.post('/Create', utils.requireLogin, function(req, res, next) {
             {
                 //console.log("isValid3: " +isValid);
                 var game = new Game({ 
+                    id: req.body.id,
                     playerNumber: req.body.players, 
                     rounds: req.body.rounds, 
                     category: req.body.categories, 
