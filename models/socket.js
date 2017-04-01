@@ -315,6 +315,7 @@ module.exports = (io) => {
         });
         socket.on('disconnect', function(){
             userCount--;
+            myCurrentRoundNumber=0;
             console.log('user disconnected ' + userCount + ' user(s)');
         });
     });
