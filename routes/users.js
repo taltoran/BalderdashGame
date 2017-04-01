@@ -100,6 +100,7 @@ router.get('/profile', function(req, res, next) {
   res.render('profile.pug', {
     firstname: req.user.fname,
     lastname: req.user.lname,
+    email: req.user.email,
     username: req.user.username,
     gameWins: req.user.gamewins
   });
