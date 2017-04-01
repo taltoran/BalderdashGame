@@ -99,6 +99,8 @@ router.post('/Create', utils.requireLogin, function(req, res, next) {
                     gameName: req.body.gameName, 
                 });
 
+                console.log("my categories on save: "+req.body.categories);
+
                 game.save(function (err) 
                 {
                     if (err) {
