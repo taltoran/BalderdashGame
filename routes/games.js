@@ -233,8 +233,8 @@ router.get('/Game', utils.requireLogin, function(req, res, next) {
                 Question.find()
                     .then(function(words) {
                         res.render('Game.pug', {title: 'Question Creator',  userName: req.user.username,
-                        wordsList: words, categories:["words","people"], rounds:game.rounds, numberOfPlayers: game.playerNumber, gameName:game.gameName}); 
-                }); //game.category
+                        wordsList: words, categories:game.category, rounds:game.rounds, numberOfPlayers: game.playerNumber, gameName:game.gameName}); 
+                });
             }
             else
             {
@@ -272,8 +272,8 @@ router.get('/Game', utils.requireLogin, function(req, res, next) {
                     Question.find()
                         .then(function(words) {
                             res.render('Game.pug', {title: 'Question Creator',  userName: req.user.username,
-                            wordsList: words, categories:["words","people"], rounds:game.rounds, numberOfPlayers: game.playerNumber, gameName:game.gameName}); 
-                    });//game.category
+                            wordsList: words, categories:game.category, rounds:game.rounds, numberOfPlayers: game.playerNumber, gameName:game.gameName}); 
+                    });
                 }
                 else
                 {
