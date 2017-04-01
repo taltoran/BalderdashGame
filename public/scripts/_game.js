@@ -12,6 +12,7 @@ window.onload = () => {
     var usersChosenAnswer = 0;
 
     var scores = document.getElementById("scores");
+    var scores = document.getElementById("finalscores");
     
     var buttonHtml = "";
     var buttonNumber = 0;
@@ -159,7 +160,8 @@ window.onload = () => {
 
             socket.emit('sendQuestion', { 
                 username: user,
-                text: $(this).text() //this.name 
+                text: $(this).text(), //this.name 
+                rounds: myRounds
             });
 
             
@@ -234,11 +236,17 @@ window.onload = () => {
             user: msg.username
         });
 
-        document.getElementById("loadingScreen").style.display="none";
-        document.getElementById("gamediv").style.display="unset";
+        $("#loadingScreen").hide();
+        $("#questionWait").show();
+        //document.getElementById("loadingScreen").style.display="none";
+        //document.getElementById("gamediv").style.display="unset";
         //document.getElementById("div.mainScreen").style.display="none";
 
         host.draw();
+
+        console.log("I'm about to show host first screen because all players are in game");
+        socket.emit('showHostFirstScreen', {
+        });
         return $hosts.animate({ scrollTop: $hosts.prop('scrollHeight') }, 300);
     });
 
@@ -438,7 +446,8 @@ window.onload = () => {
     });
 
     socket.emit('join', {
-            username: user
+            username: user,
+            numberOfPlayers: myNumberOfPlayers
     });
 
     var Message = function (arg) {
@@ -516,6 +525,18 @@ window.onload = () => {
         }
 
         setTimeout(startOver, 5000);
+    });
+
+
+
+
+    socket.on('showFinalScores', function (msg) {
+        console.log("I'm in show final scores. heres the innerHTML:");
+        alert(finalscores.innerHTML);
+        finalscores.innerHTML = msg.text;
+
+        $("#scores").hide();
+        $("#finalscores").show();
     });
 
 

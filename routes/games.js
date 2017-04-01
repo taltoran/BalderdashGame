@@ -116,6 +116,9 @@ router.post('/Create', utils.requireLogin, function(req, res, next) {
                 });
 
 */
+
+                req.session['success'] = 'User Created Game';
+                req.session['gameName'] = game.gameName;
                 res.redirect('Game');
             }
         }
@@ -152,7 +155,12 @@ router.post('/Join', function(req, res, next) {
         if (game) 
         {
             console.log("gameName was found in database: " + game.gameName);
+
+            req.session['success'] = 'User Joined Game';
+            req.session['gameName'] = game.gameName;
             res.redirect('Game');    
+
+            
         }
         else
         {
@@ -177,78 +185,91 @@ router.post('/Join', function(req, res, next) {
 
 /* GET Game page. */
 router.get('/Game', utils.requireLogin, function(req, res, next) {
-    //console.log("i'm here in .get Game");
-/*
-    myQuestionOne = "this is my question one?";
-    myQuestionTwo = "this is my question two?";
-    myQuestionThree = "this is my question three?";
-    myQuestionFour = "this is my question four?";
-    myQuestionFive = "this is my question five?";
-    myQuestionSix = "this is my question six?";
-*/
-    var myQuestionOne = ['this is my question one?', 'this is my question2?', 'this is my question3?', 'this is my question4?']
 
-/*
-    Game.findOne(
+    if (req.session['success'] == 'User Created Game')
     {
-        gameHost: "bradyadair"
-    }, function(err, game) 
-    {
-        if (err) next(err);
+        console.log("Yes a user just created a game!");
+        req.session['success'] = null;
 
-        if (game) 
+        console.log("Game name is: "+ req.session['gameName'])
+
+        Game.findOne(
         {
-            myIsHost = "yes you are the host";
-            console.log("you are the host are were found in the database: " + myIsHost);  
+            gameName: req.session['gameName']
+        }, function(err, game) 
+        {
+            if (err) next(err);
+
+            if (game) 
+            {
+                req.session['gameName'] = null;
+                Question.find()
+                    .then(function(words) {
+                        res.render('Game.pug', {title: 'Question Creator',  userName: req.user.username,
+                        wordsList: words, categories:game.category, rounds:game.rounds, numberOfPlayers: game.playerNumber, gameName:game.gameName}); 
+                });
+            }
+            else
+            {
+                req.session['gameName'] = null;
+            }
+        });
+    }
+    else
+    {
+        console.log("No a user did not just create a game.");
+
+        /*
+        Question.find()
+        .then(function(words) {
+            res.render('Game.pug', {title: 'Question Creator',  userName: req.user.username,
+            wordsList: words, categories:["words"], rounds:"4", numberOfPlayers: "2"}); 
+        });
+        */
+        if (req.session['success'] == 'User Joined Game')
+        {
+            console.log("Yes a user just joined a game!");
+            req.session['success'] = null;
+
+            console.log("Game name is: "+ req.session['gameName'])
+
+            Game.findOne(
+            {
+                gameName: req.session['gameName']
+            }, function(err, game) 
+            {
+                if (err) next(err);
+
+                if (game) 
+                {
+                    req.session['gameName'] = null;
+                    Question.find()
+                        .then(function(words) {
+                            res.render('Game.pug', {title: 'Question Creator',  userName: req.user.username,
+                            wordsList: words, categories:game.category, rounds:game.rounds, numberOfPlayers: game.playerNumber, gameName:game.gameName}); 
+                    });
+                }
+                else
+                {
+                    req.session['gameName'] = null;
+                }
+            });
         }
         else
         {
-            myIsHost = "no you are not the host";
+            req.session['gameName'] = null;
+
+            res.render('newgame.pug', {
+                userName: req.user.username
+            });
         }
-    });
-    */
-
-    //res.render('Game.pug',{questionOne: myQuestionOne, userName: req.user.username});//, isHost: myIsHost });//, questionTwo: myQuestionTwo, questionThree: myQuestionThree,
-        //questionFour: myQuestionFour, questionFive: myQuestionFive, questionSix: myQuestionSix});
+    }
 
 
-
-    Question.find()//{ category: /^words/ })
-        .then(function(words) {
-            //console.log(words);
-/*
-            Question.find({ category: /^people/ })
-            .then(function(people) {
-                console.log(people);
-
-                    Question.find({ category: /^initials/ })
-                    .then(function(initials) {
-                        console.log(initials);
-
-                            Question.find({ category: /^movies/ })
-                            .then(function(movies) {
-                                console.log(movies);
-
-                                    Question.find({ category: /^laws/ })
-                                    .then(function(laws) {
-                                        console.log(laws);
-                                        */
-                                        //questionOne: myQuestionOne,
-
-                        res.render('Game.pug', {title: 'Question Creator',  userName: req.user.username,
-                          wordsList: words, categories:["words"]});//, 
-                          /*
-                          peopleList: people,
-                          initialsList: initials,
-                          moviesList: movies,
-                          lawsList: laws});
-                          */
-                    //});
-                //});
-            //});
-        //});
-    });
+    
 });
+
+
 
 /* POST Game page. */
 router.post('/Game', function(req, res, next) {
@@ -262,10 +283,6 @@ router.post('/Game', function(req, res, next) {
 
     res.render('Game.pug',{questionOne: myQuestionOne, questionTwo: myQuestionTwo, questionThree: myQuestionThree,
         questionFour: myQuestionFour, questionFive: myQuestionFive, questionSix: myQuestionSix});
-
-
-
-
 });
 
 
