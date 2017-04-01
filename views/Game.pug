@@ -176,7 +176,8 @@ block scripts
     | var myWordsList =!{JSON.stringify(wordsList)}; 
     | var myCategories =!{JSON.stringify(categories)}; 
     | var myRounds = !{JSON.stringify(rounds)}; 
-    | var myNumberOfPlayers = !{JSON.stringify(numberOfPlayers)}; 
+    | var myNumberOfPlayers = !{JSON.stringify(numberOfPlayers)};
+    | var myGameName =  !{JSON.stringify(gameName)};
   script(src='/scripts/_game.js') 
    
   script(src='/socket.io/socket.io.js')

@@ -504,6 +504,12 @@ window.onload = () => {
 
     socket.on('hostFirstScreen', function (msg) {
         console.log("i'm in game to show host first screen");
+        var $answerMessage;
+        $answerMessage = $($('.answerTemplate').clone().html());
+        
+        $('.myAnswers').empty();
+        //scores.innerHTML = "";
+        $("#finalscores").hide();
         $("#gamediv").show();
         $("#questionWait").hide();
     });
@@ -560,6 +566,44 @@ window.onload = () => {
         console.log("I'm in show final scores. heres the innerHTML:");
         alert(finalscores.innerHTML);
         finalscores.innerHTML = msg.text;
+
+        finalscores.innerHTML += "</br></br><h1> Would you like to start a New Game? </h1>";
+
+
+    
+        //finalscores.innerHTML += "<form id='myForm' action='' method='post'><button id='choseYes' value="+myGameName+" name='myChoice' type='text'> Yes </button><button id='choseNo' name='myChoice' value='choseNo' type='text'> No </button></form>";
+        finalscores.innerHTML += "<button id='choseYes' value="+myGameName+" name='myChoice' type='text'> Yes </button><button id='choseNo' name='myChoice' value='choseNo' type='text'> No </button>";
+
+        //var form = document.getElementById("myForm");
+        //$(document.body).append(form);
+
+
+        var choseYes = document.getElementById("choseYes");
+        var choseNo = document.getElementById("choseNo");
+
+
+        choseYes.onclick = function() {
+            myTempCount = 0;
+            $("#finalscores").hide();
+            //$("#gamediv").show();
+            $("#questionWait").show();
+
+            socket.emit('showHostFirstScreen', {
+            
+            });
+
+            var $answerMessage;
+            $answerMessage = $($('.answerTemplate').clone().html());
+            
+            $('.myAnswers').empty();
+            scores.innerHTML = "";
+            //finalscores.innerHTML += "<p> You chose Yes </p>";
+            //$.post("", { 'myChoice': myGameName });
+        }
+        choseNo.onclick = function() {
+            finalscores.innerHTML += "<p> You chose No </p>";
+        }
+
 
         $("#scores").hide();
         $("#finalscores").show();

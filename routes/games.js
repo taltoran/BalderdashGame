@@ -9,9 +9,29 @@ var router = express.Router();
 /* GET newgame page. */
 router.get('/', utils.requireLogin, function(req, res, next) {
     //console.log("i'm here in .get newgame");
-    res.render('newgame.pug', {
-        userName: req.user.username
-    });
+
+    console.log("I'm in this part?");
+    
+
+    if (req.session['hasGameName'] == 'true')
+    {
+        console.log("Restarting a game!");
+        req.session['hasGameName'] = null;
+
+        req.session['success'] = 'User Joined Game';
+        //req.session['gameName'] = req.session['gameName'];
+
+        //req.session['gameName']= null;
+        res.redirect('Game');
+       
+    }
+    else
+    {
+        res.render('newgame.pug', {
+            userName: req.user.username
+        });
+    }
+    
 });
 
 
@@ -274,16 +294,26 @@ router.get('/Game', utils.requireLogin, function(req, res, next) {
 
 /* POST Game page. */
 router.post('/Game', function(req, res, next) {
-    //console.log("i'm here in .post .Game");
-    myQuestionOne = "this is my question one?";
-    myQuestionTwo = "this is my question two?";
-    myQuestionThree = "this is my question three?";
-    myQuestionFour = "this is my question four?";
-    myQuestionFive = "this is my question five?";
-    myQuestionSix = "this is my question six?";
+    console.log("I'm in the Game post");
+    console.log(req.body.myChoice);
 
-    res.render('Game.pug',{questionOne: myQuestionOne, questionTwo: myQuestionTwo, questionThree: myQuestionThree,
-        questionFour: myQuestionFour, questionFive: myQuestionFive, questionSix: myQuestionSix});
+    if (req.body.myChoice == 'choseNo')
+    {
+        res.render('newgame.pug', {
+                userName: req.user.username
+            });
+    }
+    else
+    {
+        req.session['hasGameName'] = 'true';
+        req.session['gameName'] = req.body.myChoice;
+
+        res.render('newgame.pug', {
+                userName: req.user.username
+            });
+
+        console.log("yes I get here");
+    }
 });
 
 
