@@ -56,6 +56,13 @@ module.exports = (io) => {
             
         });
 
+        socket.on('userChoseYes', function (msg) {
+            myCurrentRoundNumber=0;
+            io.emit('userChoseYesStartAgain', { 
+            });
+        });
+
+
         socket.on('hideYesNo', function (msg) {
             io.emit('hideYesNoButtons', { 
             });

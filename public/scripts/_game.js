@@ -170,7 +170,7 @@ window.onload = () => {
     for (var i = 0; i < sendButton.length; i++) {
         sendButton[i].onclick = function() {
             console.log("hello");
-            alert($(this).text());
+            //alert($(this).text());
             //chosenQuestion.innerHTML = this.name;
 
             //testing the jquery hide() function in javascript
@@ -407,7 +407,7 @@ window.onload = () => {
                     answerMessagesButton[i].onclick = function() {
                         //alert(this.innerHTML);//textContent);//innerHTML);//textContent);//Content);
                         $temp = $($('.answerTemplate').clone().html());
-                        alert(this.innerHTML);
+                        //alert(this.innerHTML);
                         console.log("I'm in answer messages button");
                         $("#answerChosen").show();
                         $("div.gamediv3").hide();
@@ -559,11 +559,17 @@ window.onload = () => {
 
         $('.message_input').val('');
 
+        
+
         if (myTempCount == 0)
         {
             myHtmlRoundNumber += 1;
 
             myTempCount +=1;
+        }
+        else
+        {
+            myTempCount = 0;
         }
         
         for (var i = 0; i < roundHtml.length; i++) {
@@ -599,7 +605,7 @@ window.onload = () => {
 //used to show final scores at the end of the game
     socket.on('showFinalScores', function (msg) {
         console.log("I'm in show final scores. heres the innerHTML:");
-        alert(finalscores.innerHTML);
+        //alert(finalscores.innerHTML);
         finalscores.innerHTML = msg.text;
 
         finalscores.innerHTML += "</br></br><h1> Would you like to Continue Game for Another Round? </h1>";
@@ -618,22 +624,10 @@ window.onload = () => {
 
 
         choseYes.onclick = function() {
-            myTempCount = 0;
-            $("#finalscores").hide();
-            //$("#gamediv").show();
-            $("#questionWait").show();
-
-            socket.emit('showHostFirstScreen', {
-            
+            //sets rounds back over, then calls userChoseYesStartAgain below.
+            //used to send to all players since onclicks don't resume in the socket.on, it only sends to one person
+            socket.emit('userChoseYes', {
             });
-
-            var $answerMessage;
-            $answerMessage = $($('.answerTemplate').clone().html());
-            
-            $('.myAnswers').empty();
-            scores.innerHTML = "";
-            //finalscores.innerHTML += "<p> You chose Yes </p>";
-            //$.post("", { 'myChoice': myGameName });
         }
         choseNo.onclick = function() {
             //finalscores.innerHTML += "<p> You chose No </p>";
@@ -648,6 +642,46 @@ window.onload = () => {
 
         $("#scores").hide();
         $("#finalscores").show();
+    });
+
+//gets called eventually from onclick function above userChoseYes
+//continues the game with a new round
+    socket.on('userChoseYesStartAgain', function (msg) {
+        
+        
+        myHtmlRoundNumber += 1;
+
+        if (myTempCount ==0)
+        {
+            myTempCount+=1;
+            
+            roundHtml = document.getElementsByClassName("roundNumber");
+            //this sets round number 1 on first login
+            for (var i = 0; i < roundHtml.length; i++) {
+                roundHtml[i].innerHTML = "<p> Round Number: "+myHtmlRoundNumber+"</p>";
+            }
+        }
+        else
+        {
+            myTempCount = 0;
+        }
+        
+        
+        $("#finalscores").hide();
+        //$("#gamediv").show();
+        $("#questionWait").show();
+
+        socket.emit('showHostFirstScreen', {
+        
+        });
+        
+        var $answerMessage;
+        $answerMessage = $($('.answerTemplate').clone().html());
+        
+        $('.myAnswers').empty();
+        scores.innerHTML = "";
+        //finalscores.innerHTML += "<p> You chose Yes </p>";
+        //$.post("", { 'myChoice': myGameName });
     });
 
 //used if user chooses not to continue game at the end of the game. hides the yes and no button.
