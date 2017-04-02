@@ -132,18 +132,21 @@ window.onload = () => {
     */
 
 
-    let user = document.getElementsByTagName('p')[0].textContent;
+    var user = document.getElementsByTagName('p')[1].textContent;
+    var gameName = document.getElementById('game').getAttribute('data-name');
 
     var socket = io.connect();
     window.onbeforeunload = () => {
         socket.emit('leave',{
-            username: document.getElementsByTagName('p')[0].textContent
+            username: document.getElementsByTagName('p')[1].textContent
         })
     };
 
-
-
-
+    socket.emit('join', {
+            username: user,
+            numberOfPlayers: myNumberOfPlayers,
+            game: gameName
+    });
     
     socket.emit('sendWordsDict', { 
         wordList: myWordsList
@@ -444,12 +447,13 @@ window.onload = () => {
         message.draw();
         return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
     });
-
+    /*
     socket.emit('join', {
             username: user,
-            numberOfPlayers: myNumberOfPlayers
+            numberOfPlayers: myNumberOfPlayers,
+            game: gameName
     });
-
+    */
     var Message = function (arg) {
         this.user = arg.user, this.time = arg.time, this.text = arg.text, this.message_side = arg.message_side;
         this.draw = function (_this) {
@@ -488,7 +492,7 @@ window.onload = () => {
 
             console.log("I'm about to show users answers");
             socket.emit('emptyUserAnswers', { 
-                           
+                               
             });
         }
     });
@@ -605,8 +609,8 @@ window.onload = () => {
                 
                         
                         socket.emit('addToChosenAnswer', { 
-                        text: this.innerHTML,
-                        username: user
+                            text: this.innerHTML,
+                            username: user
                         });
                         
 
