@@ -302,7 +302,7 @@ router.post('/Game', function(req, res, next) {
     console.log("I'm in the Game post");
     console.log(req.body.myChoice);
 
-    res.redirect('/');
+    res.redirect('/games');
 /*
     if (req.body.myChoice == 'choseNo')
     {
