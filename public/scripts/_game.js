@@ -659,7 +659,7 @@ window.onload = () => {
         $('#choseYes').hide();
         $('#choseNo').hide();
 
-        finalscores.innerHTML += "<form id='myForm' action='' method='post'><button id='choseYes' value="+myGameName+" name='myChoice' type='text'> Return Home </button></form>";
+        finalscores.innerHTML += "<form id='myForm' action='' method='post'><button class='choseYes' id='choseYes' value="+myGameName+" name='myChoice' type='text'> Return Home </button></form>";
 
     });
 
