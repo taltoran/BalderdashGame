@@ -607,6 +607,7 @@ window.onload = () => {
 
     
         //finalscores.innerHTML += "<form id='myForm' action='' method='post'><button id='choseYes' value="+myGameName+" name='myChoice' type='text'> Yes </button><button id='choseNo' name='myChoice' value='choseNo' type='text'> No </button></form>";
+        finalscores.innerHTML += "<button class='choseYes' id='choseYes' value="+myGameName+" name='myChoice' type='text'> Yes </button>&nbsp&nbsp&nbsp&nbsp<button class='choseNo' id='choseNo' name='myChoice' value='choseNo' type='text'> No </button>";
 
         //var form = document.getElementById("myForm");
         //$(document.body).append(form);
