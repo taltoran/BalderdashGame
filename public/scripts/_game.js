@@ -90,7 +90,7 @@ window.onload = () => {
     //this section selects the first round of random questions. 
     var gamediv = document.getElementById("gamediv");
 
-    gamediv.innerHTML = "<h1> Choose Question For the Round </h1>";
+    gamediv.innerHTML += "<h1 style='padding-top:25px'> Choose Question For the Round </h1>";
     
     var myChosenWords = {};
     var count = 0;
@@ -125,8 +125,9 @@ window.onload = () => {
         }
         var myString= "<button class=sendQuestion name=\""+myQuestion+"\">"+ myQuestion + "</button>";
         console.log(myString);
-        gamediv.innerHTML += "<button class=sendQuestion name=\" "+myQuestion+"\">"+ myQuestion + "</button>";
-        
+        gamediv.innerHTML += "<div style='padding:10px'>"
+        gamediv.innerHTML += "  <button class=sendQuestion name=\" "+myQuestion+"\">"+ myQuestion + "</button>";
+        gamediv.innerHTML += "</div>"
     }
     
 
@@ -606,7 +607,6 @@ window.onload = () => {
 
     
         //finalscores.innerHTML += "<form id='myForm' action='' method='post'><button id='choseYes' value="+myGameName+" name='myChoice' type='text'> Yes </button><button id='choseNo' name='myChoice' value='choseNo' type='text'> No </button></form>";
-        finalscores.innerHTML += "<button id='choseYes' value="+myGameName+" name='myChoice' type='text'> Yes </button><button id='choseNo' name='myChoice' value='choseNo' type='text'> No </button>";
 
         //var form = document.getElementById("myForm");
         //$(document.body).append(form);

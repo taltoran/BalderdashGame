@@ -2,7 +2,7 @@ extends layout
 
 block content
 
-  h1(style='text-align:center') Create a New Game
+  h1(style='text-align:center; padding-top:50px') Create a New Game
   .creatediv(style='text-align:center; color:black')
     .content(style='color:#ff5757')
       span.value
@@ -44,7 +44,7 @@ block content
           p
           .submitdiv
             .center
-              input#submit(type='submit', value='New Game', style='color:blue')
+              input#submit(type='submit', value='New Game')
 
 block scripts
   script(src='../js/createValidation.js', type='text/javascript')
