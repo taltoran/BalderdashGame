@@ -737,24 +737,11 @@ window.onload = () => {
             var key = e.which;
             if(key == 13)  // the enter key code
             {
-                //alert("in key press");
                 $('.send_message').click();
                 return false;  
             }
         }); 
-        /*
-        //message_input
-        $('.send_message').keyup(function (e) {
-            if (e.which === 13) {
-                console.log("I pressed the enter key"); 
-                //Brady took this out
-                return sendMessage(getMessageText()); 
-            }
-        });
-        */
     });
-
-
 }
 
 
