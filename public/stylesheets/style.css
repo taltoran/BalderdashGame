@@ -124,3 +124,28 @@ input[type=submit]{
   font-weight: 700;
   text-transform: uppercase;
 }
+
+.bottom_wrapper {
+  position: relative;
+  width: 50%;
+  padding: 20px 20px;
+  margin: auto;
+}
+.bottom_wrapper .message_input_wrapper {
+  display: inline-block;
+  height: 50px;
+  border-radius: 25px;
+  border: 1px solid black;
+  width: calc(100% - 20px);
+  position: relative;
+  padding: 0px 10px;
+  background-color: white;
+}
+.bottom_wrapper .message_input_wrapper .message_input {
+  border: none;
+  height: 100%;
+  box-sizing: border-box;
+  width: calc(100% - 40px);
+  outline-width: 0;
+  color: gray;
+}

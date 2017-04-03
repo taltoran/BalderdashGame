@@ -303,6 +303,8 @@ router.post('/Game', function(req, res, next) {
     console.log(req.body.myChoice);
 
     res.redirect('/games');
+
+    console.log(myArray[0][0]);
 /*
     if (req.body.myChoice == 'choseNo')
     {
