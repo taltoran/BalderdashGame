@@ -1,15 +1,13 @@
 
 module.exports = (io) => {    
-    /*
+    /*  Removed Globals
     var app = require('express');
     var router = app.Router();
     var userCount = 0;  
     var userPointsDict = {};    
     var userAnswersDict = {};
-    var userIdDict = {};
-    */
-    var myScoresHtml = "";
-    /*    
+    var userIdDict = {};    
+    var myScoresHtml = "";       
     var answersDisplayed = 0;
     var myWordDict = {};
     var myCurrentChosenQuestion;  // object var, NEED FIX?    
@@ -17,9 +15,7 @@ module.exports = (io) => {
     var myCurrentRoundNumber=0;    
     //how many number of players should be in a game as specified by host
     var myNumberOfPlayers;
-
     var myHostName = "";
-
     //how many users have answered question.
     var usersAnswered = 0;
     */
@@ -181,6 +177,7 @@ module.exports = (io) => {
             var myNumberOfRounds = roomdata.get(socket, "myNumberOfRounds");
             var userPointsDict = roomdata.get(socket, "userPointsDict");
             var userAnswersDict = roomdata.get(socket, "userAnswersDict");
+            var myScoresHtml = "";
 
             if (!answersDisplayed) {
                 answersDisplayed = 0;
@@ -224,7 +221,7 @@ module.exports = (io) => {
                 */                
 
                 io.sockets.in(room).emit('showScores', {
-                    test: myScoresHtml
+                    text: myScoresHtml
                 });
             }
             else
@@ -276,7 +273,7 @@ module.exports = (io) => {
                 });
                 */
                 io.sockets.in(room).emit('showFinalScores', {
-                    test: myScoresHtml
+                    text: myScoresHtml
                 });
             }
 
@@ -290,6 +287,7 @@ module.exports = (io) => {
             var myCurrentChosenQuestion = roomdata.get(socket, "myCurrentChosenQuestion");
             var userPointsDict = roomdata.get(socket, "userPointsDict");
             var userAnswersDict = roomdata.get(socket, "userAnswersDict");
+            var myScoresHtml = "";
 
             console.log("myCurrentChosenQuestion: " + myCurrentChosenQuestion);
             console.log("myWordDict: " + myWordDict);             
@@ -356,7 +354,7 @@ module.exports = (io) => {
             });
             */
 
-            myScoresHtml = "";
+            var myScoresHtml = "";
             //answersDisplayed = 0;
             roomdata.set(socket, "answersDisplayed", 0);
 
