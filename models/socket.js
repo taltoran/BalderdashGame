@@ -112,7 +112,8 @@ module.exports = (io) => {
                 console.log("host session id is: " + userIdDict[myHostName]);
 
                 // initialize room variables on host
-                roomdata.set(socket, "myCurrentRoundNumber", 0);
+                var myCurrentRoundNumber = 0;
+                roomdata.set(socket, "myCurrentRoundNumber", myCurrentRoundNumber);
             }
 
             //start game once all players have entered game
@@ -335,6 +336,7 @@ module.exports = (io) => {
             io.emit('reallyReallyHideLoading', { 
             });
             */
+
             var room = roomdata.get(socket, "room");
             io.sockets.in(room).emit('reallyReallyHideLoading', {});
         });       
@@ -391,8 +393,8 @@ module.exports = (io) => {
                 });
                 */
                 io.sockets.in(room).emit('hideLoading', {});
-                //usersAnswered = 0;
-                roomdata.set(socket, "usersAnswered", 0);
+                usersAnswered = 0;
+                roomdata.set(socket, "usersAnswered", usersAnswered);
             }   
 
             var userAnswersDict = roomdata.get(socket, "userAnswersDict");
@@ -402,15 +404,15 @@ module.exports = (io) => {
         });
 
         socket.on('sendQuestion', function (msg) {
-            myCurrentChosenQuestion = msg.text
+            var myCurrentChosenQuestion = msg.text
             roomdata.set(socket, "myCurrentChosenQuestion", myCurrentChosenQuestion);
 
-            myNumberOfRounds = msg.rounds;
-            roomdata.set(socket, "myNumberOfRounds", myNumberOfRounds);
+            var myNumberOfRounds = msg.rounds;
+            roomdata.set(socket, "myNumberOfRounds", parseInt(myNumberOfRounds));
 
             var myCurrentRoundNumber = roomdata.get(socket, "myCurrentRoundNumber");
-            myCurrentRoundNumber +=1;
-            roomdata.set(socket, "myCurrentRoundNumber");
+            myCurrentRoundNumber++;
+            roomdata.set(socket, "myCurrentRoundNumber", myCurrentRoundNumber);
 
             console.log("mycurrent question is: " + msg.text);
             
@@ -456,8 +458,8 @@ module.exports = (io) => {
             var userCount = roomdata.get(socket, "userCount");
             userCount--;
             roomdata.set(socket, "userCount", userCount);
-            //myCurrentRoundNumber=0;
-            roomdata.set(socket, "myCurrentRoundNumber");
+            var myCurrentRoundNumber = 0;
+            roomdata.set(socket, "myCurrentRoundNumber", myCurrentRoundNumber);
             console.log('user disconnected ' + userCount + ' user(s)');
         });
     });
