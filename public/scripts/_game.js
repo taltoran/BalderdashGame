@@ -452,6 +452,7 @@ window.onload = () => {
 
 //used to show how many users are logged in on very first login loadingScreen
 //waiting for all users to login
+//also is called when user logs out
     socket.on('message', (msg)=>{
         console.log('get message')
         console.log(msg.username);
@@ -704,8 +705,9 @@ window.onload = () => {
 
 
 
+
 //functions that were already here. when we started project 3.
-//I think I used it to send the question the host chose at the beginning of the round?
+//I used it to send the answers.
     $(function () {
         var getMessageText, message_side, sendMessage;
         message_side = 'right';
@@ -723,18 +725,35 @@ window.onload = () => {
         };
         
         
-        
+        //used to send answer
         $('.send_message').click(function (e) {
+            console.log("I clicked .send_message button"); 
+            $("div.gamediv2").hide();
+            $("#answerWait").show();
             return sendMessage(getMessageText());
         });
-        
-        $('.message_input').keyup(function (e) {
+
+        $('.message_input').keypress(function (e) {
+            var key = e.which;
+            if(key == 13)  // the enter key code
+            {
+                //alert("in key press");
+                $('.send_message').click();
+                return false;  
+            }
+        }); 
+        /*
+        //message_input
+        $('.send_message').keyup(function (e) {
             if (e.which === 13) {
+                console.log("I pressed the enter key"); 
                 //Brady took this out
-                //return sendMessage(getMessageText()); 
+                return sendMessage(getMessageText()); 
             }
         });
+        */
     });
+
 
 }
 

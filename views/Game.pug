@@ -119,7 +119,8 @@ block content
         //ul.messages
         .bottom_wrapper.clearfix
           .message_input_wrapper
-            input#mes_input.message_input(placeholder='Type your message here...')
+            //form(action="", method="post", id="subAnswer")
+            input#mes_input.message_input(placeholder='Type your message here...' )
           #send_btn.send_message(style='padding-top:10px')
             .icon
             button.text Send
@@ -212,11 +213,24 @@ block scripts
       
     });
 
+    /*
     $("#send_btn").click(function(){
       $("div.gamediv2").hide();
       $("#answerWait").show();
     });
+    */
 
+    /*
+    $('#send_btn').keyup(function (e) {
+            if (e.which === 13) {
+                console.log("I pressed the enter key");
+                $("div.gamediv2").hide();
+                $("#answerWait").show(); 
+                //Brady took this out
+                //return sendMessage(getMessageText()); 
+            }
+    });
+    */
   
     
 
