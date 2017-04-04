@@ -6,11 +6,11 @@ module.exports = mongoose.model('Game', new Schema({
   playerNumber: String,
   rounds:  String,
   category:[{
-    ludicrousLaws: String,
-    definitions: String,
-    famousPeople: String,
-    acronyms: String,
-    movieHeadlines: String
+    ludicrousLaws: Number,
+    definitions: Number,
+    famousPeople: Number,
+    acronyms: Number,
+    movieHeadlines: Number
   }],
   gameName: String,
   winner: String,

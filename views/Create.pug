@@ -28,20 +28,22 @@ block content
           label Choose Category:
           |  
           p.confirm
-          input(type="checkbox", value="ludicrousLaws")
-          I Ludicrous Laws
+          input#ludicrousLaws(type="checkbox", name = "ludicrousLaws", checked = (true===false ? value = 1 : value = 0))
+          checkbox.ludicrousLaws Ludicrous Laws
           br
-          input(type="checkbox", value="definitions")
-          I Definitions
+          input#definitions(type="checkbox", name = "definitions", checked = (true===false ? value = 1 : value = 0))
+          checkbox.definitions Definitions
           br
-          input(type="checkbox", value="famousPeople")
-          I Famous People
+          input#famousPeople(type="checkbox", name = "famousPeople", checked = (true===false ? value = 1 : value = 0))
+          checkbox.famousPeople Famous People
           br
-          input(type="checkbox", value="acronyms")
-          I Acronyms
+          input#acronyms(type="checkbox", name = "acronyms", checked = (true===false ? value = 1 : value = 0))
+          checkbox.acronyms Acronyms
           br
-          input(type="checkbox", value="movieHeadlines")
-          I Movie Headlines
+          input#movieHeadlines(type="checkbox", name = "movieHeadlines", checked = (true===false ? value = 1 : value = 0))
+          checkbox.movieHeadlines Movie Headlines
+          .content(style='color:#ff5757')
+            span.invalidCategories #{invalidCategories}
           p
           |  
           label Choose Game Name (Optional):

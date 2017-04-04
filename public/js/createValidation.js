@@ -37,6 +37,34 @@ window.onload=function(){
         return roundsValid;
     }
 
+    function categoryValidation()
+    {
+        var categoriesValid = true;
+        document.querySelector('.content .invalidCategories').innerHTML = '';
+
+        var count = 0;
+
+        var ludicrousLaws = form.ludicrousLaws.value;
+        console.log("ludicrousLaws " + ludicrousLaws);
+        var definitions = form.definitions.value;
+        console.log("definitions " + definitions);
+        var famousPeople = form.famousPeople.value;
+        console.log("famousPeople " + famousPeople);
+        var acronyms = form.acronyms.value;
+        console.log("acronyms " + acronyms);
+        var movieHeadlines = form.movieHeadlines.value;
+        console.log("movieHeadlines " + movieHeadlines);
+
+        var count = ludicrousLaws + definitions + famousPeople + acronyms + movieHeadlines;
+
+        if(count == 0) {
+            document.querySelector('.content .invalidCategories').innerHTML = 'Must select at least 1 category.';
+            categoriesValid = false;
+        }
+
+        return categoriesValid;
+    }
+
 
     function gameNameValidation() 
     {
