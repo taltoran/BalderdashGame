@@ -145,20 +145,24 @@ window.onload = () => {
     */
 
 
-    //gets the username from Game.pug
-    let user = document.getElementsByTagName('p')[0].textContent;
-    //connects to socket
-    let socket = io.connect();
+
+    var user = document.getElementsByTagName('p')[1].textContent;
+    var gameName = document.getElementById('game').getAttribute('data-name');
+
+    var socket = io.connect();
     window.onbeforeunload = () => {
         socket.emit('leave',{
-            username: document.getElementsByTagName('p')[0].textContent
+            username: document.getElementsByTagName('p')[1].textContent
         })
     };
 
 
-
-
-    //makes it so socket has the whole words dict
+    socket.emit('join', {
+            username: user,
+            numberOfPlayers: myNumberOfPlayers,
+            game: gameName
+    });
+    
     socket.emit('sendWordsDict', { 
         wordList: myWordsList
     });
@@ -482,9 +486,9 @@ window.onload = () => {
         message.draw();
         return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
     });
-
-    
-//object used for message above. has a function draw. that is used a couple lines above this.
+  
+    /*
+  
     var Message = function (arg) {
         this.user = arg.user, this.time = arg.time, this.text = arg.text, this.message_side = arg.message_side;
         this.draw = function (_this) {
