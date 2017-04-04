@@ -207,7 +207,7 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
         console.log("Yes a user just created a game!");
         req.session['success'] = null;
 
-        console.log("Game name is: " + req.session['gameName'])
+        console.log("Game name is: " + req.session['gameName']);
 
         Game.findOne(
             {

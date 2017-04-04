@@ -153,7 +153,7 @@ window.onload = () => {
     window.onbeforeunload = () => {
         socket.emit('leave',{
             username: document.getElementsByTagName('p')[1].textContent
-        })
+        });
     };
 
 
@@ -487,7 +487,7 @@ window.onload = () => {
         return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
     });
   
-    /*
+    
   
     var Message = function (arg) {
         this.user = arg.user, this.time = arg.time, this.text = arg.text, this.message_side = arg.message_side;
@@ -508,13 +508,13 @@ window.onload = () => {
         }(this);
         return this;
     };
-
+/*
 //shows that a user logged into the game
     socket.emit('join', {
             username: user,
             numberOfPlayers: myNumberOfPlayers
     });
-
+*/
 
 
     
@@ -747,7 +747,6 @@ window.onload = () => {
         }); 
     });
 }
-
 
 
 

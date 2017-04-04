@@ -169,19 +169,23 @@ module.exports = (io) => {
         });
 
         socket.on('userChoseYes', function (msg) {
-            myCurrentRoundNumber=0;
-            io.emit('userChoseYesStartAgain', { 
+            //myCurrentRoundNumber=0;
+            roomdata.set(socket, "myCurrentRoundNumber", 0);
+            var room = roomdata.get(socket, "room");
+            io.sockets.in(room).emit('userChoseYesStartAgain', { 
             });
         });
 
 
         socket.on('hideYesNo', function (msg) {
-            io.emit('hideYesNoButtons', { 
+            var room = roomdata.get(socket, "room");
+            io.sockets.in(room).emit('hideYesNoButtons', { 
             });
         });
 
         socket.on('showAnswers', function (msg) {
-             io.emit('showAnswersTimeout', { 
+            var room = roomdata.get(socket, "room");
+            io.sockets.in(room).emit('showAnswersTimeout', { 
             });
         });
 
