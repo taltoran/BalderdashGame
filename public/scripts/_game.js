@@ -718,7 +718,15 @@ window.onload = () => {
         getMessageText = function () {
             var $message_input;
             $message_input = $('.message_input');
-            return $message_input.val();
+
+            if ($message_input.val() ==null || $message_input.val()=="") 
+            { 
+                return "blank response"; 
+            } 
+            else 
+            { 
+                return $message_input.val(); 
+            } 
         };
         sendMessage = function (text) {
             console.log('send: ' + text);
