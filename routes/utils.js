@@ -17,9 +17,10 @@ module.exports.requireLogin = function(req, res, next) {
  * make sure a game room isnt full before to let people join game
  */
 module.exports.notFull = function(req, res, next) {
+  var gamefull = false;
   if (gamefull) {
     myInvalidCode = "Game room is full, please try again"
-    res.redirect('/games/Join', , { invalidCode: myInvalidCode });
+    res.redirect('/games/Join', { invalidCode: myInvalidCode });
   } else {
     next();
   }
