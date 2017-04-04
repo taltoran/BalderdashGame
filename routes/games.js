@@ -26,7 +26,7 @@ router.get('/Create', utils.requireLogin, function(req, res, next) {
 /* POST Create page. */
 router.post('/Create', utils.requireLogin, function(req, res, next) {
     console.log("i'm here in .post .Create");
-    
+    console.log("my req.body is: " + req.body);
 
     //console.log(req.body);
 
@@ -87,11 +87,11 @@ router.post('/Create', utils.requireLogin, function(req, res, next) {
             if(!isValid)
             {
                 //console.log("i'm in !isValid");
-                res.render('Create.pug', {invalidPlayers: myPlayers, invalidRounds:myRounds, invalidGameName: myGameName});
+                res.render('Create.pug', {invalidPlayers: myPlayers, invalidRounds: myRounds, invalidGameName: myGameName});
             }
             else
             {
-                //console.log("isValid3: " +isValid);
+                console.log("my req.body is: " + req.body);
                 var game = new Game({ 
                     playerNumber: req.body.players, 
                     rounds: req.body.rounds, 

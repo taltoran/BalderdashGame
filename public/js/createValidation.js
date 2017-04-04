@@ -42,22 +42,13 @@ window.onload=function(){
         var categoriesValid = true;
         document.querySelector('.content .invalidCategories').innerHTML = '';
 
-        var count = 0;
+        var ludicrousLaws = form.ludicrousLaws.checked;
+        var definitions = form.definitions.checked;
+        var famousPeople = form.famousPeople.checked;
+        var acronyms = form.acronyms.checked;
+        var movieHeadlines = form.movieHeadlines.checked;
 
-        var ludicrousLaws = form.ludicrousLaws.value;
-        console.log("ludicrousLaws " + ludicrousLaws);
-        var definitions = form.definitions.value;
-        console.log("definitions " + definitions);
-        var famousPeople = form.famousPeople.value;
-        console.log("famousPeople " + famousPeople);
-        var acronyms = form.acronyms.value;
-        console.log("acronyms " + acronyms);
-        var movieHeadlines = form.movieHeadlines.value;
-        console.log("movieHeadlines " + movieHeadlines);
-
-        var count = ludicrousLaws + definitions + famousPeople + acronyms + movieHeadlines;
-
-        if(count == 0) {
+        if(ludicrousLaws == false && definitions == false && famousPeople == false && acronyms == false && movieHeadlines == false) {
             document.querySelector('.content .invalidCategories').innerHTML = 'Must select at least 1 category.';
             categoriesValid = false;
         }
@@ -100,6 +91,7 @@ window.onload=function(){
         isValid = playersValidation();
         isValid = roundsValidation() && isValid;
         isValid = gameNameValidation() && isValid;
+        isValid = categoryValidation() && isValid;
 
 
         if (!isValid)
