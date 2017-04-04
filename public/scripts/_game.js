@@ -1,40 +1,48 @@
 window.onload = () => {
 //Brady stuff
 
+    //used for host choosing a question
     var sendButton = document.getElementsByClassName("sendQuestion");
+    
+    //used to show chosenquestion
     var chosenQuestion = document.getElementById("chosenQuestion");
     var chosenQuestionTwo = document.getElementById("chosenQuestionTwo");
-    //var sendAnswer = document.getElementById("sendAnswer");
+
+    //used to get input answer
     var inputAnswer = document.getElementById("inputAnswer");
     var answers = document.getElementById("answers");
 
     //***used to see if all users have chosen an answer
     var usersChosenAnswer = 0;
 
+    //used to display scores at end of each round
     var scores = document.getElementById("scores");
-    var scores = document.getElementById("finalscores");
+    //used to display final scores
+    var finalscores = document.getElementById("finalscores");
     
-    var buttonHtml = "";
-    var buttonNumber = 0;
+
+    
+    //var buttonHtml = "";
+    //var buttonNumber = 0;
+
+    //used to display round number each round
+    var myHtmlRoundNumber = 1;
+    var roundHtml = document.getElementsByClassName("roundNumber");
+    //this sets round number 1 on first login
+    for (var i = 0; i < roundHtml.length; i++) {
+        roundHtml[i].innerHTML = "<p> Round Number: "+myHtmlRoundNumber+"</p>";
+    }
+
+
 
     //used to see if everybodys entered an answer
-    var usersAnswered = 0;
+    //var usersAnswered = 0;
 
+    //used to show current chosen question each round
     var currentChosenQuestion = "";
 
 
-    //just using to see if I got data from Game.pug
-    /*
-    console.log("my local data: " +myWordsList);
-
-    for (var i = 0; i<3; i++)
-    {
-        var randomNum= Math.floor(Math.random() * (myWordsList.length))
-        var myQuestion = myWordsList[randomNum].question
-        console.log("my questions " +myWordsList[randomNum].question)
-    }
-    */
-
+    //used to save questions and answers
     var myWordsDict= {}; 
 
     //used to make it so only words in Category are chosen as questions (gets rid of other categories in list)
@@ -64,7 +72,7 @@ window.onload = () => {
 
     
 
-
+    //putting question and answers in a dictionary, where the question is the key and answer is the value
     for (var i = 0; i<myWordsList.length; i++)
     {
         var question = myWordsList[i].question;
@@ -74,11 +82,15 @@ window.onload = () => {
         console.log("answer: " +myWordsDict[question]);
     }
 
-    console.log("my categories: " + myCategories[0]);
+    //used to see which categories were chosen
+    //console.log("my categories: " + myCategories[0]);
 
+
+
+    //this section selects the first round of random questions. 
     var gamediv = document.getElementById("gamediv");
 
-    gamediv.innerHTML = "<h1> Choose Question For the Round </h1>";
+    gamediv.innerHTML += "<h1 style='padding-top:25px'> Choose Question For the Round </h1>";
     
     var myChosenWords = {};
     var count = 0;
@@ -113,8 +125,9 @@ window.onload = () => {
         }
         var myString= "<button class=sendQuestion name=\""+myQuestion+"\">"+ myQuestion + "</button>";
         console.log(myString);
-        gamediv.innerHTML += "<button class=sendQuestion name=\" "+myQuestion+"\">"+ myQuestion + "</button>";
-        
+        gamediv.innerHTML += "<div style='padding:10px'>"
+        gamediv.innerHTML += "  <button class=sendQuestion name=\" "+myQuestion+"\">"+ myQuestion + "</button>";
+        gamediv.innerHTML += "</div>"
     }
     
 
@@ -132,6 +145,7 @@ window.onload = () => {
     */
 
 
+
     var user = document.getElementsByTagName('p')[1].textContent;
     var gameName = document.getElementById('game').getAttribute('data-name');
 
@@ -141,6 +155,7 @@ window.onload = () => {
             username: document.getElementsByTagName('p')[1].textContent
         })
     };
+
 
     socket.emit('join', {
             username: user,
@@ -152,10 +167,14 @@ window.onload = () => {
         wordList: myWordsList
     });
 
+
+
+//used to set click listeners on host questions at beginning of round. 
+//once clicked users will be sent to page to enter answers
     for (var i = 0; i < sendButton.length; i++) {
         sendButton[i].onclick = function() {
             console.log("hello");
-            alert($(this).text());
+            //alert($(this).text());
             //chosenQuestion.innerHTML = this.name;
 
             //testing the jquery hide() function in javascript
@@ -166,13 +185,9 @@ window.onload = () => {
                 text: $(this).text(), //this.name 
                 rounds: myRounds
             });
-
-            
-
             
             for (var i = 0; i<4; i++)
-            {
-                
+            {  
                 var randomNum= Math.floor(Math.random() * (myWordsList.length))
                 var myQuestion = myWordsList[randomNum].question
 
@@ -200,31 +215,39 @@ window.onload = () => {
                     myChosenWords[myQuestion] = "true"
                 }
 
-/*
-                var your_div = document.getElementById('gamediv');
-
-                var text_to_change = your_div.childNodes[i];
-
-                text_to_change.nodeValue = myQuestion;
-                */
-
                 $(sendButton[i]).text(myQuestion);
-
-                //var currentOne = 'button.sendQuestion['+i+']';
-                //$('button.sendQuestion').text('Hello');
-                //$('button.sendQuestion').name('Hello');
-                //$(this).innerHTML = myQuestion;
-                //var myString= "<button class=sendQuestion name=\""+myQuestion+"\">"+ myQuestion + "</button>";
-                //console.log(myString);
-                //gamediv.innerHTML += "<button class=sendQuestion name=\" "+myQuestion+"\">"+ myQuestion + "</button>";
-                
             }
 
+            //used to give users 15 seconds to enter their answers
+            //setTimeout(timesUpShowAnswers, 15000);
             
         }
     }
 
+//in testing right now. this cuts off people who take more than 15 seconds to answer question.
+//and shows the answers that have been entered.
+    socket.on('showAnswersTimeout', (msg)=>{
+        $(".gamediv3").show();
+        $(".gamediv2").hide();
+        $("#answerWait").hide();
+    });
 
+//sends to socket, and which then calls socket.on('showanswersTimeout') above this.  
+    function timesUpShowAnswers()
+    {
+        socket.emit('showAnswers', {
+        });
+    }
+
+
+//once everyone has joined the game the host name is saved.
+//this will call to show the host the first screen, 
+//and the other users the waiting for host to choose question screen
+//
+//socket.emit('showHostFirstScreen', {
+//        });
+// 
+// is probably the only useful part of this. can't remember why i did the other stuff..
     socket.on('setHost', (msg)=>{
         console.log('set hostname')
         console.log(msg.username);
@@ -241,18 +264,37 @@ window.onload = () => {
 
         $("#loadingScreen").hide();
         $("#questionWait").show();
-        //document.getElementById("loadingScreen").style.display="none";
-        //document.getElementById("gamediv").style.display="unset";
-        //document.getElementById("div.mainScreen").style.display="none";
 
         host.draw();
 
-        console.log("I'm about to show host first screen because all players are in game");
+        //console.log("I'm about to show host first screen because all players are in game");
+
+        //this is where it calls to show host first screen
         socket.emit('showHostFirstScreen', {
         });
         return $hosts.animate({ scrollTop: $hosts.prop('scrollHeight') }, 300);
     });
 
+    //used as an object for above. //has a draw function
+    //kind of useless.. I think all I did was show a host name 
+    var Host = function (arg) {
+        this.user = arg.user;//, this.time = arg.time, this.text = arg.text, this.message_side = arg.message_side;
+        this.draw = function (_this) {
+            return function () {
+                var $host;
+                $host = $($('.message_template').clone().html());
+                $host.addClass(_this.message_side).find('.user').html(_this.user);
+                
+                //what brady added
+                $('.hosts').append($host);
+
+                return setTimeout(function () {
+                    return $host.addClass('appeared');
+                }, 0);
+            };
+        }(this);
+        return this;
+    };
 
 
 
@@ -290,21 +332,17 @@ window.onload = () => {
 
 
 
-
+// used to put answers in buttons. and set up answer button listeners
     socket.on('answerMessage', (msg)=>{
         console.log('get message')
         console.log(msg.username);
         console.log(msg.text);
 
-        //Brady added
-        
         var $answerMessages, answerMessage;
         if (msg.text.trim() === '') {
             return;
         } 
-        //$('.answerMessages').val(''); 
-        //Bradyadded
-        //$answerMessages = $('.answerMessages');
+
         $answerMessages = $('.myAnswers');
         console.log('you: ' + user + 'sender: ' + msg.username)
         if(msg.username == user ){
@@ -313,257 +351,29 @@ window.onload = () => {
             message_side = 'left';
         }
 
-//my attempt to use innerHTML for answer buttons
-/*
-        var btnNumber = buttonNumber +"";
-        buttonHtml = "<button id=\""+btnNumber+"\" value=\""+msg.text+"\">"+msg.text+"</button>";
-        $('.myAnswers').innerHTML += buttonHtml;
-
-        console.log(buttonHtml);
-
-        var answerMessagesButton = document.getElementById(btnNumber);
-
-
-        
-        answerMessagesButton.onclick = function() {
-            alert(this.innerHTML);//textContent);//innerHTML);//textContent);//Content);
-            
-            console.log("I'm in answer messages button");
-            $("#loadingScreen").show();
-            $("div.gamediv3").hide();
-
-            
-
-            socket.emit('addToChosenAnswer', { 
-                text: this.innerHTML,
-                username: user
-            });
-
-            console.log("usersCount: " + arg.usersCount);
-            console.log("usersChosenAnswer count: " + usersChosenAnswer);
-        };
-        */
-
-// removed for a second
-
-        //bradyadded
         answerMessage = new AnswerMessage({
             user: msg.username,
             time: msg.time,
-            text: msg.text,//name="+msg.text.toLowerCase()+"\">" + msg.text.toLowerCase() +"</button></br>",
+            text: msg.text,
             message_side: message_side,
             usersCount: msg.usersCount
         });
-/*
-        usersAnswered +=1;
-        if (usersAnswered == msg.usersCount)
-        {
-            $("div.gamediv3").show();
-        }
-        else
-        {
-            displayLoading();
-        }
-        */
 
         //bradyadded
         answerMessage.draw();
         return $answerMessages.animate({ scrollTop: $answerMessages.prop('scrollHeight') }, 300);
-        
-    
+
     });
 
-    socket.on('hideLoading', function (msg) {
-        
-        console.log("hiding waiting for users to answer and showing gamediv3.");
-        
-/*
-        console.log("the answer i'm sending: "+myWordsDict[currentChosenQuestion]);
-
-        answerMessage = new AnswerMessage({
-            user: "Computer",
-            text: myWordsDict[currentChosenQuestion]
-        });
-
-        
-
-        answerMessage.draw();
-*/
-        $("#answerWait").hide();
-        $("div.gamediv3").show();
-
-/*
-        socket.emit('reallyHideLoading', {
-
-        });
-        */
-        
-        
-    });
-
-    socket.on('reallyReallyHideLoading', function (msg) {
-
-
-        
-
-        $("#answerWait").hide();
-        $("div.gamediv3").show();
-        
-    });
-/*
-    function displayLoading()
-    {
-        $("#loadingScreen").show();
-    }
-    */
-
-
-    socket.on('message', (msg)=>{
-        console.log('get message')
-        console.log(msg.username);
-        console.log(msg.text);
-        var $messages, message;
-
-        if (msg.text.trim() === '') {
-            return;
-        }
-        $('.message_input').val('');
-        $messages = $('.messages');
-
-        console.log('you: ' + user + 'sender: ' + msg.username)
-        if(msg.username == user ){
-            message_side = 'right';
-        }else{
-            message_side = 'left';
-        }
-        //message_side = message_side === 'left' ? 'right' : 'left';
-        message = new Message({
-            user: msg.username,
-            time: msg.time,
-            text: msg.text,
-            message_side: message_side
-        });
-
-        message.draw();
-        return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
-    });
-    /*
-    socket.emit('join', {
-            username: user,
-            numberOfPlayers: myNumberOfPlayers,
-            game: gameName
-    });
-    */
-    var Message = function (arg) {
-        this.user = arg.user, this.time = arg.time, this.text = arg.text, this.message_side = arg.message_side;
-        this.draw = function (_this) {
-            return function () {
-                var $message;
-                $message = $($('.message_template').clone().html());
-                $message.addClass(_this.message_side).find('.text').html(_this.text);
-                $message.addClass(_this.message_side).find('.user').html(_this.user);
-                $message.addClass(_this.message_side).find('.time').html(_this.time);
-                console.log('text: '+_this.text+' user: '+_this.user+' time: '+_this.time);
-                $('.messages').append($message);
-
-                return setTimeout(function () {
-                    return $message.addClass('appeared');
-                }, 0);
-            };
-        }(this);
-        return this;
-    };
-
-    
-
-    socket.on('addOneChosenAnswer', function (msg) {
-        usersChosenAnswer += 1;
-
-        
-        console.log("Game: how many users have chosen answer: " + usersChosenAnswer);
-
-        if(msg.usersCount == usersChosenAnswer)
-        {
-            console.log("They are equal!");
-            $("#answerChosen").hide();
-            //$("div.gamediv3").show();
-            //$(".answerUser").show();
-            usersChosenAnswer = 0;
-
-            console.log("I'm about to show users answers");
-            socket.emit('emptyUserAnswers', { 
-                               
-            });
-        }
-    });
-
-    socket.on('hostFirstScreen', function (msg) {
-        console.log("i'm in game to show host first screen");
-        $("#gamediv").show();
-        $("#questionWait").hide();
-    });
-
-    socket.on('showScores', function (msg) {
-        console.log("I'm in show scores. heres the innerHTML:");
-        //alert(scores.innerHTML);
-        scores.innerHTML = msg.text;
-
-        $("#scores").show();
-
-        function startOver()
-        {
-            $("#scores").hide();
-            //$("#gamediv").show();
-            $("#questionWait").show();
-
-            socket.emit('showHostFirstScreen', {
-            
-            });
-
-            var $answerMessage;
-            $answerMessage = $($('.answerTemplate').clone().html());
-            
-            $('.myAnswers').empty();
-            scores.innerHTML = "";
-
-        }
-
-        setTimeout(startOver, 5000);
-    });
-
-
-
-
-    socket.on('showFinalScores', function (msg) {
-        console.log("I'm in show final scores. heres the innerHTML:");
-        alert(finalscores.innerHTML);
-        finalscores.innerHTML = msg.text;
-
-        $("#scores").hide();
-        $("#finalscores").show();
-    });
-
-
-
-    var firstTimeThroughAnswer = 0;    
-
-//brady added this function, a modification of Message
+//an object used for socket.on('answerMessage'). draw function puts in all answers as buttons as they are entered
     var AnswerMessage = function (arg) {
         this.user = arg.user, this.usersCount = arg.usersCount, this.time = arg.time, this.text = arg.text, this.message_side = arg.message_side;
         this.draw = function (_this) {
             return function () {
                 var $answerMessage;
-                //$answerMessage = $($('.answerMessages').clone().html());
                 $answerMessage = $($('.answerTemplate').clone().html());
-                console.log("the text i'm adding to the answer button: " + _this.text);
                 $answerMessage.addClass(_this.text).find('.answerText').html(_this.text);
                 $answerMessage.addClass(_this.text).find('.answerUser').html(_this.user);
-                //$answerMessage.addClass(_this.message_side).find('.time').html(_this.time);
-                console.log('text: '+_this.text+' user: '+_this.user+' time: '+_this.time);
-                console.log("here is my answermessage: ");
-                console.log($answerMessage);
-                //what brady added
-                //$('.answerMessages').append($answerMessage);
                 $('.myAnswers').append($answerMessage);
 
                 //shuffle answer buttons
@@ -601,7 +411,7 @@ window.onload = () => {
                     answerMessagesButton[i].onclick = function() {
                         //alert(this.innerHTML);//textContent);//innerHTML);//textContent);//Content);
                         $temp = $($('.answerTemplate').clone().html());
-                        alert(this.innerHTML);
+                        //alert(this.innerHTML);
                         console.log("I'm in answer messages button");
                         $("#answerChosen").show();
                         $("div.gamediv3").hide();
@@ -609,8 +419,8 @@ window.onload = () => {
                 
                         
                         socket.emit('addToChosenAnswer', { 
-                            text: this.innerHTML,
-                            username: user
+                        text: this.innerHTML,
+                        username: user
                         });
                         
 
@@ -631,55 +441,277 @@ window.onload = () => {
         return this;
     };
 
-    //brady added this function, a modification of Message
-    var Host = function (arg) {
-        this.user = arg.user;//, this.time = arg.time, this.text = arg.text, this.message_side = arg.message_side;
+
+
+//used to hide "waiting for users to answer" loading screen. and shows the users answers page
+    socket.on('hideLoading', function (msg) {
+        console.log("hiding waiting for users to answer and showing gamediv3.");
+        
+        $("#answerWait").hide();
+        $("div.gamediv3").show();
+    });
+
+
+
+
+//used to show how many users are logged in on very first login loadingScreen
+//waiting for all users to login
+//also is called when user logs out
+    socket.on('message', (msg)=>{
+        console.log('get message')
+        console.log(msg.username);
+        console.log(msg.text);
+        var $messages, message;
+
+        if (msg.text.trim() === '') {
+            return;
+        }
+        $('.message_input').val('');
+        $messages = $('.messages');
+
+        console.log('you: ' + user + 'sender: ' + msg.username)
+        if(msg.username == user ){
+            message_side = 'right';
+        }else{
+            message_side = 'left';
+        }
+        //message_side = message_side === 'left' ? 'right' : 'left';
+        message = new Message({
+            user: msg.username,
+            time: msg.time,
+            text: msg.text,
+            message_side: message_side
+        });
+
+        message.draw();
+        return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
+    });
+  
+    /*
+  
+    var Message = function (arg) {
+        this.user = arg.user, this.time = arg.time, this.text = arg.text, this.message_side = arg.message_side;
         this.draw = function (_this) {
             return function () {
-                var $host;
-                $host = $($('.message_template').clone().html());
-                //$host.addClass(_this.message_side).find('.text').html(_this.text);
-                $host.addClass(_this.message_side).find('.user').html(_this.user);
-                //$answerMessage.addClass(_this.message_side).find('.time').html(_this.time);
-                //console.log('text: '+_this.text+' user: '+_this.user+' time: '+_this.time);
-                
-                //what brady added
-                $('.hosts').append($host);
+                var $message;
+                $message = $($('.message_template').clone().html());
+                $message.addClass(_this.message_side).find('.text').html(_this.text);
+                $message.addClass(_this.message_side).find('.user').html(_this.user);
+                $message.addClass(_this.message_side).find('.time').html(_this.time);
+                console.log('text: '+_this.text+' user: '+_this.user+' time: '+_this.time);
+                $('.messages').append($message);
 
                 return setTimeout(function () {
-                    return $host.addClass('appeared');
+                    return $message.addClass('appeared');
                 }, 0);
             };
         }(this);
         return this;
     };
 
+//shows that a user logged into the game
+    socket.emit('join', {
+            username: user,
+            numberOfPlayers: myNumberOfPlayers
+    });
 
-/*
-    //brady added this function, a modification of Message
-    var QuestionMessage = function (arg) {
-        this.text = arg.text;//, this.message_side = arg.message_side;
-        this.draw = function (_this) {
-            return function () {
-                var $questionMessage;
-                //$host = $($('.message_template').clone().html());
-                $questionMessage = $($('chosenQuestion').clone().html());
-                $questionMessage.addClass(_this.message_side).find('.text').html(_this.text);
-                
-                //this adds to gamediv2
-                $('chosenQuestion').append($questionMessage);
-                //this adds to gamediv3 
-                $('chosenQuestionTwo').append($questionMessage);
 
-                return setTimeout(function () {
-                    return $questionMessage.addClass('appeared');
-                }, 0);
-            };
-        }(this);
-        return this;
-    };
-    */
 
+    
+//once everyone chooses an answer, then this calls to show scores for the end of the round
+    socket.on('addOneChosenAnswer', function (msg) {
+        usersChosenAnswer += 1;
+
+        
+        console.log("Game: how many users have chosen answer: " + usersChosenAnswer);
+
+        if(msg.usersCount == usersChosenAnswer)
+        {
+            console.log("They are equal!");
+            $("#answerChosen").hide();
+            //$("div.gamediv3").show();
+            //$(".answerUser").show();
+            usersChosenAnswer = 0;
+
+            console.log("I'm about to show users answers");
+            socket.emit('emptyUserAnswers', {   
+            });
+        }
+    });
+
+
+//used to show ONLY the HOST the screen to choose the new question for the round
+    socket.on('hostFirstScreen', function (msg) {
+        console.log("i'm in game to show host first screen");
+        var $answerMessage;
+        $answerMessage = $($('.answerTemplate').clone().html());
+        
+        $('.myAnswers').empty();
+        //scores.innerHTML = "";
+        $("#finalscores").hide();
+        $("#gamediv").show();
+        $("#questionWait").hide();        
+    });
+
+
+//used to show scores at the end of each round
+    //used for showscores
+    var myTempCount = 0;
+    socket.on('showScores', function (msg) {
+        console.log("I'm in show scores. heres the innerHTML:");
+        //alert(scores.innerHTML);
+        scores.innerHTML = msg.text;
+
+        $('.message_input').val('');
+
+        
+
+        if (myTempCount == 0)
+        {
+            myHtmlRoundNumber += 1;
+
+            myTempCount +=1;
+        }
+        else
+        {
+            myTempCount = 0;
+        }
+        
+        for (var i = 0; i < roundHtml.length; i++) {
+            roundHtml[i].innerHTML = "<p> Round Number: "+myHtmlRoundNumber+"</p>";
+        }
+
+        $("#scores").show();
+
+        function startOver()
+        {
+            myTempCount = 0;
+            $("#scores").hide();
+            //$("#gamediv").show();
+            $("#questionWait").show();
+
+            socket.emit('showHostFirstScreen', {
+            
+            });
+
+            var $answerMessage;
+            $answerMessage = $($('.answerTemplate').clone().html());
+            
+            $('.myAnswers').empty();
+            scores.innerHTML = "";
+
+        }
+
+        setTimeout(startOver, 5000);
+    });
+
+
+
+//used to show final scores at the end of the game
+    socket.on('showFinalScores', function (msg) {
+        console.log("I'm in show final scores. heres the innerHTML:");
+        //alert(finalscores.innerHTML);
+        finalscores.innerHTML = msg.text;
+
+        finalscores.innerHTML += "</br></br><h1> Would you like to Continue Game for Another Round? </h1>";
+
+
+    
+        //finalscores.innerHTML += "<form id='myForm' action='' method='post'><button id='choseYes' value="+myGameName+" name='myChoice' type='text'> Yes </button><button id='choseNo' name='myChoice' value='choseNo' type='text'> No </button></form>";
+        finalscores.innerHTML += "<button class='choseYes' id='choseYes' value="+myGameName+" name='myChoice' type='text'> Yes </button>&nbsp&nbsp&nbsp&nbsp<button class='choseNo' id='choseNo' name='myChoice' value='choseNo' type='text'> No </button>";
+
+        //var form = document.getElementById("myForm");
+        //$(document.body).append(form);
+
+
+        var choseYes = document.getElementById("choseYes");
+        var choseNo = document.getElementById("choseNo");
+
+
+        choseYes.onclick = function() {
+            //sets rounds back over, then calls userChoseYesStartAgain below.
+            //used to send to all players since onclicks don't resume in the socket.on, it only sends to one person
+            socket.emit('userChoseYes', {
+            });
+        }
+        choseNo.onclick = function() {
+            //finalscores.innerHTML += "<p> You chose No </p>";
+            $('#choseYes').hide();
+            $('#choseNo').hide();
+
+            socket.emit('hideYesNo', {
+            
+            });
+        }
+
+
+        $("#scores").hide();
+        $("#finalscores").show();
+    });
+
+//gets called eventually from onclick function above userChoseYes
+//continues the game with a new round
+    socket.on('userChoseYesStartAgain', function (msg) {
+        
+        
+        myHtmlRoundNumber += 1;
+
+        if (myTempCount ==0)
+        {
+            myTempCount+=1;
+            
+            roundHtml = document.getElementsByClassName("roundNumber");
+            //this sets round number 1 on first login
+            for (var i = 0; i < roundHtml.length; i++) {
+                roundHtml[i].innerHTML = "<p> Round Number: "+myHtmlRoundNumber+"</p>";
+            }
+        }
+        else
+        {
+            myTempCount = 0;
+        }
+        
+        
+        $("#finalscores").hide();
+        //$("#gamediv").show();
+        $("#questionWait").show();
+
+        socket.emit('showHostFirstScreen', {
+        
+        });
+        
+        var $answerMessage;
+        $answerMessage = $($('.answerTemplate').clone().html());
+        
+        $('.myAnswers').empty();
+        scores.innerHTML = "";
+        //finalscores.innerHTML += "<p> You chose Yes </p>";
+        //$.post("", { 'myChoice': myGameName });
+    });
+
+//used if user chooses not to continue game at the end of the game. hides the yes and no button.
+//and then shows the button to return to home page
+    socket.on('hideYesNoButtons', function (msg) {
+        console.log("i'm in hide yes no buttons");
+
+        finalscores.innerHTML += "<p>A Player Chose To Not Continue Game. Thanks for Playing! Click Button Below to Return to Home Page. </p>";
+        $('#choseYes').hide();
+        $('#choseNo').hide();
+
+        finalscores.innerHTML += "<form id='myForm' action='' method='post'><button class='choseYes' id='choseYes' value="+myGameName+" name='myChoice' type='text'> Return Home </button></form>";
+
+    });
+
+
+
+    var firstTimeThroughAnswer = 0;    
+
+
+
+
+
+//functions that were already here. when we started project 3.
+//I used it to send the answers.
     $(function () {
         var getMessageText, message_side, sendMessage;
         message_side = 'right';
@@ -695,106 +727,28 @@ window.onload = () => {
                 text: text 
             });
         };
-
-/*
-        //Brady added
-        getQuestionText = function () {
-            var $message_input;
-            $message_input = $('.sendQuestion');
-            return $sendQuestion.val();
-        };
-
-        sendQuestion = function (text) {
-            console.log('sendQuestion: ' + text);
-            socket.emit('sendQuestion', { 
-                username: user,
-                text: text 
-            });
-            */
         
         
+        //used to send answer
         $('.send_message').click(function (e) {
+            console.log("I clicked .send_message button"); 
+            $("div.gamediv2").hide();
+            $("#answerWait").show();
             return sendMessage(getMessageText());
         });
 
-        
-            
-        
-        $('.message_input').keyup(function (e) {
-            if (e.which === 13) {
-                //Brady took this out
-                //return sendMessage(getMessageText()); 
+        $('.message_input').keypress(function (e) {
+            var key = e.which;
+            if(key == 13)  // the enter key code
+            {
+                $('.send_message').click();
+                return false;  
             }
-        });
-        // sendMessage('Hello Philip! :)');
-        // setTimeout(function () {
-        //     return sendMessage('Hi Sandy! How are you?');
-        // }, 1000);
-        // return setTimeout(function () {
-        //     return sendMessage('I\'m fine, thank you!');
-        // }, 2000);
+        }); 
     });
-
 }
 
 
 
-//- demo js this is an example of how to interact with the chat 
-// (function () {
-//     var Message;
-//     Message = function (arg) {
-//         this.text = arg.text, this.message_side = arg.message_side;
-//         this.draw = function (_this) {
-//             return function () {
-//                 var $message;
-//                 $message = $($('.message_template').clone().html());
-//                 $message.addClass(_this.message_side).find('.text').html(_this.text);
-//                 $('.messages').append($message);
-//                 return setTimeout(function () {
-//                     return $message.addClass('appeared');
-//                 }, 0);
-//             };
-//         }(this);
-//         return this;
-//     };
-//     $(function () {
-//         var getMessageText, message_side, sendMessage;
-//         message_side = 'right';
-//         getMessageText = function () {
-//             var $message_input;
-//             $message_input = $('.message_input');
-//             return $message_input.val();
-//         };
-//         sendMessage = function (text) {
-//             var $messages, message;
-//             if (text.trim() === '') {
-//                 return;
-//             }
-//             $('.message_input').val('');
-//             $messages = $('.messages');
-//             message_side = message_side === 'left' ? 'right' : 'left';
-//             message = new Message({
-//                 text: text,
-//                 message_side: message_side
-//             });
-//             message.draw();
-//             return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
-//         };
-//         $('.send_message').click(function (e) {
-//             return sendMessage(getMessageText());
-//         });
-//         $('.message_input').keyup(function (e) {
-//             if (e.which === 13) {
-//                 return sendMessage(getMessageText());
-//             }
-//         });
-//         sendMessage('Hello Philip! :)');
-//         setTimeout(function () {
-//             return sendMessage('Hi Sandy! How are you?');
-//         }, 1000);
-//         return setTimeout(function () {
-//             return sendMessage('I\'m fine, thank you!');
-//         }, 2000);
-//     });
-// }.call(this));
+
 

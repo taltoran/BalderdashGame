@@ -162,10 +162,27 @@ module.exports = (io) => {
             var userIdDict = roomdata.get(socket, "userIdDict");
             var myHostName = roomdata.get(socket, "myHostName");
 
-            console.log("i'm in socket to show host first screen and host id is: " + userIdDict[myHostName]);
+            //console.log("i'm in socket to show host first screen and host id is: "+userIdDict[myHostName]);
             //io.to(io.clients[userIdDict["host"]]).emit('hostFirstScreen');//send host to first screen
             io.sockets.connected[userIdDict[myHostName]].emit('hostFirstScreen');
             
+        });
+
+        socket.on('userChoseYes', function (msg) {
+            myCurrentRoundNumber=0;
+            io.emit('userChoseYesStartAgain', { 
+            });
+        });
+
+
+        socket.on('hideYesNo', function (msg) {
+            io.emit('hideYesNoButtons', { 
+            });
+        });
+
+        socket.on('showAnswers', function (msg) {
+             io.emit('showAnswersTimeout', { 
+            });
         });
 
         socket.on('emptyUserAnswers', function (msg) {
@@ -253,7 +270,9 @@ module.exports = (io) => {
                         var index=i+1;
                         if (i == 0)
                         {
-                            tempHtml += "<h2> WINNER!!!   "+myArray[i][0]+" Won with a Score of "+myArray[i][1]+" Points   WINNER!!!</h2>";
+                            myWinner = myArray[i][0];
+                            console.log("My winner: " + myWinner);
+                            tempHtml += "<h2 class='winText'> WINNER!!!   "+myArray[i][0]+" Won with a Score of "+myArray[i][1]+" Points   WINNER!!!</h2>";
                         }
                         else
                         {
@@ -328,16 +347,6 @@ module.exports = (io) => {
                 usersCount: userCount
             });
         });
-
-        socket.on('reallyHideLoading', function (msg) {
-            /*
-            io.emit('reallyReallyHideLoading', { 
-            });
-            */
-
-            var room = roomdata.get(socket, "room");
-            io.sockets.in(room).emit('reallyReallyHideLoading', {});
-        });       
 
         socket.on('send', function (msg) {
             var stamp = new Date().toLocaleTimeString();

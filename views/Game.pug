@@ -3,6 +3,11 @@
 block content
   html
     head
+      link(href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800', rel='stylesheet', type='text/css')
+      link(href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic', rel='stylesheet', type='text/css')
+      //- stylesheets
+      link(rel='stylesheet', href='/stylesheets/style.css')
+      link(rel='stylesheet', href='/stylesheets/index.css')
       style.
         .loader {
         border: 10px solid #f3f3f3;
@@ -42,6 +47,10 @@ block content
 
         }
 
+        body {
+          color: black;
+        }
+
     body
       div#loadingScreen
         //.mainScreen
@@ -68,7 +77,9 @@ block content
   - var myChosenWords= {};
   
 
-  div#gamediv
+  div#gamediv(style='text-align:center')
+    h1#gameHeading(style='padding-top:50px') Game Category
+    h1#categoryHeading= categories
       //div
       //- for (var i = 0; i<4; i++)
         -var randomNum= Math.floor(Math.random() * (myWords.length))
@@ -94,12 +105,12 @@ block content
         br
         br
   div
-  .gamediv2
+  .gamediv2(style='text-align:center; padding-top:50px')
       div
       //p=myWords[0].question
       //-var name = $(".sendQuestion").attr("name");
       
-      p#chosenQuestion
+      h1#chosenQuestion
       //p#chosenAnswer=myWordsDict[name]
       //input#inputAnswer(placeholder='Type your answer')
       //input#sendAnswer(type='button', value='send')
@@ -109,13 +120,13 @@ block content
         //ul.messages
         .bottom_wrapper.clearfix
           .message_input_wrapper
-            input#mes_input.message_input(placeholder='Type your message here...')
-          #send_btn.send_message
+            input#mes_input.message_input(placeholder='Type your message here...' )
+          #send_btn.send_message(style='padding-top:10px')
             .icon
             button.text Send
 
   div
-  .gamediv3
+  .gamediv3(style='text-align:center; padding-top:50px')
       div
         h1#chosenQuestionTwo
               //p(id="answers")
@@ -134,29 +145,32 @@ block content
                 .answerUserID
                   .answerUser
                   .answerTime
-              .answerText_wrapper
+              .answerText_wrapper(style='padding-top:10px')
                 button.answerText 
         //ul.messages
         //div
 
   div
-  #scores
+  #scores(style='text-align:center; padding-top:50px')
 
   div
-  #finalscores
+  #finalscores(style='text-align:center; padding-top:50px')
 
   
-  div#answerWait
+  div#answerWait(style='text-align:center; padding-top:50px')
     h1(text-align: center) Waiting For Players to Enter Answers
+    h1.roundNumber
     .loader
 
-  div#answerChosen
+  div#answerChosen(style='text-align:center; padding-top:50px')
     h1(text-align: center) Waiting For Players to Choose Answers
+    h1.roundNumber
     .loader
     
 
-  div#questionWait
+  div#questionWait(style='text-align:center; padding-top:50px')
     h1(text-align: center) Waiting For Host to Choose Question
+    h1.roundNumber
     .loader
 
   
@@ -174,7 +188,8 @@ block scripts
     | var myWordsList =!{JSON.stringify(wordsList)}; 
     | var myCategories =!{JSON.stringify(categories)}; 
     | var myRounds = !{JSON.stringify(rounds)}; 
-    | var myNumberOfPlayers = !{JSON.stringify(numberOfPlayers)}; 
+    | var myNumberOfPlayers = !{JSON.stringify(numberOfPlayers)};
+    | var myGameName =  !{JSON.stringify(gameName)};
   script(src='/scripts/_game.js') 
    
   script(src='/socket.io/socket.io.js')
@@ -197,12 +212,6 @@ block scripts
       $("div.gamediv2").show();
       
     });
-
-    $("#send_btn").click(function(){
-      $("div.gamediv2").hide();
-      $("#answerWait").show();
-    });
-
   
     
 

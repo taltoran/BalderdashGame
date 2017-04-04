@@ -36,6 +36,7 @@ router.post('/register', function(req, res, next) {
     lname:      req.body.lname,
     email:      req.body.email,
     username:   req.body.username,
+    gameswon:   0,
     password:   hash,
   });
   //console.log(user); 
@@ -75,7 +76,7 @@ router.get('/login', function(req, res, next) {
  */
 router.post('/login', function(req, res) {
   // get a single user from their username entered on the webpage
-  schema.User.findOne({ username: req.body.username }, 'fname lname email username password data', function(err, user) {
+  schema.User.findOne({ username: req.body.username }, 'fname lname email username password gameswon data', function(err, user) {
     // console.log(user);
     // cant find user redirect to login with error msg displayed
     if (!user) {
@@ -97,11 +98,12 @@ router.post('/login', function(req, res) {
 /* GET profile page. */
 router.get('/profile', function(req, res, next) {
   console.log('running get for user');
+  console.log('games won:' + req.user.gameswon);
   res.render('profile.pug', {
     firstname: req.user.fname,
     lastname: req.user.lname,
     username: req.user.username,
-    gameWins: req.user.gamewins
+    gamewins: req.user.gameswon
   });
   /*schema.User.findById(req.params.id, function(err,user){
     if(err)
