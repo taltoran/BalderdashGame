@@ -142,6 +142,8 @@ module.exports = (io) => {
                         var index=i+1;
                         if (i == 0)
                         {
+                            myWinner = myArray[i][0];
+                            console.log("My winner: " + myWinner);
                             tempHtml += "<h2 class='winText'> WINNER!!!   "+myArray[i][0]+" Won with a Score of "+myArray[i][1]+" Points   WINNER!!!</h2>";
                         }
                         else
