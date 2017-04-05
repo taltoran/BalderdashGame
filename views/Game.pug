@@ -78,9 +78,9 @@ block content
   
 
   div#gamediv(style='text-align:center')
-    h1#gameHeading(style='padding-top:50px') Game Category
-    h1#categoryHeading= categories
-      //div
+    //h1#gameHeading(style='padding-top:50px') Game Category
+    //h1#categoryHeading= categories
+      div
       //- for (var i = 0; i<4; i++)
         -var randomNum= Math.floor(Math.random() * (myWords.length))
         -var myQuestion = myWords[randomNum].question
@@ -96,10 +96,10 @@ block content
           p Its false
           - myChosenWords[myQuestion] = "true"
 
-        //p=randomNum
+        p=randomNum
         button.sendQuestion(name=myQuestion)= myQuestion
         
-      //each value in myWords
+        each value in myWords
         button.sendQuestion(name=value.question)= value.question
         p.sendAnswer(name=value.answer style="visibility:hidden")=value.answer
         br

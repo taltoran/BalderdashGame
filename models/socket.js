@@ -415,7 +415,8 @@ module.exports = (io) => {
         });
 
         socket.on('sendQuestion', function (msg) {
-            var myCurrentChosenQuestion = msg.text
+            var myCurrentChosenQuestion = msg.text;
+            console.log("socket myCurrentChosenQuestion1: "+myCurrentChosenQuestion);
             roomdata.set(socket, "myCurrentChosenQuestion", myCurrentChosenQuestion);
 
             var myNumberOfRounds = msg.rounds;
@@ -435,6 +436,7 @@ module.exports = (io) => {
             */
 
             var room = roomdata.get(socket, "room");
+            console.log("socket myCurrentChosenQuestion2: "+myCurrentChosenQuestion);
             io.sockets.in(room).emit('questionMessage', {
                 text: msg.text
             });
