@@ -1,6 +1,10 @@
 window.onload = () => {
 //Brady stuff
 
+    //used for scores
+    var scoresHtml = "";//document.getElementById("scores");
+    //scoresHtml.innerHTML = "";
+
     //used for host choosing a question
     var sendButton = document.getElementsByClassName("sendQuestion");
     
@@ -456,6 +460,9 @@ window.onload = () => {
                     }
                     firstTimeThroughAnswer +=1;
                 }
+
+                
+                scoresHtml += "<p>" +_this.user + " input the answer: " +_this.text + "</p>";
                 
 
                 
@@ -613,7 +620,7 @@ window.onload = () => {
     socket.on('showScores', function (msg) {
         console.log("I'm in show scores. heres the innerHTML:");
         //alert(scores.innerHTML);
-        scores.innerHTML = msg.text;
+        scores.innerHTML = msg.text+ "</br><h1>User Answers: </h1>"+scoresHtml;
 
         $('.message_input').val('');
 
@@ -665,7 +672,7 @@ window.onload = () => {
         console.log("I'm in show final scores. heres the innerHTML:");
         //alert(finalscores.innerHTML);
         $('.message_input').val('');
-        finalscores.innerHTML = msg.text;
+        finalscores.innerHTML = msg.text+ "</br><h1>User Final Answers: </h1>"+scoresHtml;
 
         finalscores.innerHTML += "</br></br><h1> Would you like to Continue Game for Another Round? </h1>";
 
