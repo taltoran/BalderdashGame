@@ -2,7 +2,7 @@ extends layout
 
 block content
 
-  h1(style='text-align:center') Create a New Game
+  h1(style='text-align:center; padding-top:50px') Create a New Game
   .creatediv(style='text-align:center; color:black')
     .content(style='color:#ff5757')
       span.value
@@ -27,6 +27,7 @@ block content
           |  
           label Choose Category:
           |  
+<<<<<<< HEAD
           p.confirm
           input#ludicrousLaws(type="checkbox", name = "ludicrousLaws", checked = (true===false ? "checked" : undefined))
           checkbox.ludicrousLaws Ludicrous Laws
@@ -44,6 +45,15 @@ block content
           checkbox.movieHeadlines Movie Headlines
           .content(style='color:#ff5757')
             span.invalidCategories #{invalidCategories}
+=======
+          select(name='categories')
+            option(value='words') Words
+            option(value='people') People
+            option(value='initials') Initials
+            option(value='movies') Movies
+            option(value='laws') Laws
+            option(value='allCategories') All Categories
+>>>>>>> refs/remotes/origin/socketFix
           p
           |  
           label Choose Game Name (Optional):
@@ -54,7 +64,7 @@ block content
           p
           .submitdiv
             .center
-              input#submit(type='submit', value='New Game', style='color:blue')
+              input#submit(type='submit', value='New Game')
 
 block scripts
   script(src='../js/createValidation.js', type='text/javascript')

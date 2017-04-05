@@ -5,6 +5,7 @@ module.exports = mongoose.model('Game', new Schema({
   //gameHost: String,
   playerNumber: String,
   rounds:  String,
+<<<<<<< HEAD
   category:[String],/*,
     definitions: String,
     famousPeople: String,
@@ -12,6 +13,9 @@ module.exports = mongoose.model('Game', new Schema({
     movieHeadlines: String
   ],
   */
+=======
+  category: [String],
+>>>>>>> refs/remotes/origin/socketFix
   gameName: String,
   winner: String,
   questions: Number,
