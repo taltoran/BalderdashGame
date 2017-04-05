@@ -107,27 +107,6 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
 
                 res.render('Create.pug', { invalidPlayers: myPlayers, invalidRounds: myRounds, invalidGameName: myGameName });
 
-<<<<<<< HEAD
-            res.render('Create.pug', {invalidPlayers: myPlayers, invalidRounds:myRounds, invalidGameName: myGameName});
-            
-        }
-        else
-        {
-            if(!isValid)
-            {
-                //console.log("i'm in !isValid");
-                res.render('Create.pug', {invalidPlayers: myPlayers, invalidRounds: myRounds, invalidGameName: myGameName});
-            }
-            else
-            {
-                console.log("my req.body is: " + req.body);
-                var game = new Game({ 
-                    playerNumber: req.body.players, 
-                    rounds: req.body.rounds, 
-                    category: req.body.categories, 
-                    gameName: req.body.gameName, 
-                });
-=======
             }
             else {
                 if (!isValid) {
@@ -142,7 +121,6 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
                         category: req.body.categories,
                         gameName: req.body.gameName,
                     });
->>>>>>> refs/remotes/origin/socketFix
 
                     console.log("my categories on save: " + req.body.categories);
 
