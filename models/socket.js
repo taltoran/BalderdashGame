@@ -608,12 +608,14 @@ module.exports = (io) => {
                 else {
                     console.log("Found user!!!!!!");
                     var won = (updateUser.gameswon + 1);
-                    console.log("User: " + updateUser.username + "    New score: " + won);
                     // if user found compare update the users gameswon
                     updateUser.gameswon = won;
                     updateUser.save(function (err) {
                         if (err) {
                             console.log(err);
+                        }
+                        else{
+                            console.log("User: " + updateUser.username + "    New score: " + won);
                         }
                     });
                 }
@@ -641,6 +643,10 @@ module.exports = (io) => {
                 updateGame.save(function (err) {
                     if (err) {
                         console.log(err);
+                    }
+                    else{
+                        console.log("Game: " + updateGame.gameName + "    gameActive: " + updateGame.gameActive);
+                        console.log("Game: " + updateGame.gameName + "    winners: " + updateGame.winners);
                     }
                 });
             }
