@@ -91,8 +91,7 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
 
     Game.findOne(
         {
-            gameName: req.body.gameName,
-            gameActive: true
+            gameName: req.body.gameName
         }, function (err, game) {
             if (err) next(err);
 
@@ -115,8 +114,6 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
                         rounds: req.body.rounds,
                         category: req.body.categories,
                         gameName: req.body.gameName,
-                        gameActive: true,
-                        gameFull: false
                     });
 
                     console.log("my categories on save: " + req.body.categories);
@@ -168,8 +165,7 @@ router.post('/Join', function (req, res, next) {
 
     Game.findOne(
         {
-            gameName: req.body.code,
-            gameActive: true
+            gameName: req.body.code
         }, function (err, game) {
             if (err) next(err);
 
@@ -219,21 +215,13 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
 
                 if (game) {
                     req.session['gameName'] = null;
-
-                    // checks that the game has not been set to full for player to join
-                    if(game.gameFull){
-                        console.log("The Game Is Full");
-                        myInvalidCode = "Game room code is currently full, please try again"
-                        res.render('Join.pug', { invalidCode: myInvalidCode });
-                    }else{
-                        Question.find()
-                            .then(function (words) {
-                                res.render('Game.pug', {
-                                    title: 'Question Creator', userName: req.user.username,
-                                    wordsList: words, categories: ["words", "people"], rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName
-                                }); //game.category
-                            });
-                    }
+                    Question.find()
+                        .then(function (words) {
+                            res.render('Game.pug', {
+                                title: 'Question Creator', userName: req.user.username,
+                                wordsList: words, categories: ["words","people"], rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName
+                            }); //game.category
+                        });
                 }
                 else {
                     req.session['gameName'] = null;
@@ -263,22 +251,14 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
 
                     if (game) {
                         req.session['gameName'] = null;
-
-                        // checks that the game has not been set to full for player to join
-                        if (game.gameFull) {
-                            console.log("The Game Is Full");
-                            myInvalidCode = "Game room code is currently full, please try again"
-                            res.render('Join.pug', { invalidCode: myInvalidCode });
-                        } else {
-                            Question.find()
-                                .then(function (words) {
-                                    res.render('Game.pug', {
-                                        title: 'Question Creator', userName: req.user.username,
-                                        wordsList: words, categories: ["words", "people"], rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName
-                                    }); //game.category
-                                });
-                        }
-                    }    
+                        Question.find()
+                            .then(function (words) {
+                                res.render('Game.pug', {
+                                    title: 'Question Creator', userName: req.user.username,
+                                    wordsList: words, categories: ["words","people"], rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName
+                                });//game.category
+                            });
+                    }
                     else {
                         req.session['gameName'] = null;
                     }
@@ -303,8 +283,34 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
 router.post('/Game', function (req, res, next) {
     console.log("I'm in the Game post");
     console.log(req.body.myChoice);
+    //console.log(myWinner);
 
-    // Posting for game and user data is happening in the socket.js in models
+    // myWinner should be returned as a list object of winners
+    // For loop through winnersList where winner.username is set to user name in find one
+    
+
+    // schema.User.findOne({ username: myWinner }, 'fname lname email username password gameswon data', function (err, updateUser) {
+    //     // cant find user redirect to error page with error msg displayed
+    //     if (!updateUser) {
+    //         res.render('error.pug', { error: "Could not find user: " + myWinner });
+    //     }
+    //     else {
+    //         won = (updateUser.gameswon + 1);
+    //         console.log("New score: " + won);
+    //         // if user found compare update the users gameswon
+    //         updateUser.gameswon = won;
+    //         updateUser.save(function (err) {
+    //             if (err)
+    //             {
+    //                 res.render('error.pug', { error: error });
+    //             }
+    //             else{
+    //                 res.redirect('/games');
+    //             }
+    //         });
+    //     }
+    // });
+
     res.redirect('/games');
 
     /*
