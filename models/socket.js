@@ -439,7 +439,13 @@ module.exports = (io) => {
             }   
 
             var userPointsDict = roomdata.get(socket, "userPointsDict");
-            userPointsDict[msg.username] = 0;
+            
+            if (!userPointsDict[msg.username])
+            {
+                console.log(msg.username +" aasdfasd: " + userPointsDict[msg.username]);
+                userPointsDict[msg.username] = 0;
+            }
+            
             roomdata.set(socket, "userPointsDict", userPointsDict);
 
             var userAnswersDict = roomdata.get(socket, "userAnswersDict");
