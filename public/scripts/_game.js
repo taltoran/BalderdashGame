@@ -213,6 +213,9 @@ window.onload = () => {
 
             //alert($(this).val());
             currentChosenCategoryNQuestion =$(this).text();
+            socket.emit('showChosenCategoryNQuestion', { 
+                curChosenCategoryNQuestion: $(this).text()
+            });
 
             socket.emit('sendQuestion', { 
                 username: user,
@@ -278,6 +281,17 @@ window.onload = () => {
             
         }
     }
+
+
+    socket.on('showChosenCategoryNQuestionToEveryone', (msg)=>{
+        currentChosenCategoryNQuestion = msg.text;
+        
+        //adds to gamediv2
+        chosenQuestion.innerHTML = currentChosenCategoryNQuestion;//msg.text;
+
+        //adds to gamediv3
+        chosenQuestionTwo.innerHTML = currentChosenCategoryNQuestion;//msg.text;
+    });
 
 //in testing right now. this cuts off people who take more than 15 seconds to answer question.
 //and shows the answers that have been entered.
@@ -366,11 +380,6 @@ window.onload = () => {
             return;
         }
 
-        //adds to gamediv2
-        chosenQuestion.innerHTML = currentChosenCategoryNQuestion;//msg.text;
-
-        //adds to gamediv3
-        chosenQuestionTwo.innerHTML = currentChosenCategoryNQuestion;//msg.text;
 
         
         $("#gamediv").hide();
@@ -621,6 +630,7 @@ window.onload = () => {
         console.log("I'm in show scores. heres the innerHTML:");
         //alert(scores.innerHTML);
         scores.innerHTML = msg.text+ "</br><h1>User Answers: </h1>"+scoresHtml;
+        
 
         $('.message_input').val('');
 
@@ -645,6 +655,7 @@ window.onload = () => {
 
         function startOver()
         {
+            scoresHtml ="";
             myTempCount = 0;
             $("#scores").hide();
             //$("#gamediv").show();
@@ -662,7 +673,7 @@ window.onload = () => {
 
         }
 
-        setTimeout(startOver, 5000);
+        setTimeout(startOver, 15000);
     });
 
 
@@ -672,8 +683,11 @@ window.onload = () => {
         console.log("I'm in show final scores. heres the innerHTML:");
         //alert(finalscores.innerHTML);
         $('.message_input').val('');
+        //alert(msg.text);
         finalscores.innerHTML = msg.text+ "</br><h1>User Final Answers: </h1>"+scoresHtml;
+        
 
+        //alert(msg.text);
         finalscores.innerHTML += "</br></br><h1> Would you like to Continue Game for Another Round? </h1>";
 
 
@@ -713,7 +727,7 @@ window.onload = () => {
 //gets called eventually from onclick function above userChoseYes
 //continues the game with a new round
     socket.on('userChoseYesStartAgain', function (msg) {
-        
+        scoresHtml ="";
         
         myHtmlRoundNumber += 1;
 
