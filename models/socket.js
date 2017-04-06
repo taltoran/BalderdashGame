@@ -117,6 +117,8 @@ module.exports = (io) => {
 
             if (userCount == myNumberOfPlayers)
             {
+                var myScoresCorrectAnswerHtml = "";        
+                roomdata.set(socket, "myScoresCorrectAnswerHtml", myScoresCorrectAnswerHtml);
                 var myScoresHtml = "";
                 roomdata.set(socket, "myScoresHtml", myScoresHtml);
 
@@ -228,6 +230,7 @@ module.exports = (io) => {
             var userPointsDict = roomdata.get(socket, "userPointsDict");
             var userAnswersDict = roomdata.get(socket, "userAnswersDict");
             var myScoresHtml = roomdata.get(socket, "myScoresHtml");
+            var myScoresCorrectAnswerHtml = roomdata.get(socket, "myScoresCorrectAnswerHtml");
             //var myScoresHtml = "";
 
             if (!answersDisplayed) {
@@ -261,6 +264,7 @@ module.exports = (io) => {
 
             //}
             
+            myScoresHtml += myScoresCorrectAnswerHtml;
                 
             if (myCurrentRoundNumber < myNumberOfRounds)
             {
@@ -396,6 +400,7 @@ module.exports = (io) => {
             var userAnswersDict = roomdata.get(socket, "userAnswersDict");
 
             var myScoresHtml = roomdata.get(socket, "myScoresHtml");
+            var myScoresCorrectAnswerHtml = roomdata.get(socket, "myScoresCorrectAnswerHtml");
             //var myScoresHtml = "";
             
 
@@ -428,11 +433,8 @@ module.exports = (io) => {
 
             }
 
-
-            //myScoresHtml +="<h3>The Correct Answer To "+myCurrentChosenQuestion+" was: </h2>";
-            //myScoresHtml += "<p>"+myWordDict[myCurrentChosenQuestion]+"</p>";         
-
-
+            myScoresCorrectAnswerHtml ="<h3>The Correct Answer To "+myCurrentChosenQuestion+" was: </h2><p>"+myWordDict[myCurrentChosenQuestion]+"</p>";        
+            roomdata.set(socket, "myScoresCorrectAnswerHtml", myScoresCorrectAnswerHtml);
 
             roomdata.set(socket, "myScoresHtml", myScoresHtml);
             var userCount = roomdata.get(socket, "userCount");
