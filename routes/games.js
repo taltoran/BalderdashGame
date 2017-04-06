@@ -53,11 +53,6 @@ router.get('/Create', utils.requireLogin, function (req, res, next) {
 /* POST Create page. */
 router.post('/Create', utils.requireLogin, function (req, res, next) {
     console.log("i'm here in .post .Create");
-<<<<<<< HEAD
-    console.log("my req.body is: " + req.body);
-=======
-
->>>>>>> refs/remotes/origin/socketFix
 
     //console.log(req.body);
 
@@ -114,12 +109,36 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
                     res.render('Create.pug', { invalidPlayers: myPlayers, invalidRounds: myRounds, invalidGameName: myGameName });
                 }
                 else {
+
+                        var  categoriesToAdd = [];
+
+                        if (req.body.ludicrousLaws == true) {
+                            categoriesToAdd.push("ludicrousLaws");
+                        }
+
+                        if (req.body.definitions == true) {
+                            categoriesToAdd.push("definitions");
+                        }
+
+                        if (req.body.famousPeople == true) {
+                            categoriesToAdd.push("famousPeople");
+                        }
+
+                        if (req.body.acronyms == true) {
+                            categoriesToAdd.push("acronyms");
+                        }
+
+                        if (req.body.movieHeadlines == true) {
+                            categoriesToAdd.push("movieHeadlines");
+                        }
+
                     //console.log("isValid3: " +isValid);
                     var game = new Game({
                         playerNumber: req.body.players,
                         rounds: req.body.rounds,
-                        category: req.body.categories,
                         gameName: req.body.gameName,
+                        category: categoriesToAdd
+
                     });
 
                     console.log("my categories on save: " + req.body.categories);

@@ -48,6 +48,26 @@ window.onload=function(){
         var acronyms = form.acronyms.checked;
         var movieHeadlines = form.movieHeadlines.checked;
 
+        /*if (ludicrousLaws == true) {
+            category: req.body.ludicrousLaws;
+        } 
+
+        if (definitions == true) {
+            category: req.body.definitions;
+        } 
+        
+        if (famousPeople == true) {
+            category: req.body.famousPeople;
+        } 
+        
+        if (acronyms == true) {
+            category: req.body.acronyms;
+        } 
+        
+        if (movieHeadlines == true) {
+            category: req.body.movieHeadlines;
+        } */
+
         if(ludicrousLaws == false && definitions == false && famousPeople == false && acronyms == false && movieHeadlines == false) {
             document.querySelector('.content .invalidCategories').innerHTML = 'Must select at least 1 category.';
             categoriesValid = false;
