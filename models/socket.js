@@ -96,7 +96,8 @@ module.exports = (io) => {
             
             //Brady added to check if it's the host, and set the host name (host is first player to login right now)
             if ( userCount == 1 )
-            {
+            {   
+                
                 var myHostName = msg.username;
                 roomdata.set(socket, "myHostName", myHostName);
                 console.log('host name: ' + myHostName);
@@ -116,6 +117,8 @@ module.exports = (io) => {
             if (userCount == myNumberOfPlayers)
             {
                 console.log("I'm about to set host because all players are in game");
+                console.log("socket game variable: "+game);
+                req.session[game+"Full"] = false;
                 /*
                 io.emit('setHost', { 
                     username: myHostName,
@@ -266,25 +269,24 @@ module.exports = (io) => {
                     items.sort(function(first, second) {
                         return second[1] - first[1];
                     });
-
+                    
                     // Create a new array 
                     var myArray = items.slice(0, userPointsDict.length);
-
+                    var index = 1;
+                    list
                     for(var i=0; i<myArray.length;i++)
                     {
-                        var index=i+1;
-                        if (i == 0)
-                        {
-                            myWinner = myArray[i][0];
-                            console.log("My winner: " + myWinner);
+                        if(myArray[i][0] == myArray[0][0]){
+                            winnerList[i] = myArray[i][0];
                             tempHtml += "<h2 class='winText'> WINNER!!!   "+myArray[i][0]+" Won with a Score of "+myArray[i][1]+" Points   WINNER!!!</h2>";
                         }
                         else
-                        {
-                            
+                        {  
+                            index += 1;                          
                             tempHtml += "<h3> Place #"+ index +": " +myArray[i][0]+" Scored "+myArray[i][1]+" Points</h3>";
                         }
                     }
+                    console.log("My winners list: " + winnerList)
 
                     myScoresHtml = tempHtml + "</br></br>"+myScoresHtml;
 

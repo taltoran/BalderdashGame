@@ -6,7 +6,6 @@ var Question = require('../models/Question.js');    //questions model
 var utils = require('./utils');                     // has functions for creating user session, also require login function
 var router = express.Router();
 
-var winner = "";
 
 /* GET newgame page. */
 router.get('/', utils.requireLogin, function (req, res, next) {
@@ -93,7 +92,8 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
 
     Game.findOne(
         {
-            gameName: req.body.gameName
+            gameName: req.body.gameName,
+            gameActive: true
         }, function (err, game) {
             if (err) next(err);
 
@@ -135,6 +135,12 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
                     var game = new Game({
                         playerNumber: req.body.players,
                         rounds: req.body.rounds,
+<<<<<<< HEAD
+=======
+                        category: req.body.categories,
+                        gameActive: true,                   //set game active to false in post
+                        gameFull: false,
+>>>>>>> refs/remotes/origin/BradyGame4square1
                         gameName: req.body.gameName,
                         category: categoriesToAdd
                     });
@@ -188,18 +194,22 @@ router.post('/Join', function (req, res, next) {
 
     Game.findOne(
         {
-            gameName: req.body.code
-        }, function (err, game) {
+            gameName: req.body.code,
+            gameActive: true
+        }, function (err, gameJoin) {
             if (err) next(err);
 
-            if (game) {
-                console.log("gameName was found in database: " + game.gameName);
+            if (gameJoin) {
+                console.log("gameName was found in database: " + gameJoin.gameName);
 
-                req.session['success'] = 'User Joined Game';
-                req.session['gameName'] = game.gameName;
-                res.redirect('Game');
-
-
+                // check if game is full logic here
+                if (gameJoin.gameFull) {
+                    myInvalidCode = "Game room is full, please try again"
+                    res.redirect('/games/Join', { invalidCode: myInvalidCode });
+                } else {
+                    req.session['success'] = 'User Joined Game';
+                    res.redirect('Game');
+                }
             }
             else {
                 console.log("gameName was not found in database");
@@ -210,11 +220,6 @@ router.post('/Join', function (req, res, next) {
             }
         });
 
-
-
-
-
-
 });
 
 
@@ -223,27 +228,43 @@ router.post('/Join', function (req, res, next) {
 
 /* GET Game page. */
 router.get('/Game', utils.requireLogin, function (req, res, next) {
+    console.log("In Game");
 
     if (req.session['success'] == 'User Created Game') {
         console.log("Yes a user just created a game!");
         req.session['success'] = null;
+<<<<<<< HEAD
 
         console.log("Game name is: " + req.session['gameName']);
+=======
+        console.log("Game name is: " + req.session['gameName'])
+>>>>>>> refs/remotes/origin/BradyGame4square1
 
         Game.findOne(
             {
-                gameName: req.session['gameName']
-            }, function (err, game) {
+                gameName: req.session['gameName'], 
+                gameActive: true
+
+            }, function (err, myGame) {
                 if (err) next(err);
 
-                if (game) {
+                if (myGame) {
                     req.session['gameName'] = null;
+                    var winners = [];
+                    var gameFull = false;
                     Question.find()
-                        .then(function (words) {
+                        .then(function (word) {
                             res.render('Game.pug', {
+<<<<<<< HEAD
                                 title: 'Question Creator', userName: req.user.username,
                                 wordsList: words, categories: game.category, rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName, myWinner: winner
                             }); //game.category
+=======
+                                title: 'Question Creator', 
+                                userName: req.user.username, wordsList: word, categories: myGame.category, rounds: myGame.rounds, numberOfPlayers: myGame.playerNumber, gameName: myGame.gameName, 
+                                winnerList: winners, gameFull: myGame.gameFull
+                            });
+>>>>>>> refs/remotes/origin/BradyGame4square1
                         });
                 }
                 else {
@@ -253,6 +274,7 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
     }
     else {
         console.log("No a user did not just create a game.");
+
         /*
         Question.find()
         .then(function(words) {
@@ -268,18 +290,27 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
 
             Game.findOne(
                 {
-                    gameName: req.session['gameName']
-                }, function (err, game) {
+                    gameName: req.session['gameName'],
+                    gameActive: true
+                }, function (err, myGame) {
                     if (err) next(err);
 
-                    if (game) {
+                    if (myGame) {
                         req.session['gameName'] = null;
+                        var winners = [];
                         Question.find()
                             .then(function (words) {
                                 res.render('Game.pug', {
+<<<<<<< HEAD
                                     title: 'Question Creator', userName: req.user.username,
                                     wordsList: words, categories: game.category, rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName, myWinner: winner
                                 });//game.category
+=======
+                                    title: 'Question Creator',
+                                    userName: req.user.username, wordsList: word, categories: myGame.category, rounds: myGame.rounds, numberOfPlayers: myGame.playerNumber, gameName: myGame.gameName, 
+                                    winnerList: winners, gameFull: myGame.gameFull
+                                });
+>>>>>>> refs/remotes/origin/BradyGame4square1
                             });
                     }
                     else {
@@ -306,33 +337,52 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
 router.post('/Game', function (req, res, next) {
     console.log("I'm in the Game post");
     console.log(req.body.myChoice);
-    console.log(myWinner);
 
-    // myWinner should be returned as a list object of winners
+    // winnerList should be returned as a list strings of winners names
     // For loop through winnersList where winner.username is set to user name in find one
-    
+    for (winner in winnerList) {
+        schema.User.findOne({ username: winner }, 'fname lname email username password gameswon data', function (err, updateUser) {
+            // cant find user redirect to error page with error msg displayed
+            if (!updateUser) {
+                res.render('error.pug', { error: "Could not find user: " + winner });
+            }
+            else {
+                var won = (updateUser.gameswon + 1);
+                console.log(winner + " New score: " + won);
+                // if user found compare update the users gameswon
+                updateUser.gameswon = won;
+                updateUser.save(function (err) {
+                    if (err) {
+                        res.render('error.pug', { error: err });
+                    }
+                });
+            }
+        });
+    }
 
-    schema.User.findOne({ username: myWinner }, 'fname lname email username password gameswon data', function (err, updateUser) {
-        // cant find user redirect to error page with error msg displayed
-        if (!updateUser) {
-            res.render('error.pug', { error: "Could not find user: " + myWinner });
+    // Update game data information when posting
+    console.log("In Game .Post - Game Name: "+myGame.gameName);
+    console.log("Another way to get gameName check: " + req.body.gameName);
+    Game.findOne({ gameName: myGame.gameName}, function (err, updateGame) {
+        // cant find game redirect to error page with error msg displayed
+        if (!updateGame) {
+            res.render('error.pug', { error: err });
         }
         else {
-            won = (updateUser.gameswon + 1);
-            console.log("New score: " + won);
+            console.log("Game to update found");
             // if user found compare update the users gameswon
-            updateUser.gameswon = won;
-            updateUser.save(function (err) {
-                if (err)
-                {
-                    res.render('error.pug', { error: error });
-                }
-                else{
-                    res.redirect('/games');
-                }
-            });
+            //updateGame.gameActive = false;
+            //updateGame.winner = "whatever";                          // <---------------needs to be changed / updated
+            //updateGame.gameEnd = "som etime"; 
+            // updateGame.save(function (err) {
+            //     if (err) {
+            //         res.render('error.pug', { error: err });
+            //     }
+            // });
         }
     });
+
+    res.redirect('/games');
 
 
 

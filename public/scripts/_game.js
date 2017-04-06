@@ -317,9 +317,24 @@ window.onload = () => {
             user: msg.username
         });
 
+<<<<<<< HEAD
         //$("#gamediv").show();
         $("#loadingScreen").hide();
         $("#questionWait").show();
+=======
+<<<<<<< HEAD
+
+        
+        $("#loadingScreen").hide();
+        $("#gamediv").show();
+        //document.getElementById("loadingScreen").style.display="none";
+        //document.getElementById("gamediv").style.display="unset";
+        //document.getElementById("div.mainScreen").style.display="none";
+=======
+        $("#loadingScreen").hide();
+        $("#questionWait").show();
+>>>>>>> origin/BradyGame4square1
+>>>>>>> refs/remotes/origin/BradyGame4square1
 
         host.draw();
 
