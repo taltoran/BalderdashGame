@@ -213,6 +213,9 @@ window.onload = () => {
 
             //alert($(this).val());
             currentChosenCategoryNQuestion =$(this).text();
+            socket.emit('showChosenCategoryNQuestion', { 
+                curChosenCategoryNQuestion: $(this).text()
+            });
 
             socket.emit('sendQuestion', { 
                 username: user,
@@ -278,6 +281,17 @@ window.onload = () => {
             
         }
     }
+
+
+    socket.on('showChosenCategoryNQuestionToEveryone', (msg)=>{
+        currentChosenCategoryNQuestion = msg.text;
+        
+        //adds to gamediv2
+        chosenQuestion.innerHTML = currentChosenCategoryNQuestion;//msg.text;
+
+        //adds to gamediv3
+        chosenQuestionTwo.innerHTML = currentChosenCategoryNQuestion;//msg.text;
+    });
 
 //in testing right now. this cuts off people who take more than 15 seconds to answer question.
 //and shows the answers that have been entered.
@@ -366,11 +380,6 @@ window.onload = () => {
             return;
         }
 
-        //adds to gamediv2
-        chosenQuestion.innerHTML = currentChosenCategoryNQuestion;//msg.text;
-
-        //adds to gamediv3
-        chosenQuestionTwo.innerHTML = currentChosenCategoryNQuestion;//msg.text;
 
         
         $("#gamediv").hide();

@@ -157,6 +157,14 @@ module.exports = (io) => {
             //console.log("your session id is: "+sessionid);     
         });
 
+        socket.on('showChosenCategoryNQuestion', function (msg) { 
+            var room = roomdata.get(socket, "room");
+            io.sockets.in(room).emit('showChosenCategoryNQuestionToEveryone', {
+                text: msg.curChosenCategoryNQuestion
+            });
+        });
+
+
         socket.on('showHostFirstScreen', function (msg) {            
            
             var userIdDict = roomdata.get(socket, "userIdDict");
