@@ -578,7 +578,7 @@ module.exports = (io) => {
                 // if game found update the games columns
                 // ex updateGame.whatever = stuff
                 updateGame.gameActive = false;
-                updateGame.winner = winners;
+                updateGame.winners = winners;
                 // add game endEnd date 
                 // add update to whatever is going in the players array
                 updateGame.save(function (err) {
