@@ -186,8 +186,13 @@ module.exports = (io) => {
             var room = roomdata.get(socket, "room");
             // getting list of winners from roomdata "winnerList"
             var gameWinners = roomdata.get(socket, "winnerList");
+            // getting the game name
+            var gameName = roomdata.get(socket, "room");
             // calling function to update users gameswon to + 1
             updateUserInDB(gameWinners);
+            // calling function to update Game fields in DB    NOTE: make sure to add aditonal params to the function at the bottom
+            // updateGameInDB(gamename, additional params)       <----------------- EXAMPLE
+            updateGameInDB(gameName, gameWinners);   // add stuff for the players array and the gameEnd time
             io.sockets.in(room).emit('hideYesNoButtons', {
             });
         });
@@ -529,6 +534,7 @@ module.exports = (io) => {
     //return router;
 
     // function takes in the list of winners including those who tied and iterates through each one incrementing their gameswon
+    // function is called on 191
     function updateUserInDB(myWinners) {
         console.log("------In socket.js  .updateUserInDb------");
         console.log("The game winners: " + myWinners);
@@ -558,7 +564,9 @@ module.exports = (io) => {
         }
     }
 
-    function updateGameInDB(gamename) {
+    // Function will set gameActive to false, update the games winners[], update the games EndTime, and update the games playerData[]
+    // Function is called on line 195
+    function updateGameInDB(gamename, winners) {
         console.log("-----In socket.js .updateGameInDB-----");
         console.log("gamename param: " + gamename);
         Game.findOne({ gameName: gamename}, function (err, updateGame) {
@@ -569,6 +577,10 @@ module.exports = (io) => {
                 console.log("Found Game!!!!!!");
                 // if game found update the games columns
                 // ex updateGame.whatever = stuff
+                updateGame.gameActive = false;
+                updateGame.winner = winners;
+                // add game endEnd date 
+                // add update to whatever is going in the players array
                 updateGame.save(function (err) {
                     if (err) {
                         console.log(err);
@@ -578,6 +590,7 @@ module.exports = (io) => {
         });
     }
 
+    // function is called on line 122
     function setGameFullInDB(gamename) {
         console.log("-----In socket.js .setGameFullInDB-----");
         console.log("gamename param: " + gamename);
