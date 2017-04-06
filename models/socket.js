@@ -116,6 +116,11 @@ module.exports = (io) => {
             //start game once all players have entered game
             if (userCount == myNumberOfPlayers) {
                 console.log("I'm about to set host because all players are in game");
+                
+                // setting games gameFull column to true in DB 
+                var gameName = roomdata.get(socket, "room");
+                setGameFullInDB(gameName);
+
                 /*
                 io.emit('setHost', { 
                     username: myHostName,
@@ -554,8 +559,10 @@ module.exports = (io) => {
     }
 
     function updateGameInDB(gamename) {
+        console.log("-----In socket.js .updateGameInDB-----");
+        console.log("gamename param: " + gamename);
         Game.findOne({ gameName: gamename}, function (err, updateGame) {
-            if (!updateUser) {
+            if (!updateGame) {
                 console.log("Couldnt Find Game...");
             }
             else {
@@ -571,9 +578,11 @@ module.exports = (io) => {
         });
     }
 
-    function setGameFullInDB(myWinners) {
+    function setGameFullInDB(gamename) {
+        console.log("-----In socket.js .setGameFullInDB-----");
+        console.log("gamename param: " + gamename);
         Game.findOne({ gameName: gamename }, function (err, updateGame) {
-            if (!updateUser) {
+            if (!updateGame) {
                 console.log("Couldnt Find Game...");
             }
             else {
@@ -584,6 +593,7 @@ module.exports = (io) => {
                     if (err) {
                         console.log(err);
                     }
+                    console.log("update successful, "+ updateGame.gameName+".gameFull = true")
                 });
             }
         });
