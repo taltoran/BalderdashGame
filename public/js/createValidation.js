@@ -37,6 +37,23 @@ window.onload=function(){
         return roundsValid;
     }
 
+    document.getElementById("allCategories").addEventListener("click", function() {
+
+        if (form.allCategories.checked == true) {
+          form.ludicrousLaws.checked = true;
+          form.definitions.checked = true;
+          form.famousPeople.checked = true;
+          form.acronyms.checked = true;
+          form.movieHeadlines.checked = true;
+        } else {
+          form.ludicrousLaws.checked = false;
+          form.definitions.checked = false;
+          form.famousPeople.checked = false;
+          form.acronyms.checked = false;
+          form.movieHeadlines.checked = false;
+        }
+    });
+
     function categoryValidation()
     {
         var categoriesValid = true;
