@@ -135,12 +135,8 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
                     var game = new Game({
                         playerNumber: req.body.players,
                         rounds: req.body.rounds,
-<<<<<<< HEAD
-=======
-                        category: req.body.categories,
                         gameActive: true,                   //set game active to false in post
                         gameFull: false,
->>>>>>> refs/remotes/origin/BradyGame4square1
                         gameName: req.body.gameName,
                         category: categoriesToAdd
                     });
@@ -233,12 +229,8 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
     if (req.session['success'] == 'User Created Game') {
         console.log("Yes a user just created a game!");
         req.session['success'] = null;
-<<<<<<< HEAD
 
         console.log("Game name is: " + req.session['gameName']);
-=======
-        console.log("Game name is: " + req.session['gameName'])
->>>>>>> refs/remotes/origin/BradyGame4square1
 
         Game.findOne(
             {
@@ -255,16 +247,10 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
                     Question.find()
                         .then(function (word) {
                             res.render('Game.pug', {
-<<<<<<< HEAD
-                                title: 'Question Creator', userName: req.user.username,
-                                wordsList: words, categories: game.category, rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName, myWinner: winner
-                            }); //game.category
-=======
                                 title: 'Question Creator', 
                                 userName: req.user.username, wordsList: word, categories: myGame.category, rounds: myGame.rounds, numberOfPlayers: myGame.playerNumber, gameName: myGame.gameName, 
                                 winnerList: winners, gameFull: myGame.gameFull
                             });
->>>>>>> refs/remotes/origin/BradyGame4square1
                         });
                 }
                 else {
@@ -301,16 +287,10 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
                         Question.find()
                             .then(function (words) {
                                 res.render('Game.pug', {
-<<<<<<< HEAD
-                                    title: 'Question Creator', userName: req.user.username,
-                                    wordsList: words, categories: game.category, rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName, myWinner: winner
-                                });//game.category
-=======
                                     title: 'Question Creator',
                                     userName: req.user.username, wordsList: word, categories: myGame.category, rounds: myGame.rounds, numberOfPlayers: myGame.playerNumber, gameName: myGame.gameName, 
                                     winnerList: winners, gameFull: myGame.gameFull
                                 });
->>>>>>> refs/remotes/origin/BradyGame4square1
                             });
                     }
                     else {
