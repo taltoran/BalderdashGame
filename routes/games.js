@@ -223,7 +223,7 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
                     // checks that the game has not been set to full for player to join
                     if(game.gameFull){
                         console.log("The Game Is Full");
-                        myInvalidCode = "Game room code is currently full, please try again"
+                        myInvalidCode = "Game room, \""+game.gameName+"\" is currently full, please try again"
                         res.render('Join.pug', { invalidCode: myInvalidCode });
                     }else{
                         Question.find()
@@ -267,7 +267,7 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
                         // checks that the game has not been set to full for player to join
                         if (game.gameFull) {
                             console.log("The Game Is Full");
-                            myInvalidCode = "Game room code is currently full, please try again"
+                            myInvalidCode = "Game room, \""+game.gameName+"\" is currently full, please try again"
                             res.render('Join.pug', { invalidCode: myInvalidCode });
                         } else {
                             Question.find()
