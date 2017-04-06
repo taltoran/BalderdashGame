@@ -28,22 +28,22 @@ block content
           label Choose Category:
           |  
           p.confirm
-          input#ludicrousLaws(type="checkbox", name = "ludicrousLaws", value = 'ludicrousLaws', checked = (true===false ? "checked" : undefined))
+          input#ludicrousLaws(type="checkbox", name = "ludicrousLaws", checked = (true==false ? value = true : value = false))
           checkbox.ludicrousLaws Ludicrous Laws
           br
-          input#definitions(type="checkbox", name = "definitions", value = 'definitions', checked = (true===false ? "checked" : undefined))
+          input#definitions(type="checkbox", name = "definitions", checked = (true==false ? value = true : value = false))
           checkbox.definitions Definitions
           br
-          input#famousPeople(type="checkbox", name = "famousPeople", value = 'famousPeople', checked = (true===false ? "checked" : undefined))
+          input#famousPeople(type="checkbox", name = "famousPeople", value = false, checked = (true==false ? value = true : value = false))
           checkbox.famousPeople Famous People
           br
-          input#acronyms(type="checkbox", name = "acronyms", value = 'acronyms', checked = (true===false ? "checked" : undefined))
+          input#acronyms(type="checkbox", name = "acronyms", value = false, checked = (true==false ? value = true : value = false))
           checkbox.acronyms Acronyms
           br
-          input#movieHeadlines(type="checkbox", name = "movieHeadlines", value = 'movieHeadlines', checked = (true===false ? "checked" : undefined))
+          input#movieHeadlines(type="checkbox", name = "movieHeadlines", value = false, checked = (true==false ? value = true : value = false))
           checkbox.movieHeadlines Movie Headlines
           br
-          input#allCategories(type="checkbox", name = "allCategories", value = 'allCategories', checked = (true===false ? "checked" : undefined))
+          input#allCategories(type="checkbox", name = "allCategories", value = false)
           checkbox.allCategories All
           .content(style='color:#ff5757')
             span.invalidCategories #{invalidCategories}

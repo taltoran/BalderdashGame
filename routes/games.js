@@ -59,6 +59,7 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
     myPlayers = '';
     myRounds = '';
     myGameName = '';
+    var  categoriesToAdd = [];
 
     var isValid = true;
 
@@ -110,25 +111,23 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
                 }
                 else {
 
-                        var  categoriesToAdd = [];
-
-                        if (req.body.ludicrousLaws == true) {
+                        if (req.body.ludicrousLaws == "on") {
                             categoriesToAdd.push("ludicrousLaws");
                         }
 
-                        if (req.body.definitions == true) {
+                        if (req.body.definitions == "on") {
                             categoriesToAdd.push("definitions");
                         }
 
-                        if (req.body.famousPeople == true) {
+                        if (req.body.famousPeople == "on") {
                             categoriesToAdd.push("famousPeople");
                         }
 
-                        if (req.body.acronyms == true) {
+                        if (req.body.acronyms == "on") {
                             categoriesToAdd.push("acronyms");
                         }
 
-                        if (req.body.movieHeadlines == true) {
+                        if (req.body.movieHeadlines == "on") {
                             categoriesToAdd.push("movieHeadlines");
                         }
 
@@ -138,7 +137,7 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
                         rounds: req.body.rounds,
                         gameName: req.body.gameName,
                         category: categoriesToAdd
-
+ //////////////////////////////////////////////sdfasdfsd
                     });
 
                     console.log("my categories on save: " + req.body.categories);
