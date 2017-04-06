@@ -6,8 +6,6 @@ var Question = require('../models/Question.js');    //questions model
 var utils = require('./utils');                     // has functions for creating user session, also require login function
 var router = express.Router();
 
-var winner = "";
-
 /* GET newgame page. */
 router.get('/', utils.requireLogin, function (req, res, next) {
     //console.log("i'm here in .get newgame");
@@ -221,7 +219,7 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
                         .then(function (words) {
                             res.render('Game.pug', {
                                 title: 'Question Creator', userName: req.user.username,
-                                wordsList: words, categories: ["words","people"], rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName, myWinner: winner
+                                wordsList: words, categories: ["words","people"], rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName
                             }); //game.category
                         });
                 }
@@ -257,7 +255,7 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
                             .then(function (words) {
                                 res.render('Game.pug', {
                                     title: 'Question Creator', userName: req.user.username,
-                                    wordsList: words, categories: ["words","people"], rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName, myWinner: winner
+                                    wordsList: words, categories: ["words","people"], rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName
                                 });//game.category
                             });
                     }
@@ -285,35 +283,35 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
 router.post('/Game', function (req, res, next) {
     console.log("I'm in the Game post");
     console.log(req.body.myChoice);
-    console.log(myWinner);
+    //console.log(myWinner);
 
     // myWinner should be returned as a list object of winners
     // For loop through winnersList where winner.username is set to user name in find one
     
 
-    schema.User.findOne({ username: myWinner }, 'fname lname email username password gameswon data', function (err, updateUser) {
-        // cant find user redirect to error page with error msg displayed
-        if (!updateUser) {
-            res.render('error.pug', { error: "Could not find user: " + myWinner });
-        }
-        else {
-            won = (updateUser.gameswon + 1);
-            console.log("New score: " + won);
-            // if user found compare update the users gameswon
-            updateUser.gameswon = won;
-            updateUser.save(function (err) {
-                if (err)
-                {
-                    res.render('error.pug', { error: error });
-                }
-                else{
-                    res.redirect('/games');
-                }
-            });
-        }
-    });
+    // schema.User.findOne({ username: myWinner }, 'fname lname email username password gameswon data', function (err, updateUser) {
+    //     // cant find user redirect to error page with error msg displayed
+    //     if (!updateUser) {
+    //         res.render('error.pug', { error: "Could not find user: " + myWinner });
+    //     }
+    //     else {
+    //         won = (updateUser.gameswon + 1);
+    //         console.log("New score: " + won);
+    //         // if user found compare update the users gameswon
+    //         updateUser.gameswon = won;
+    //         updateUser.save(function (err) {
+    //             if (err)
+    //             {
+    //                 res.render('error.pug', { error: error });
+    //             }
+    //             else{
+    //                 res.redirect('/games');
+    //             }
+    //         });
+    //     }
+    // });
 
-
+    res.redirect('/games');
 
     /*
         if (req.body.myChoice == 'choseNo')
