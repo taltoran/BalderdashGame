@@ -630,6 +630,7 @@ window.onload = () => {
         console.log("I'm in show scores. heres the innerHTML:");
         //alert(scores.innerHTML);
         scores.innerHTML = msg.text+ "</br><h1>User Answers: </h1>"+scoresHtml;
+        
 
         $('.message_input').val('');
 
@@ -654,6 +655,7 @@ window.onload = () => {
 
         function startOver()
         {
+            scoresHtml ="";
             myTempCount = 0;
             $("#scores").hide();
             //$("#gamediv").show();
@@ -671,7 +673,7 @@ window.onload = () => {
 
         }
 
-        setTimeout(startOver, 5000);
+        setTimeout(startOver, 15000);
     });
 
 
@@ -681,8 +683,11 @@ window.onload = () => {
         console.log("I'm in show final scores. heres the innerHTML:");
         //alert(finalscores.innerHTML);
         $('.message_input').val('');
+        //alert(msg.text);
         finalscores.innerHTML = msg.text+ "</br><h1>User Final Answers: </h1>"+scoresHtml;
+        
 
+        //alert(msg.text);
         finalscores.innerHTML += "</br></br><h1> Would you like to Continue Game for Another Round? </h1>";
 
 
@@ -722,7 +727,7 @@ window.onload = () => {
 //gets called eventually from onclick function above userChoseYes
 //continues the game with a new round
     socket.on('userChoseYesStartAgain', function (msg) {
-        
+        scoresHtml ="";
         
         myHtmlRoundNumber += 1;
 

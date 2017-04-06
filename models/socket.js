@@ -115,6 +115,8 @@ module.exports = (io) => {
             //start game once all players have entered game
             if (userCount == myNumberOfPlayers)
             {
+                var myScoresHtml = "";
+                roomdata.set(socket, "myScoresHtml", myScoresHtml);
                 console.log("I'm about to set host because all players are in game");
                 /*
                 io.emit('setHost', { 
@@ -131,7 +133,7 @@ module.exports = (io) => {
             }
 
             var userPointsDict = {};
-            userPointsDict[msg.username] = 0;
+            //userPointsDict[msg.username] = 0;
             roomdata.set(socket, "userPointsDict", userPointsDict);
 
             var userAnswersDict = {};
@@ -215,8 +217,8 @@ module.exports = (io) => {
             
             console.log("emptyUserAnswers " + userAnswersDict[msg.text] + " ,answer username: " + msg.username);
             
-            if (answersDisplayed == 0)
-            {
+            //if (answersDisplayed == 0)
+            //{
                 answersDisplayed += 1;
                 roomdata.set(socket, "answersDisplayed", answersDisplayed);                
 
@@ -237,7 +239,7 @@ module.exports = (io) => {
                 {
                     myScoresHtml = "<h1>Final Points Scored During the Last Round</h1>"+myScoresHtml
                 }
-            }
+            //}
             
                 
             if (myCurrentRoundNumber < myNumberOfRounds)
@@ -250,16 +252,20 @@ module.exports = (io) => {
                 });
                 */                
 
+                var tempMyScoresHtml = myScoresHtml;
+                myScoresHtml ="";
+                //roomdata.set(socket, "myScoresHtml", myScoresHtml);
+
                 io.sockets.in(room).emit('showScores', {
-                    text: myScoresHtml
+                    text: tempMyScoresHtml//myScoresHtml
                 });
             }
             else
             {
                 var tempHtml = "";
                 console.log("answersDisplayed value: " + answersDisplayed);
-                if (answersDisplayed == 1)
-                {
+                //if (answersDisplayed == 1)
+                //{
 
                     answersDisplayed += 1;
                     roomdata.set(socket, "answersDisplayed", answersDisplayed);
@@ -297,15 +303,20 @@ module.exports = (io) => {
                     myScoresHtml = tempHtml + "</br></br>"+myScoresHtml;
 
                     
-                }
+                //}
                 console.log("I'm about to show FINAL scores");
                 /*
                 io.emit('showFinalScores', { 
                     text: myScoresHtml
                 });
                 */
+
+                var tempMyScoresHtml = myScoresHtml;
+                myScoresHtml ="";
+                //roomdata.set(socket, "myScoresHtml", myScoresHtml);
+
                 io.sockets.in(room).emit('showFinalScores', {
-                    text: myScoresHtml
+                    text: tempMyScoresHtml//myScoresHtml
                 });
             }
 
@@ -319,7 +330,8 @@ module.exports = (io) => {
             var myCurrentChosenQuestion = roomdata.get(socket, "myCurrentChosenQuestion");
             var userPointsDict = roomdata.get(socket, "userPointsDict");
             var userAnswersDict = roomdata.get(socket, "userAnswersDict");
-            var myScoresHtml = "";
+            var myScoresHtml = roomdata.get(socket, "myScoresHtml");
+            //var myScoresHtml = "";
             
 
             console.log("myCurrentChosenQuestion: " + myCurrentChosenQuestion);
@@ -333,7 +345,7 @@ module.exports = (io) => {
                 roomdata.set(socket, "userPointsDict", userPointsDict);
 
                 myScoresHtml +="<p>"+msg.username + " picked the Correct answer: " + msg.text+ ", so "+msg.username + " scored 2 points!</p>";//" +userPointsDict[userAnswersDict[msg.text]] +" 
-
+                console.log("<p>"+msg.username + " picked the Correct answer: " + msg.text+ ", so "+msg.username + " scored 2 points!</p>");
                 console.log("user chose correct answer and won 2 points");
             }
             else
@@ -350,8 +362,8 @@ module.exports = (io) => {
 
             }
 
-            myScoresHtml +="<h3>The Correct Answer To "+myCurrentChosenQuestion+" was: </h2>";
-            myScoresHtml += "<p>"+myWordDict[myCurrentChosenQuestion]+"</p>";         
+            //myScoresHtml +="<h3>The Correct Answer To "+myCurrentChosenQuestion+" was: </h2>";
+            //myScoresHtml += "<p>"+myWordDict[myCurrentChosenQuestion]+"</p>";         
 
 
             roomdata.set(socket, "myScoresHtml", myScoresHtml);
@@ -384,6 +396,8 @@ module.exports = (io) => {
             */
 
             var myScoresHtml = "";
+            roomdata.set(socket, "myScoresHtml", myScoresHtml);
+
             //answersDisplayed = 0;
             roomdata.set(socket, "answersDisplayed", 0);
 
@@ -423,6 +437,10 @@ module.exports = (io) => {
                 usersAnswered = 0;
                 roomdata.set(socket, "usersAnswered", usersAnswered);
             }   
+
+            var userPointsDict = roomdata.get(socket, "userPointsDict");
+            userPointsDict[msg.username] = 0;
+            roomdata.set(socket, "userPointsDict", userPointsDict);
 
             var userAnswersDict = roomdata.get(socket, "userAnswersDict");
             userAnswersDict[msg.text] = msg.username;
