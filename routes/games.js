@@ -137,7 +137,6 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
                         rounds: req.body.rounds,
                         gameName: req.body.gameName,
                         category: categoriesToAdd
- //////////////////////////////////////////////sdfasdfsd
                     });
 
                     console.log("my categories on save: " + req.body.categories);
