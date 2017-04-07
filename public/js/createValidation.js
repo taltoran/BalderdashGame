@@ -37,8 +37,38 @@ window.onload=function(){
         return roundsValid;
     }
 
-    document.getElementById("allCategories").addEventListener("click", function() {
+    
+    document.getElementById("ludicrousLaws").addEventListener("click", function() {
+        if (form.ludicrousLaws.checked == false) {
+          form.allCategories.checked = false;
+        } 
+    });
 
+    document.getElementById("definitions").addEventListener("click", function() {
+        if (form.definitions.checked == false) {
+          form.allCategories.checked = false;
+        } 
+    });
+
+    document.getElementById("famousPeople").addEventListener("click", function() {
+        if (form.famousPeople.checked == false) {
+          form.allCategories.checked = false;
+        } 
+    });
+
+    document.getElementById("acronyms").addEventListener("click", function() {
+        if (form.acronyms.checked == false) {
+          form.allCategories.checked = false;
+        } 
+    });
+
+    document.getElementById("movieHeadlines").addEventListener("click", function() {
+        if (form.movieHeadlines.checked == false) {
+          form.allCategories.checked = false;
+        } 
+    });
+
+    document.getElementById("allCategories").addEventListener("click", function() {
         if (form.allCategories.checked == true) {
           form.ludicrousLaws.checked = true;
           form.definitions.checked = true;
