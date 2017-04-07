@@ -38,6 +38,93 @@ window.onload=function(){
     }
 
 
+    document.getElementById("words").addEventListener("click", function() {
+        if (form.words.checked == false) {
+          form.allCategories.checked = false;
+        } 
+    });
+
+    document.getElementById("people").addEventListener("click", function() {
+        if (form.people.checked == false) {
+          form.allCategories.checked = false;
+        } 
+    });
+
+    document.getElementById("initials").addEventListener("click", function() {
+        if (form.initials.checked == false) {
+          form.allCategories.checked = false;
+        } 
+    });
+
+    document.getElementById("movies").addEventListener("click", function() {
+        if (form.movies.checked == false) {
+          form.allCategories.checked = false;
+        } 
+    });
+
+    document.getElementById("laws").addEventListener("click", function() {
+        if (form.laws.checked == false) {
+          form.allCategories.checked = false;
+        } 
+    });
+
+    document.getElementById("allCategories").addEventListener("click", function() {
+        if (form.allCategories.checked == true) {
+          form.words.checked = true;
+          form.people.checked = true;
+          form.initials.checked = true;
+          form.movies.checked = true;
+          form.laws.checked = true;
+        } else {
+          form.words.checked = false;
+          form.people.checked = false;
+          form.initials.checked = false;
+          form.movies.checked = false;
+          form.laws.checked = false;
+        }
+    });
+
+    function categoryValidation()
+    {
+        var categoriesValid = true;
+        document.querySelector('.content .invalidCategories').innerHTML = '';
+
+        var words = form.words.checked;
+        var people = form.people.checked;
+        var initials = form.initials.checked;
+        var movies = form.movies.checked;
+        var laws = form.laws.checked;
+
+        /*if (ludicrousLaws == true) {
+            category: req.body.ludicrousLaws;
+        } 
+
+        if (definitions == true) {
+            category: req.body.definitions;
+        } 
+        
+        if (famousPeople == true) {
+            category: req.body.famousPeople;
+        } 
+        
+        if (acronyms == true) {
+            category: req.body.acronyms;
+        } 
+        
+        if (movieHeadlines == true) {
+            category: req.body.movieHeadlines;
+        } */
+
+        if(words == false && people == false && initials == false && movies == false && laws == false) {
+            document.querySelector('.content .invalidCategories').innerHTML = 'Must select at least 1 category.';
+            categoriesValid = false;
+        }
+
+        return categoriesValid;
+    }
+
+
+
     function gameNameValidation() 
     {
        // console.log("I'm in gameNamevalidation");
@@ -72,6 +159,7 @@ window.onload=function(){
         isValid = playersValidation();
         isValid = roundsValidation() && isValid;
         isValid = gameNameValidation() && isValid;
+        isValid = categoryValidation() && isValid;
 
 
         if (!isValid)

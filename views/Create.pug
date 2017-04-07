@@ -27,13 +27,26 @@ block content
           |  
           label Choose Category:
           |  
-          select(name='categories')
-            option(value='words') Words
-            option(value='people') People
-            option(value='initials') Initials
-            option(value='movies') Movies
-            option(value='laws') Laws
-            option(value='allCategories') All Categories
+          p.confirm
+          input#words(type="checkbox", name = "words", checked = (true==false ? value = true : value = false))
+          checkbox.words Weird Words
+          br
+          input#people(type="checkbox", name = "people", checked = (true==false ? value = true : value = false))
+          checkbox.people Peculiar People
+          br
+          input#initials(type="checkbox", name = "initials", checked = (true==false ? value = true : value = false))
+          checkbox.initials Incredible Initials
+          br
+          input#movies(type="checkbox", name = "movies", checked = (true==false ? value = true : value = false))
+          checkbox.movies Marvelous Movies
+          br
+          input#laws(type="checkbox", name = "laws", checked = (true==false ? value = true : value = false))
+          checkbox.laws Laughable Laws
+          br
+          input#allCategories(type="checkbox", name = "allCategories")
+          checkbox.allCategories All
+          .content(style='color:#ff5757')
+            span.invalidCategories #{invalidCategories}
           p
           |  
           label Choose Game Name (Optional):

@@ -121,11 +121,7 @@ module.exports = (io) => {
 
 
                 console.log("shownFirstScreen 1:" + shownFirstScreen);
-                for (var key in usersShownFirstScreen) {
-                    var value = usersShownFirstScreen[key];
-                    // Use `key` and `value`
-                    console.log("usersShownFirstScreen 1:" + key + value);
-                }
+                
                 
             }
             else
@@ -145,12 +141,7 @@ module.exports = (io) => {
             roomdata.set(socket, "usersShownFirstScreen", usersShownFirstScreen);
 
 
-            console.log("shownFirstScreen 2:" + shownFirstScreen);
-            for (var key in usersShownFirstScreen) {
-                var value = usersShownFirstScreen[key];
-                // Use `key` and `value`
-                console.log("usersShownFirstScreen 2:" + key + value);
-            }
+            
 
 
             
@@ -163,16 +154,6 @@ module.exports = (io) => {
             {
                 userCountTimesTwo = userCount;
                 roomdata.set(socket, "userCountTimesTwo", userCountTimesTwo);
-
-                console.log("userCountTimesTwo when first set: " + userCount);
-                //var myHostName = roomdata.get(socket, "myHostName");
-                //usersShownFirstScreen[myHostName]="true";
-
-                for (var key in usersShownFirstScreen) {
-                    var value = usersShownFirstScreen[key];
-                    // Use `key` and `value`
-                    console.log("usersShownFirstScreen 3:" + key + value);
-                }
 
                 var myScoresCorrectAnswerHtml = "";        
                 roomdata.set(socket, "myScoresCorrectAnswerHtml", myScoresCorrectAnswerHtml);
@@ -258,12 +239,7 @@ module.exports = (io) => {
             
             if (firstScreenCalled == userCountTimesTwo)//1)
             {
-                console.log("shownFirstScreen 4:" + shownFirstScreen);
-                for (var key in usersShownFirstScreen) {
-                    var value = usersShownFirstScreen[key];
-                    // Use `key` and `value`
-                    console.log("usersShownFirstScreen 4:" + key + value);
-                }
+                
                 
 
                 if (shownFirstScreen == userCount)
@@ -278,12 +254,7 @@ module.exports = (io) => {
                     }
                     roomdata.set(socket, "usersShownFirstScreen", usersShownFirstScreen);
                 }
-                console.log("shownFirstScreen 5:" + shownFirstScreen);
-                for (var key in usersShownFirstScreen) {
-                    var value = usersShownFirstScreen[key];
-                    // Use `key` and `value`
-                    console.log("usersShownFirstScreen 5:" + key + value);
-                }
+                
                 shownFirstScreen += 1;
                 roomdata.set(socket, "shownFirstScreen", shownFirstScreen);
 

@@ -58,6 +58,8 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
     myPlayers = '';
     myRounds = '';
     myGameName = '';
+    var  categoriesToAdd = [];
+
 
     var isValid = true;
 
@@ -109,6 +111,38 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
                     res.render('Create.pug', { invalidPlayers: myPlayers, invalidRounds: myRounds, invalidGameName: myGameName });
                 }
                 else {
+
+                    
+if (req.body.words == "on") {
+                            categoriesToAdd.push("words");
+                        }
+
+                        if (req.body.people == "on") {
+                            categoriesToAdd.push("people");
+                        }
+
+                        if (req.body.initials == "on") {
+                            categoriesToAdd.push("initials");
+                        }
+
+                        if (req.body.laws == "on") {
+                            categoriesToAdd.push("laws");
+                        }
+
+                        if (req.body.movieHeadlines == "on") {
+                            categoriesToAdd.push("movieHeadlines");
+                        }
+
+                    //console.log("isValid3: " +isValid);
+                    var game = new Game({
+                        playerNumber: req.body.players,
+                        rounds: req.body.rounds,
+                        gameName: req.body.gameName,
+                        category: categoriesToAdd,
+                        gameActive: true,
+                        gameFull: false
+                    });
+/*
                     //console.log("isValid3: " +isValid);
                     var game = new Game({
                         playerNumber: req.body.players,
@@ -118,6 +152,7 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
                         gameActive: true,
                         gameFull: false
                     });
+                    */
 
                     console.log("my categories on save: " + req.body.categories);
 
@@ -231,8 +266,8 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
                             .then(function (words) {
                                 res.render('Game.pug', {
                                     title: 'Question Creator', userName: req.user.username,
-                                    wordsList: words, categories: ["words", "people"], rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName
-                                }); //game.category
+                                    wordsList: words, categories:game.category , rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName
+                                }); //["words", "people"]
                             });
                     }
                 }
@@ -276,8 +311,8 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
                                 .then(function (words) {
                                     res.render('Game.pug', {
                                         title: 'Question Creator', userName: req.user.username,
-                                        wordsList: words, categories: ["words", "people"], rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName
-                                    }); //game.category
+                                        wordsList: words, categories: game.category, rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName
+                                    }); //["words", "people"]
                                 });
                         }
                     }    
