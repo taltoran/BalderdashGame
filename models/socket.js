@@ -438,6 +438,9 @@ module.exports = (io) => {
                     // adding winner list to roomdata
                     roomdata.set(socket, "winnerList", winnerList);
 
+                    // update players data in db from end of game screen
+                    updateGamePlayerDataInDB(roomdata.get(socket, "room"), myArray);
+
                     console.log("__________OUt of winner list for loop_______");
                     console.log("My winners list: " + winnerList)
 
@@ -693,6 +696,18 @@ module.exports = (io) => {
             var myCurrentRoundNumber = 0;
             roomdata.set(socket, "myCurrentRoundNumber", myCurrentRoundNumber);
             console.log('user disconnected ' + userCount + ' user(s)');
+
+            if(userCount == 0)
+            {
+                var gameWinners = roomdata.get(socket, "winnerList");
+                // getting the game name
+                var gameName = roomdata.get(socket, "room");
+                // calling function to update users gameswon to + 1
+                updateUserInDB(gameWinners);
+                // calling function to update Game fields in DB    NOTE: make sure to add aditonal params to the function at the bottom
+                // updateGameInDB(gamename, additional params)       <----------------- EXAMPLE
+                updateGameInDB(gameName, gameWinners);   // add stuff for the players array and the gameEnd time
+            }
         });
     });
 
@@ -742,11 +757,13 @@ module.exports = (io) => {
             }
             else {
                 console.log("Found Game!!!!!!");
+
                 // if game found update the games columns
                 // ex updateGame.whatever = stuff
-                updateGame.gameActive = true;
-                updateGame.gameFull = false;
+                updateGame.gameActive = false;
+                //updateGame.gameFull = false;
                 updateGame.winners = winners;
+                updateGame.gameEnd = Date(Date.now);
                 // add game endEnd date 
                 // add update to whatever is going in the players array
                 updateGame.save(function (err) {
@@ -757,6 +774,30 @@ module.exports = (io) => {
                         console.log("Game: " + updateGame.gameName + "    gameActive: " + updateGame.gameActive);
                         console.log("Game: " + updateGame.gameName + "    gameFull: " + updateGame.gameFull);
                         console.log("Game: " + updateGame.gameName + "    winners: " + updateGame.winners);
+                    }
+                });
+            }
+        });
+    }
+
+    function updateGamePlayerDataInDB(gamename, playerData) {
+        console.log("-----In socket.js .updateGamePlayerDataInDB-----");
+        Game.findOne({ gameName: gamename}, function (err, updateGame) {
+            if (!updateGame) {
+                console.log("Couldnt Find Game...");
+            }
+            else {
+                console.log("Found Game!!!!!!");
+
+                // if game found update the games columns
+                // ex updateGame.whatever = stuff
+                updateGame.players = playerData;
+                updateGame.save(function (err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else{
+                        console.log("Game: " + updateGame.gameName + "    players: " + updateGame.players);
                     }
                 });
             }

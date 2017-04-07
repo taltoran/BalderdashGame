@@ -9,12 +9,8 @@ module.exports = mongoose.model('Game', new Schema({
   gameName: String,
   winners: [String],
   questions: Number,
-  gameEnd: Date,
+  gameEnd: {type: Date, default: Date.now},
   gameActive: {type: Boolean, default: false},
   gameFull: {type: Boolean, default: false},
-  players:  [{ 
-    content: { type: String },
-    score: { type: String },
-    date: { type: Date, default: Date.now }
-  }]
+  players:  [String]
 }));
