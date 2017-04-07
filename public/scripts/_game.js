@@ -15,9 +15,12 @@ window.onload = () => {
     //used to get input answer
     var inputAnswer = document.getElementById("inputAnswer");
     var answers = document.getElementById("answers");
+    var answerSent = new Boolean(false);
 
     //***used to see if all users have chosen an answer
     var usersChosenAnswer = 0;
+    var answerPicked = new Boolean(false);
+    var answerMessagesButton = document.getElementsByClassName("answerText");
 
     //used to display scores at end of each round
     var scores = document.getElementById("scores");
@@ -292,7 +295,7 @@ window.onload = () => {
         //adds to gamediv3
         chosenQuestionTwo.innerHTML = currentChosenCategoryNQuestion;//msg.text;
     });
-
+/*
 //in testing right now. this cuts off people who take more than 15 seconds to answer question.
 //and shows the answers that have been entered.
     socket.on('showAnswersTimeout', (msg)=>{
@@ -307,7 +310,32 @@ window.onload = () => {
         socket.emit('showAnswers', {
         });
     }
+    */
 
+// Timeout Emits
+    // Randomly clicks a question button after 15 seconds
+    socket.on('timeoutHostQuestion', (msg) => {
+
+        let randomNum = Math.floor(Math.random() * 4);
+        //alert("numQuestions: " + msg.numQuestions + "random: " + randomNum);
+        $(sendButton[randomNum]).click();
+    });   
+    // Sends blank answer on timeout
+    socket.on('timeoutSendQuestion', (msg) => {
+
+        if (answerSent == false) {
+            //alert("timeout answerSent " + answerSent);
+            $('.send_message').click();
+        }            
+    });
+    // Randomly clicks a response
+    socket.on('timeoutSend', (msg) => {
+
+        if (answerPicked == false) {
+            //alert("timeoutSend answerSent " + answerPicked);
+            answerMessagesButton[0].click("timedOut");            
+        }        
+    });  
 
 //once everyone has joined the game the host name is saved.
 //this will call to show the host the first screen, 
@@ -340,6 +368,7 @@ window.onload = () => {
 
         //this is where it calls to show host first screen
         socket.emit('showHostFirstScreen', {
+            username: msg.username
         });
         return $hosts.animate({ scrollTop: $hosts.prop('scrollHeight') }, 300);
     });
@@ -403,6 +432,10 @@ window.onload = () => {
         console.log(msg.username);
         console.log(msg.text);
 
+        // reset timeout variable
+        answerSent = false;
+        //alert("answerMessage answerSent " + answerSent);
+
         var $answerMessages, answerMessage;
         if (msg.text.trim() === '') {
             return;
@@ -447,7 +480,7 @@ window.onload = () => {
                     ul.appendChild(ul.children[Math.random() * i | 0]);
                 }
 
-                var answerMessagesButton = document.getElementsByClassName("answerText");
+                //var answerMessagesButton = document.getElementsByClassName("answerText");
 
 
                 if (firstTimeThroughAnswer == 0)
@@ -477,7 +510,7 @@ window.onload = () => {
                 
 
                 for (var i = 0; i < answerMessagesButton.length; i++) {
-                    answerMessagesButton[i].onclick = function() {
+                    answerMessagesButton[i].onclick = function(timedOut) {
                         //alert(this.innerHTML);//textContent);//innerHTML);//textContent);//Content);
                         $temp = $($('.answerTemplate').clone().html());
                         //alert(this.innerHTML);
@@ -485,11 +518,16 @@ window.onload = () => {
                         $("#answerChosen").show();
                         $("div.gamediv3").hide();
                         firstTimeThroughAnswer = 0;
-                
+                        
+                        answerPicked = true;                        
+                        var buttonText = this.innerHTML;
+                        if (timedOut) {
+                            buttonText = "blank response";
+                        }
                         
                         socket.emit('addToChosenAnswer', { 
-                        text: this.innerHTML,
-                        username: user
+                            text: buttonText,
+                            username: user
                         });
                         
 
@@ -628,6 +666,9 @@ window.onload = () => {
     var myTempCount = 0;
     socket.on('showScores', function (msg) {
         console.log("I'm in show scores. heres the innerHTML:");
+        // Reset Timeout Variable
+        answerPicked = false;
+
         //alert(scores.innerHTML);
         scores.innerHTML = msg.text+ "</br><h1>User Answers: </h1>"+scoresHtml;
         
@@ -662,7 +703,7 @@ window.onload = () => {
             $("#questionWait").show();
 
             socket.emit('showHostFirstScreen', {
-            
+                username: msg.username
             });
 
             var $answerMessage;
@@ -751,8 +792,12 @@ window.onload = () => {
         //$("#gamediv").show();
         $("#questionWait").show();
 
+        // reset Timeout variables
+        answerSent = false;
+        answerChosen = false;
+
         socket.emit('showHostFirstScreen', {
-        
+            username: msg.username
         });
         
         var $answerMessage;
@@ -805,10 +850,13 @@ window.onload = () => {
         };
         sendMessage = function (text) {
             console.log('send: ' + text);
+            // keeps track if user sent an answer
+            answerSent = true;
+            //alert("sendMessage answerSent " + answerSent);
             socket.emit('send', { 
                 username: user,
                 text: text 
-            });
+            });            
         };
         
         

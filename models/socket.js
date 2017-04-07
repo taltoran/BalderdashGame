@@ -208,7 +208,8 @@ module.exports = (io) => {
         });
 
 
-        socket.on('showChosenCategoryNQuestion', function (msg) { 
+        socket.on('showChosenCategoryNQuestion', function (msg) {
+            //console.log("socket.showChosenCategoryNQuestion"); 
             var room = roomdata.get(socket, "room");
             io.sockets.in(room).emit('showChosenCategoryNQuestionToEveryone', {
                 text: msg.curChosenCategoryNQuestion
@@ -230,12 +231,13 @@ module.exports = (io) => {
             var usersShownFirstScreen = roomdata.get(socket, "usersShownFirstScreen");
             var userCount = roomdata.get(socket, "userCount");
 
-            
+            var room = roomdata.get(socket, "room");
 
             firstScreenCalled+=1;
             roomdata.set(socket, "firstScreenCalled", firstScreenCalled);
             console.log("firstScreenCalled#1:  " +firstScreenCalled);
 
+            var sendToThisPerson = "";
             
             if (firstScreenCalled == userCountTimesTwo)//1)
             {
@@ -259,7 +261,7 @@ module.exports = (io) => {
                 roomdata.set(socket, "shownFirstScreen", shownFirstScreen);
 
 
-                var sendToThisPerson = "";
+                //var sendToThisPerson = "";
                 for (var key in usersShownFirstScreen) {
                     var value = usersShownFirstScreen[key];
                     // Use `key` and `value`
@@ -267,6 +269,7 @@ module.exports = (io) => {
                     if (value =="false")
                     {
                         sendToThisPerson = userIdDict[key];
+                        roomdata.set(socket, "hostEmit", sendToThisPerson);
                         usersShownFirstScreen[key] = "true";
                         roomdata.set(socket, "usersShownFirstScreen", usersShownFirstScreen);
                         break;
@@ -288,11 +291,24 @@ module.exports = (io) => {
                 //io.to(io.clients[userIdDict["host"]]).emit('hostFirstScreen');//send host to first screen
                 io.sockets.connected[sendToThisPerson].emit('hostFirstScreen'); //userIdDict[myHostName]
             }
+
+            // Timeout for Host
+            var gameRound = "hostQuestion";
+            roomdata.set(socket, "gameRound", gameRound);
+            setTimeout(function () {
+                gameRound = roomdata.get(socket, "gameRound");
+                if (gameRound == "hostQuestion") {
+                    var sendToThisPerson = roomdata.get(socket, "hostEmit");
+                    //console.log("socket.numQuestions" + msg.numQuestions + "sent to " + sendToThisPerson);
+                    io.sockets.connected[sendToThisPerson].emit('timeoutHostQuestion');
+                } 
+            }, 10 * 1000);
             
         });
 
         socket.on('userChoseYes', function (msg) {
             //myCurrentRoundNumber=0;
+            //console.log("socket.userChoseYes");
             roomdata.set(socket, "myCurrentRoundNumber", 0);
             var room = roomdata.get(socket, "room");
             io.sockets.in(room).emit('userChoseYesStartAgain', {
@@ -301,6 +317,7 @@ module.exports = (io) => {
 
 
         socket.on('hideYesNo', function (msg) {
+            //console.log("socket.hideYesNo");
             var room = roomdata.get(socket, "room");
             // getting list of winners from roomdata "winnerList"
             var gameWinners = roomdata.get(socket, "winnerList");
@@ -314,16 +331,17 @@ module.exports = (io) => {
             io.sockets.in(room).emit('hideYesNoButtons', {
             });
         });
-
+/*
         socket.on('showAnswers', function (msg) {
+            //console.log("socket.showAnswers");
             var room = roomdata.get(socket, "room");
             io.sockets.in(room).emit('showAnswersTimeout', {
             });
         });
-
+*/
         socket.on('emptyUserAnswers', function (msg) {
             //var userAnswersDict = {};
-
+            //console.log("socket.emptyUserAnswers");
             var room = roomdata.get(socket, "room");
             var answersDisplayed = roomdata.get(socket, "answersDisplayed");
             var myCurrentRoundNumber = roomdata.get(socket, "myCurrentRoundNumber");
@@ -332,9 +350,8 @@ module.exports = (io) => {
             var userAnswersDict = roomdata.get(socket, "userAnswersDict");
             var myScoresHtml = roomdata.get(socket, "myScoresHtml");
             var myScoresCorrectAnswerHtml = roomdata.get(socket, "myScoresCorrectAnswerHtml");
-
             
-            
+            roomdata.set(socket, "gameRound", "emptyUserAnswers");    
 
             if (!answersDisplayed) {
                 answersDisplayed = 0;
@@ -501,6 +518,7 @@ module.exports = (io) => {
 
         socket.on('addToChosenAnswer', function (msg) {
 
+            //console.log("socket.addToChosenAnswer");
             //var myWordDict = {};
             var myWordDict = roomdata.get(socket, "myWordDict");
             var myCurrentChosenQuestion = roomdata.get(socket, "myCurrentChosenQuestion");
@@ -527,6 +545,11 @@ module.exports = (io) => {
                 console.log("<p>"+msg.username + " picked the Correct answer: " + msg.text+ ", so "+msg.username + " scored 2 points!</p>");
 
                 console.log("user chose correct answer and won 2 points");
+            } else if (msg.text == "blank response") {
+                console.log("Blank Response chosen");
+                
+                myScoresHtml += "<p>" + msg.username + " picked the answer: " + msg.text + ", so " + userAnswersDict[msg.text] + " scored 0 point</p>";//" +userPointsDict[userAnswersDict[msg.text]] +" 
+
             }
             else {
                 //give user whose answer it was, a point
@@ -559,6 +582,7 @@ module.exports = (io) => {
         });
 
         socket.on('send', function (msg) {
+            //console.log("socket.send");
             var stamp = new Date().toLocaleTimeString();
             if (stamp.length == 10) {
                 stamp = stamp.substring(0, 4) + ' ' + stamp.substring(8, 10)
@@ -588,6 +612,8 @@ module.exports = (io) => {
 
             var room = roomdata.get(socket, "room");
             var userCount = roomdata.get(socket, "userCount");
+
+            
 
             //Brady Added
             /*
@@ -629,9 +655,23 @@ module.exports = (io) => {
             userAnswersDict[msg.text] = msg.username;
             roomdata.set(socket, "userAnswersDict", userAnswersDict);
 
+
+            // Timeout
+            var gameRound = "send";
+            roomdata.set(socket, "gameRound", gameRound);
+            setTimeout(function () {
+                gameRound = roomdata.get(socket, "gameRound");
+                if (gameRound == "send") {
+                    io.sockets.in(room).emit('timeoutSend');
+                } 
+            }, 15 * 1000);
+
         });
 
         socket.on('sendQuestion', function (msg) {
+            //console.log("socket.sendQuestion");
+            var gameRound = "sendQuestion";
+            roomdata.set(socket, "gameRound", gameRound);
             var myCurrentChosenQuestion = msg.text;
             console.log("socket myCurrentChosenQuestion1: " + myCurrentChosenQuestion);
             roomdata.set(socket, "myCurrentChosenQuestion", myCurrentChosenQuestion);
@@ -641,6 +681,7 @@ module.exports = (io) => {
 
             var myCurrentRoundNumber = roomdata.get(socket, "myCurrentRoundNumber");
             myCurrentRoundNumber++;
+            console.log("myCurrentRoundNumber: " + myCurrentRoundNumber);
             roomdata.set(socket, "myCurrentRoundNumber", myCurrentRoundNumber);
 
             console.log("mycurrent question is: " + msg.text);
@@ -658,10 +699,18 @@ module.exports = (io) => {
                 text: msg.text
             });
 
+            // Timeout
+            setTimeout(function () {
+                gameRound = roomdata.get(socket, "gameRound");
+                if (gameRound == "sendQuestion") {
+                    io.sockets.in(room).emit('timeoutSendQuestion');
+                } 
+            }, 10 * 1000);
+
         });
 
         socket.on('leave', function (msg) {
-            console.log("------In socket.js  socket.on leave------");
+            //console.log("------In socket.js  socket.on leave------");
             var stamp = new Date().toLocaleTimeString();
             if (stamp.length == 10) {
                 stamp = stamp.substring(0, 4) + ' ' + stamp.substring(8, 10)

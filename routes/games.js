@@ -58,6 +58,7 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
     myPlayers = '';
     myRounds = '';
     myGameName = '';
+    myGameCode = '';
     var  categoriesToAdd = [];
 
 
