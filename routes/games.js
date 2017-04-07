@@ -236,8 +236,7 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
 
         Game.findOne(
             {
-                gameName: req.session['gameName'],
-                gameActive: true
+                gameName: req.session['gameName']
             }, function (err, game) {
                 if (err) next(err);
 
@@ -282,8 +281,7 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
 
             Game.findOne(
                 {
-                    gameName: req.session['gameName'],
-                    gameActive: true
+                    gameName: req.session['gameName']
                 }, function (err, game) {
                     if (err) next(err);
 
