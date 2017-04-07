@@ -175,7 +175,7 @@ if (req.body.words == "on") {
 
                     req.session['success'] = 'User Created Game';
                     req.session['gameName'] = game.gameName;
-                    res.redirect('Game');
+                    res.redirect('Play');
                 }
             }
         });
@@ -213,7 +213,7 @@ router.post('/Join', function (req, res, next) {
 
                 req.session['success'] = 'User Joined Game';
                 req.session['gameName'] = game.gameName;
-                res.redirect('Game');
+                res.redirect('Play');
 
 
             }
@@ -238,7 +238,7 @@ router.post('/Join', function (req, res, next) {
 
 
 /* GET Game page. */
-router.get('/Game', utils.requireLogin, function (req, res, next) {
+router.get('/Play', utils.requireLogin, function (req, res, next) {
 
     if (req.session['success'] == 'User Created Game') {
         console.log("Yes a user just created a game!");
@@ -337,12 +337,12 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
 
 
 /* POST Game page. */
-router.post('/Game', function (req, res, next) {
+router.post('/Play', function (req, res, next) {
     console.log("I'm in the Game post");
     console.log(req.body.myChoice);
 
     // Posting for game and user data is happening in the socket.js in models
-    res.redirect('/games');
+    res.redirect('/Game');
 
     /*
         if (req.body.myChoice == 'choseNo')

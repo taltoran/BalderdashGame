@@ -744,7 +744,8 @@ module.exports = (io) => {
                 console.log("Found Game!!!!!!");
                 // if game found update the games columns
                 // ex updateGame.whatever = stuff
-                updateGame.gameActive = false;
+                updateGame.gameActive = true;
+                updateGame.gameFull = false;
                 updateGame.winners = winners;
                 // add game endEnd date 
                 // add update to whatever is going in the players array
@@ -754,6 +755,7 @@ module.exports = (io) => {
                     }
                     else{
                         console.log("Game: " + updateGame.gameName + "    gameActive: " + updateGame.gameActive);
+                        console.log("Game: " + updateGame.gameName + "    gameFull: " + updateGame.gameFull);
                         console.log("Game: " + updateGame.gameName + "    winners: " + updateGame.winners);
                     }
                 });
