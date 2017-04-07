@@ -103,7 +103,7 @@ window.onload = () => {
     var myChosenWords = {};
     var count = 0;
     var categoryCount = 0;
-    for (var i = 0; i<4; i++)
+    for (var i = 0; i<5; i++)
     {
         var randomNum= Math.floor(Math.random() * (myWordsList.length))
         var myQuestion = myWordsList[randomNum].question
@@ -224,7 +224,7 @@ window.onload = () => {
                 //setCurrentQuestion: myQuestion    
             });
             
-            for (var i = 0; i<4; i++)
+            for (var i = 0; i<5; i++)
             {  
                 var randomNum= Math.floor(Math.random() * (myWordsList.length))
                 var myQuestion = myWordsList[randomNum].question;
