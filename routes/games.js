@@ -52,12 +52,12 @@ router.get('/Create', utils.requireLogin, function (req, res, next) {
 router.post('/Create', utils.requireLogin, function (req, res, next) {
     console.log("i'm here in .post .Create");
 
-
     //console.log(req.body);
 
     myPlayers = '';
     myRounds = '';
     myGameName = '';
+    var  categoriesToAdd = [];
 
     var isValid = true;
 
@@ -109,12 +109,35 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
                     res.render('Create.pug', { invalidPlayers: myPlayers, invalidRounds: myRounds, invalidGameName: myGameName });
                 }
                 else {
+
+                        if (req.body.ludicrousLaws == "on") {
+                            categoriesToAdd.push("ludicrousLaws");
+                        }
+
+                        if (req.body.definitions == "on") {
+                            categoriesToAdd.push("definitions");
+                        }
+
+                        if (req.body.famousPeople == "on") {
+                            categoriesToAdd.push("famousPeople");
+                        }
+
+                        if (req.body.acronyms == "on") {
+                            categoriesToAdd.push("acronyms");
+                        }
+
+                        if (req.body.movieHeadlines == "on") {
+                            categoriesToAdd.push("movieHeadlines");
+                        }
+
                     //console.log("isValid3: " +isValid);
                     var game = new Game({
                         playerNumber: req.body.players,
                         rounds: req.body.rounds,
-                        category: req.body.categories,
+                        gameActive: true,                   //set game active to false in post
+                        gameFull: false,
                         gameName: req.body.gameName,
+                        category: categoriesToAdd,
                         gameActive: true,
                         gameFull: false
                     });
@@ -170,17 +193,21 @@ router.post('/Join', function (req, res, next) {
         {
             gameName: req.body.code,
             gameActive: true
+        //}, function (err, gameJoin) {
         }, function (err, game) {
             if (err) next(err);
 
-            if (game) {
-                console.log("gameName was found in database: " + game.gameName);
+            if (gameJoin) {
+                console.log("gameName was found in database: " + gameJoin.gameName);
 
-                req.session['success'] = 'User Joined Game';
-                req.session['gameName'] = game.gameName;
-                res.redirect('Game');
-
-
+                // check if game is full logic here
+                if (gameJoin.gameFull) {
+                    myInvalidCode = "Game room is full, please try again"
+                    res.redirect('/games/Join', { invalidCode: myInvalidCode });
+                } else {
+                    req.session['success'] = 'User Joined Game';
+                    res.redirect('Game');
+                }
             }
             else {
                 console.log("gameName was not found in database");
@@ -191,11 +218,6 @@ router.post('/Join', function (req, res, next) {
             }
         });
 
-
-
-
-
-
 });
 
 
@@ -204,6 +226,7 @@ router.post('/Join', function (req, res, next) {
 
 /* GET Game page. */
 router.get('/Game', utils.requireLogin, function (req, res, next) {
+    console.log("In Game");
 
     if (req.session['success'] == 'User Created Game') {
         console.log("Yes a user just created a game!");
@@ -218,7 +241,7 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
             }, function (err, game) {
                 if (err) next(err);
 
-                if (game) {
+                if (myGame) {
                     req.session['gameName'] = null;
 
                     // checks that the game has not been set to full for player to join
@@ -243,6 +266,7 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
     }
     else {
         console.log("No a user did not just create a game.");
+
         /*
         Question.find()
         .then(function(words) {
@@ -263,9 +287,8 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
                 }, function (err, game) {
                     if (err) next(err);
 
-                    if (game) {
+                    if (myGame) {
                         req.session['gameName'] = null;
-
                         // checks that the game has not been set to full for player to join
                         if (game.gameFull) {
                             console.log("The Game Is Full");
@@ -305,6 +328,54 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
 router.post('/Game', function (req, res, next) {
     console.log("I'm in the Game post");
     console.log(req.body.myChoice);
+    
+    //BryanCatNArr merge into socketfix
+    // winnerList should be returned as a list strings of winners names
+    // For loop through winnersList where winner.username is set to user name in find one
+    for (winner in winnerList) {
+        schema.User.findOne({ username: winner }, 'fname lname email username password gameswon data', function (err, updateUser) {
+            // cant find user redirect to error page with error msg displayed
+            if (!updateUser) {
+                res.render('error.pug', { error: "Could not find user: " + winner });
+            }
+            else {
+                var won = (updateUser.gameswon + 1);
+                console.log(winner + " New score: " + won);
+                // if user found compare update the users gameswon
+                updateUser.gameswon = won;
+                updateUser.save(function (err) {
+                    if (err) {
+                        res.render('error.pug', { error: err });
+                    }
+                });
+            }
+        });
+    }
+
+    // Update game data information when posting
+    console.log("In Game .Post - Game Name: "+myGame.gameName);
+    console.log("Another way to get gameName check: " + req.body.gameName);
+    Game.findOne({ gameName: myGame.gameName}, function (err, updateGame) {
+        // cant find game redirect to error page with error msg displayed
+        if (!updateGame) {
+            res.render('error.pug', { error: err });
+        }
+        else {
+            console.log("Game to update found");
+            // if user found compare update the users gameswon
+            //updateGame.gameActive = false;
+            //updateGame.winner = "whatever";                          // <---------------needs to be changed / updated
+            //updateGame.gameEnd = "som etime"; 
+            // updateGame.save(function (err) {
+            //     if (err) {
+            //         res.render('error.pug', { error: err });
+            //     }
+            // });
+        }
+    });
+
+    res.redirect('/games');
+    //end of bryans added code
 
     // Posting for game and user data is happening in the socket.js in models
     res.redirect('/games');

@@ -14,20 +14,6 @@ module.exports.requireLogin = function(req, res, next) {
 
 
 /**
- * make sure a game room isnt full before to let people join game
- */
-module.exports.notFull = function(req, res, next) {
-  var gamefull = false;
-  if (gamefull) {
-    myInvalidCode = "Game room is full, please try again"
-    res.redirect('/games/Join', { invalidCode: myInvalidCode });
-  } else {
-    next();
-  }
-};
-
-
-/**
  * Given a user object:
  *  - Store the user object as a req.user
  *  - Make the user object available to templates as #{user}

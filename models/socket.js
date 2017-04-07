@@ -180,11 +180,12 @@ module.exports = (io) => {
                 roomdata.set(socket, "myScoresHtml", myScoresHtml);
 
                 console.log("I'm about to set host because all players are in game");
+                //console.log("socket game variable: "+game);
+                //req.session[game+"Full"] = false;
                 
                 // setting games gameFull column to true in DB 
                 var gameName = roomdata.get(socket, "room");
                 setGameFullInDB(gameName);
-
                 /*
                 io.emit('setHost', { 
                     username: myHostName,
@@ -443,7 +444,7 @@ module.exports = (io) => {
                     items.sort(function (first, second) {
                         return second[1] - first[1];
                     });
-
+                    
                     // Create a new array 
                     var myArray = items.slice(0, userPointsDict.length);
                     var index = 1;
@@ -464,6 +465,7 @@ module.exports = (io) => {
                         }
                         console.log(tempHtml);
                     }
+                    //console.log("My winners list: " + winnerList)
                     // adding winner list to roomdata
                     roomdata.set(socket, "winnerList", winnerList);
 
@@ -471,15 +473,9 @@ module.exports = (io) => {
                     console.log("My winners list: " + winnerList)
 
                     myScoresHtml = tempHtml + "</br></br>" + myScoresHtml;
-
-
-
-                    
                 //}
 
                 console.log("I'm about to show FINAL scores");
-
-
 
                 //     // Create a new array 
                 //     var myArray = items.slice(0, userPointsDict.length);
@@ -506,25 +502,20 @@ module.exports = (io) => {
                 // }
                 // console.log("I'm about to show FINAL scores");
 
-
-
                 /*
                 io.emit('showFinalScores', { 
                     text: myScoresHtml
                 });
                 */
-
-
+              
                 var tempMyScoresHtml = myScoresHtml;
                 myScoresHtml ="";
                 //roomdata.set(socket, "myScoresHtml", myScoresHtml);
-
 
                 io.sockets.in(room).emit('showFinalScores', {
                     text: tempMyScoresHtml//myScoresHtml
                 });
             }
-
             //myScoresHtml = "";
         });
 

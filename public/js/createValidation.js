@@ -37,6 +37,92 @@ window.onload=function(){
         return roundsValid;
     }
 
+    
+    document.getElementById("ludicrousLaws").addEventListener("click", function() {
+        if (form.ludicrousLaws.checked == false) {
+          form.allCategories.checked = false;
+        } 
+    });
+
+    document.getElementById("definitions").addEventListener("click", function() {
+        if (form.definitions.checked == false) {
+          form.allCategories.checked = false;
+        } 
+    });
+
+    document.getElementById("famousPeople").addEventListener("click", function() {
+        if (form.famousPeople.checked == false) {
+          form.allCategories.checked = false;
+        } 
+    });
+
+    document.getElementById("acronyms").addEventListener("click", function() {
+        if (form.acronyms.checked == false) {
+          form.allCategories.checked = false;
+        } 
+    });
+
+    document.getElementById("movieHeadlines").addEventListener("click", function() {
+        if (form.movieHeadlines.checked == false) {
+          form.allCategories.checked = false;
+        } 
+    });
+
+    document.getElementById("allCategories").addEventListener("click", function() {
+        if (form.allCategories.checked == true) {
+          form.ludicrousLaws.checked = true;
+          form.definitions.checked = true;
+          form.famousPeople.checked = true;
+          form.acronyms.checked = true;
+          form.movieHeadlines.checked = true;
+        } else {
+          form.ludicrousLaws.checked = false;
+          form.definitions.checked = false;
+          form.famousPeople.checked = false;
+          form.acronyms.checked = false;
+          form.movieHeadlines.checked = false;
+        }
+    });
+
+    function categoryValidation()
+    {
+        var categoriesValid = true;
+        document.querySelector('.content .invalidCategories').innerHTML = '';
+
+        var ludicrousLaws = form.ludicrousLaws.checked;
+        var definitions = form.definitions.checked;
+        var famousPeople = form.famousPeople.checked;
+        var acronyms = form.acronyms.checked;
+        var movieHeadlines = form.movieHeadlines.checked;
+
+        /*if (ludicrousLaws == true) {
+            category: req.body.ludicrousLaws;
+        } 
+
+        if (definitions == true) {
+            category: req.body.definitions;
+        } 
+        
+        if (famousPeople == true) {
+            category: req.body.famousPeople;
+        } 
+        
+        if (acronyms == true) {
+            category: req.body.acronyms;
+        } 
+        
+        if (movieHeadlines == true) {
+            category: req.body.movieHeadlines;
+        } */
+
+        if(ludicrousLaws == false && definitions == false && famousPeople == false && acronyms == false && movieHeadlines == false) {
+            document.querySelector('.content .invalidCategories').innerHTML = 'Must select at least 1 category.';
+            categoriesValid = false;
+        }
+
+        return categoriesValid;
+    }
+
 
     function gameNameValidation() 
     {
@@ -72,6 +158,7 @@ window.onload=function(){
         isValid = playersValidation();
         isValid = roundsValidation() && isValid;
         isValid = gameNameValidation() && isValid;
+        isValid = categoryValidation() && isValid;
 
 
         if (!isValid)
