@@ -129,8 +129,8 @@ if (req.body.words == "on") {
                             categoriesToAdd.push("laws");
                         }
 
-                        if (req.body.movieHeadlines == "on") {
-                            categoriesToAdd.push("movieHeadlines");
+                        if (req.body.movies == "on") {
+                            categoriesToAdd.push("movies");
                         }
 
                     //console.log("isValid3: " +isValid);
