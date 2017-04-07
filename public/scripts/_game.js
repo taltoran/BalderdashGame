@@ -614,7 +614,7 @@ window.onload = () => {
         console.log("i'm in game to show host first screen");
         var $answerMessage;
         $answerMessage = $($('.answerTemplate').clone().html());
-        
+ 
         $('.myAnswers').empty();
         //scores.innerHTML = "";
         $("#finalscores").hide();
@@ -673,7 +673,7 @@ window.onload = () => {
 
         }
 
-        setTimeout(startOver, 15000);
+        setTimeout(startOver, 3000);
     });
 
 
