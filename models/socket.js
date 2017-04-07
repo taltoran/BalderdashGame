@@ -106,74 +106,17 @@ module.exports = (io) => {
                 userIdDict[myHostName] = sessionid;
                 roomdata.set(socket, "userIdDict", userIdDict);
 
+                console.log("host session id is: " + userIdDict[myHostName]);
+
                 // initialize room variables on host
                 var myCurrentRoundNumber = 0;
                 roomdata.set(socket, "myCurrentRoundNumber", myCurrentRoundNumber);
-
-
-                var shownFirstScreen = 0;//1;
-                roomdata.set(socket, "shownFirstScreen", shownFirstScreen);
-                var usersShownFirstScreen = {};
-                roomdata.set(socket, "usersShownFirstScreen", usersShownFirstScreen);
-                var firstScreenCalled = 0;
-                roomdata.set(socket, "firstScreenCalled", firstScreenCalled);
-                
-
-
-                console.log("shownFirstScreen 1:" + shownFirstScreen);
-                for (var key in usersShownFirstScreen) {
-                    var value = usersShownFirstScreen[key];
-                    // Use `key` and `value`
-                    console.log("usersShownFirstScreen 1:" + key + value);
-                }
-                
             }
-            else
-            {
-                var userIdDict = roomdata.get(socket, "userIdDict");
-                userIdDict[msg.username] = sessionid;
-                roomdata.set(socket, "userIdDict", userIdDict);
-            }
-
-            
-            var usersShownFirstScreen  = roomdata.get(socket, "usersShownFirstScreen");
-
-            var myHostName = roomdata.get(socket, "myHostName");
-            usersShownFirstScreen[msg.username]="false";
-            //usersShownFirstScreen[myHostName]="true";
-
-            roomdata.set(socket, "usersShownFirstScreen", usersShownFirstScreen);
-
-
-            console.log("shownFirstScreen 2:" + shownFirstScreen);
-            for (var key in usersShownFirstScreen) {
-                var value = usersShownFirstScreen[key];
-                // Use `key` and `value`
-                console.log("usersShownFirstScreen 2:" + key + value);
-            }
-
-
-            
-
-            //console.log("host session id is: " + userIdDict[myHostName]);
 
             //start game once all players have entered game
 
             if (userCount == myNumberOfPlayers)
             {
-                userCountTimesTwo = userCount;
-                roomdata.set(socket, "userCountTimesTwo", userCountTimesTwo);
-
-                console.log("userCountTimesTwo when first set: " + userCount);
-                //var myHostName = roomdata.get(socket, "myHostName");
-                //usersShownFirstScreen[myHostName]="true";
-
-                for (var key in usersShownFirstScreen) {
-                    var value = usersShownFirstScreen[key];
-                    // Use `key` and `value`
-                    console.log("usersShownFirstScreen 3:" + key + value);
-                }
-
                 var myScoresCorrectAnswerHtml = "";        
                 roomdata.set(socket, "myScoresCorrectAnswerHtml", myScoresCorrectAnswerHtml);
                 var myScoresHtml = "";
@@ -237,88 +180,15 @@ module.exports = (io) => {
 
 
         socket.on('showHostFirstScreen', function (msg) {            
-            console.log(msg.username+" inside showHostFirstScreen");
-            
-            var firstScreenCalled = roomdata.get(socket, "firstScreenCalled");
+           
 
             var userIdDict = roomdata.get(socket, "userIdDict");
             var myHostName = roomdata.get(socket, "myHostName");
 
-            //var shownFirstScreen = 1;
-            var shownFirstScreen =roomdata.get(socket, "shownFirstScreen");
-            
-            var usersShownFirstScreen = roomdata.get(socket, "usersShownFirstScreen");
-            var userCount = roomdata.get(socket, "userCount");
+            //console.log("i'm in socket to show host first screen and host id is: "+userIdDict[myHostName]);
+            //io.to(io.clients[userIdDict["host"]]).emit('hostFirstScreen');//send host to first screen
+            io.sockets.connected[userIdDict[myHostName]].emit('hostFirstScreen');
 
-            
-
-            firstScreenCalled+=1;
-            roomdata.set(socket, "firstScreenCalled", firstScreenCalled);
-            console.log("firstScreenCalled#1:  " +firstScreenCalled);
-
-            
-            if (firstScreenCalled == userCountTimesTwo)//1)
-            {
-                console.log("shownFirstScreen 4:" + shownFirstScreen);
-                for (var key in usersShownFirstScreen) {
-                    var value = usersShownFirstScreen[key];
-                    // Use `key` and `value`
-                    console.log("usersShownFirstScreen 4:" + key + value);
-                }
-                
-
-                if (shownFirstScreen == userCount)
-                {
-                    console.log("shownFirstScreen was equal to userCount");
-                    shownFirstScreen = 0;
-                    roomdata.set(socket, "shownFirstScreen", shownFirstScreen);
-                    
-                    for (var key in usersShownFirstScreen) 
-                    {
-                        usersShownFirstScreen[key]="false";
-                    }
-                    roomdata.set(socket, "usersShownFirstScreen", usersShownFirstScreen);
-                }
-                console.log("shownFirstScreen 5:" + shownFirstScreen);
-                for (var key in usersShownFirstScreen) {
-                    var value = usersShownFirstScreen[key];
-                    // Use `key` and `value`
-                    console.log("usersShownFirstScreen 5:" + key + value);
-                }
-                shownFirstScreen += 1;
-                roomdata.set(socket, "shownFirstScreen", shownFirstScreen);
-
-
-                var sendToThisPerson = "";
-                for (var key in usersShownFirstScreen) {
-                    var value = usersShownFirstScreen[key];
-                    // Use `key` and `value`
-                    console.log("I'm checking all user keys: "+key +" and values: " + value);
-                    if (value =="false")
-                    {
-                        sendToThisPerson = userIdDict[key];
-                        usersShownFirstScreen[key] = "true";
-                        roomdata.set(socket, "usersShownFirstScreen", usersShownFirstScreen);
-                        break;
-                    }
-                }
-                if (firstScreenCalled == userCountTimesTwo)
-                {
-                    firstScreenCalled = 0;
-                    roomdata.set(socket, "firstScreenCalled", firstScreenCalled);
-                    console.log("setting firstScreenCalled#2 back to zero: " + firstScreenCalled);
-
-                    userCountTimesTwo = userCount * userCount;
-                    roomdata.set(socket, "userCountTimesTwo", userCountTimesTwo);
-                }
-
-                console.log("I'm in showHostFirstScreen in socket");
-
-                //console.log("i'm in socket to show host first screen and host id is: "+userIdDict[myHostName]);
-                //io.to(io.clients[userIdDict["host"]]).emit('hostFirstScreen');//send host to first screen
-                io.sockets.connected[sendToThisPerson].emit('hostFirstScreen'); //userIdDict[myHostName]
-            }
-            
         });
 
         socket.on('userChoseYes', function (msg) {
@@ -362,9 +232,7 @@ module.exports = (io) => {
             var userAnswersDict = roomdata.get(socket, "userAnswersDict");
             var myScoresHtml = roomdata.get(socket, "myScoresHtml");
             var myScoresCorrectAnswerHtml = roomdata.get(socket, "myScoresCorrectAnswerHtml");
-
-            
-            
+            //var myScoresHtml = "";
 
             if (!answersDisplayed) {
                 answersDisplayed = 0;
@@ -393,11 +261,6 @@ module.exports = (io) => {
                 }
                 else {
                     myScoresHtml = "<h1>Final Points Scored During the Last Round</h1>" + myScoresHtml
-
-                    var userCount = roomdata.get(socket, "userCount");
-                    userCountTimesTwo = userCount;
-                    roomdata.set(socket, "userCountTimesTwo", userCountTimesTwo);
-            
                 }
 
             //}
