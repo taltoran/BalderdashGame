@@ -254,7 +254,7 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
                             .then(function (words) {
                                 res.render('Game.pug', {
                                     title: 'Question Creator', userName: req.user.username,
-                                    wordsList: words, categories: ["words", "people"], rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName
+                                    wordsList: words, categories: game.category, rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName
                                 }); //game.category
                             });
                     }
@@ -299,7 +299,7 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
                                 .then(function (words) {
                                     res.render('Game.pug', {
                                         title: 'Question Creator', userName: req.user.username,
-                                        wordsList: words, categories: ["words", "people"], rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName
+                                        wordsList: words, categories: game.category, rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName
                                     }); //game.category
                                 });
                         }
