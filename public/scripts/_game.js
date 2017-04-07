@@ -1,6 +1,10 @@
 window.onload = () => {
 //Brady stuff
 
+    //used for scores
+    var scoresHtml = "";//document.getElementById("scores");
+    //scoresHtml.innerHTML = "";
+
     //used for host choosing a question
     var sendButton = document.getElementsByClassName("sendQuestion");
     
@@ -40,10 +44,13 @@ window.onload = () => {
 
     //used to show current chosen question each round
     var currentChosenQuestion = "";
+    //used to show current category chosen each round
+    var currentChosenCategoryNQuestion = "";
 
 
     //used to save questions and answers
     var myWordsDict= {}; 
+
 
     //used to make it so only words in Category are chosen as questions (gets rid of other categories in list)
     for (var i = 0; i<myWordsList.length; i++)
@@ -53,6 +60,7 @@ window.onload = () => {
         {
             if (myCategories[j] == myWordsList[i].category)
             {
+                console.log("myCategories[j]"+myCategories[j])
                 foundIt = "true";
             }
         }
@@ -94,23 +102,45 @@ window.onload = () => {
     
     var myChosenWords = {};
     var count = 0;
+    var categoryCount = 0;
     for (var i = 0; i<4; i++)
     {
         var randomNum= Math.floor(Math.random() * (myWordsList.length))
         var myQuestion = myWordsList[randomNum].question
+        var myCategory = myWordsList[randomNum].category
+        
+        while (myWordsList[randomNum].category != myCategories[categoryCount])
+        {
+            randomNum= Math.floor(Math.random() * (myWordsList.length));
+            myQuestion = myWordsList[randomNum].question
+            myCategory = myWordsList[randomNum].category
+        }
 
+        
+        if (categoryCount ==myCategories.length-1)
+        {
+            categoryCount = 0;
+        }
+        else
+        {
+            categoryCount +=1;
+        }
+        
+            
+        
 
         if (myChosenWords[myQuestion] == "true")
         {
           var myCount = 0
-          while (myChosenWords[myQuestion] == "true" && myCount <20)
+          while (myChosenWords[myQuestion] == "true" && myWordsList[randomNum].category != myCategories[categoryCount] &&myCount <200)
           {
             randomNum= Math.floor(Math.random() * (myWordsList.length));
             myQuestion = myWordsList[randomNum].question
+            myCategory = myWordsList[randomNum].category
             myCount +=1;
           }
           myChosenWords[myQuestion] = "true"
-          if (myCount ==20)
+          if (myCount ==200)
           {
               for (var j =0; j<myChosenWords.length; j++)
               {
@@ -123,10 +153,11 @@ window.onload = () => {
         {
           myChosenWords[myQuestion] = "true"
         }
-        var myString= "<button class=sendQuestion name=\""+myQuestion+"\">"+ myQuestion + "</button>";
-        console.log(myString);
+        //var myString= "<button class=sendQuestion name=\""+myQuestion+"\">"+ myQuestion + "</button>";
+        //console.log(myString);
         gamediv.innerHTML += "<div style='padding:10px'>"
-        gamediv.innerHTML += "  <button class=sendQuestion name=\" "+myQuestion+"\">"+ myQuestion + "</button>";
+        //gamediv.innerHTML += "  <p> Category: "+myCategory+"</p>" //
+        gamediv.innerHTML += "  <button class=sendQuestion value=\""+myQuestion+"\" name=\" "+myQuestion+"\">"+ myCategory + ": "+myQuestion + "</button>";
         gamediv.innerHTML += "</div>"
     }
     
@@ -153,7 +184,7 @@ window.onload = () => {
     window.onbeforeunload = () => {
         socket.emit('leave',{
             username: document.getElementsByTagName('p')[1].textContent
-        })
+        });
     };
 
 
@@ -180,28 +211,50 @@ window.onload = () => {
             //testing the jquery hide() function in javascript
             document.getElementById("gamediv").style.display="none";
 
+            //alert($(this).val());
+            currentChosenCategoryNQuestion =$(this).text();
+
             socket.emit('sendQuestion', { 
                 username: user,
-                text: $(this).text(), //this.name 
-                rounds: myRounds
+                text: $(this).val(),//$(this).text(), //this.name 
+                rounds: myRounds,
+                //setCurrentQuestion: myQuestion    
             });
             
             for (var i = 0; i<4; i++)
             {  
                 var randomNum= Math.floor(Math.random() * (myWordsList.length))
-                var myQuestion = myWordsList[randomNum].question
+                var myQuestion = myWordsList[randomNum].question;
+                var myCategory = myWordsList[randomNum].category
+        
+                while (myWordsList[randomNum].category != myCategories[categoryCount])
+                {
+                    randomNum= Math.floor(Math.random() * (myWordsList.length));
+                    myQuestion = myWordsList[randomNum].question
+                    myCategory = myWordsList[randomNum].category
+                }
+
+                
+                if (categoryCount ==myCategories.length-1)
+                {
+                    categoryCount = 0;
+                }
+                else
+                {
+                    categoryCount +=1;
+                }
 
                 if (myChosenWords[myQuestion] == "true")
                 {
                     var myCount = 0
-                    while (myChosenWords[myQuestion] == "true" && myCount <20)
+                    while (myChosenWords[myQuestion] == "true" && myWordsList[randomNum].category != myCategories[categoryCount] &&myCount <200)
                     {
                         randomNum= Math.floor(Math.random() * (myWordsList.length));
                         myQuestion = myWordsList[randomNum].question
                         myCount +=1;
                     }
                     myChosenWords[myQuestion] = "true"
-                    if (myCount ==20)
+                    if (myCount ==200)
                     {
                         for (var j=0; j<myChosenWords.length; j++)
                         {
@@ -215,7 +268,9 @@ window.onload = () => {
                     myChosenWords[myQuestion] = "true"
                 }
 
-                $(sendButton[i]).text(myQuestion);
+                $(sendButton[i]).val(myQuestion);
+                //gamediv.innerHTML += "  <p> Category: "+myCategory+"</p>"
+                $(sendButton[i]).text(myCategory+": "+myQuestion);
             }
 
             //used to give users 15 seconds to enter their answers
@@ -262,18 +317,8 @@ window.onload = () => {
             user: msg.username
         });
 
-<<<<<<< HEAD
-
-        
-        $("#loadingScreen").hide();
-        $("#gamediv").show();
-        //document.getElementById("loadingScreen").style.display="none";
-        //document.getElementById("gamediv").style.display="unset";
-        //document.getElementById("div.mainScreen").style.display="none";
-=======
         $("#loadingScreen").hide();
         $("#questionWait").show();
->>>>>>> origin/BradyGame4square1
 
         host.draw();
 
@@ -314,6 +359,7 @@ window.onload = () => {
         console.log(msg.text);
 
         //set the current question for all players?
+        //alert("questionMessage currentChosenQuestion: "+msg.text);
         currentChosenQuestion = msg.text; //$(this).text();
         
         if (msg.text.trim() === '') {
@@ -321,10 +367,10 @@ window.onload = () => {
         }
 
         //adds to gamediv2
-        chosenQuestion.innerHTML = msg.text;
+        chosenQuestion.innerHTML = currentChosenCategoryNQuestion;//msg.text;
 
         //adds to gamediv3
-        chosenQuestionTwo.innerHTML = msg.text;
+        chosenQuestionTwo.innerHTML = currentChosenCategoryNQuestion;//msg.text;
 
         
         $("#gamediv").hide();
@@ -397,6 +443,7 @@ window.onload = () => {
 
                 if (firstTimeThroughAnswer == 0)
                 {
+                    //alert("currentChosenQuestion answermessage: " +currentChosenQuestion);
                     console.log("this is my first time thourgh answer");
                     console.log("this is the answer: " + myWordsDict[currentChosenQuestion]);
 
@@ -413,6 +460,9 @@ window.onload = () => {
                     }
                     firstTimeThroughAnswer +=1;
                 }
+
+                
+                scoresHtml += "<p>" +_this.user + " input the answer: " +_this.text + "</p>";
                 
 
                 
@@ -497,7 +547,7 @@ window.onload = () => {
         return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
     });
   
-    /*
+    
   
     var Message = function (arg) {
         this.user = arg.user, this.time = arg.time, this.text = arg.text, this.message_side = arg.message_side;
@@ -518,13 +568,13 @@ window.onload = () => {
         }(this);
         return this;
     };
-
+/*
 //shows that a user logged into the game
     socket.emit('join', {
             username: user,
             numberOfPlayers: myNumberOfPlayers
     });
-
+*/
 
 
     
@@ -570,7 +620,7 @@ window.onload = () => {
     socket.on('showScores', function (msg) {
         console.log("I'm in show scores. heres the innerHTML:");
         //alert(scores.innerHTML);
-        scores.innerHTML = msg.text;
+        scores.innerHTML = msg.text+ "</br><h1>User Answers: </h1>"+scoresHtml;
 
         $('.message_input').val('');
 
@@ -621,7 +671,8 @@ window.onload = () => {
     socket.on('showFinalScores', function (msg) {
         console.log("I'm in show final scores. heres the innerHTML:");
         //alert(finalscores.innerHTML);
-        finalscores.innerHTML = msg.text;
+        $('.message_input').val('');
+        finalscores.innerHTML = msg.text+ "</br><h1>User Final Answers: </h1>"+scoresHtml;
 
         finalscores.innerHTML += "</br></br><h1> Would you like to Continue Game for Another Round? </h1>";
 
@@ -728,7 +779,15 @@ window.onload = () => {
         getMessageText = function () {
             var $message_input;
             $message_input = $('.message_input');
-            return $message_input.val();
+            
+            if ($message_input.val() ==null || $message_input.val()=="") 
+            { 
+                return "blank response"; 
+            } 
+            else 
+            { 
+                return $message_input.val(); 
+            } 
         };
         sendMessage = function (text) {
             console.log('send: ' + text);
@@ -757,7 +816,6 @@ window.onload = () => {
         }); 
     });
 }
-
 
 
 

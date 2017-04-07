@@ -53,12 +53,12 @@ router.get('/Create', utils.requireLogin, function (req, res, next) {
 router.post('/Create', utils.requireLogin, function (req, res, next) {
     console.log("i'm here in .post .Create");
 
-
     //console.log(req.body);
 
     myPlayers = '';
     myRounds = '';
     myGameName = '';
+    var  categoriesToAdd = [];
 
     var isValid = true;
 
@@ -110,14 +110,35 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
                     res.render('Create.pug', { invalidPlayers: myPlayers, invalidRounds: myRounds, invalidGameName: myGameName });
                 }
                 else {
+
+                        if (req.body.ludicrousLaws == "on") {
+                            categoriesToAdd.push("ludicrousLaws");
+                        }
+
+                        if (req.body.definitions == "on") {
+                            categoriesToAdd.push("definitions");
+                        }
+
+                        if (req.body.famousPeople == "on") {
+                            categoriesToAdd.push("famousPeople");
+                        }
+
+                        if (req.body.acronyms == "on") {
+                            categoriesToAdd.push("acronyms");
+                        }
+
+                        if (req.body.movieHeadlines == "on") {
+                            categoriesToAdd.push("movieHeadlines");
+                        }
+
                     //console.log("isValid3: " +isValid);
                     var game = new Game({
                         playerNumber: req.body.players,
                         rounds: req.body.rounds,
-                        category: req.body.categories,
                         gameActive: true,                   //set game active to false in post
                         gameFull: false,
                         gameName: req.body.gameName,
+                        category: categoriesToAdd
                     });
 
                     console.log("my categories on save: " + req.body.categories);
@@ -208,7 +229,8 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
     if (req.session['success'] == 'User Created Game') {
         console.log("Yes a user just created a game!");
         req.session['success'] = null;
-        console.log("Game name is: " + req.session['gameName'])
+
+        console.log("Game name is: " + req.session['gameName']);
 
         Game.findOne(
             {

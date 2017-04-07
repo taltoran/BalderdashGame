@@ -172,19 +172,23 @@ module.exports = (io) => {
         });
 
         socket.on('userChoseYes', function (msg) {
-            myCurrentRoundNumber=0;
-            io.emit('userChoseYesStartAgain', { 
+            //myCurrentRoundNumber=0;
+            roomdata.set(socket, "myCurrentRoundNumber", 0);
+            var room = roomdata.get(socket, "room");
+            io.sockets.in(room).emit('userChoseYesStartAgain', { 
             });
         });
 
 
         socket.on('hideYesNo', function (msg) {
-            io.emit('hideYesNoButtons', { 
+            var room = roomdata.get(socket, "room");
+            io.sockets.in(room).emit('hideYesNoButtons', { 
             });
         });
 
         socket.on('showAnswers', function (msg) {
-             io.emit('showAnswersTimeout', { 
+            var room = roomdata.get(socket, "room");
+            io.sockets.in(room).emit('showAnswersTimeout', { 
             });
         });
 
@@ -197,7 +201,8 @@ module.exports = (io) => {
             var myNumberOfRounds = roomdata.get(socket, "myNumberOfRounds");
             var userPointsDict = roomdata.get(socket, "userPointsDict");
             var userAnswersDict = roomdata.get(socket, "userAnswersDict");
-            var myScoresHtml = "";
+            var myScoresHtml = roomdata.get(socket, "myScoresHtml");
+            //var myScoresHtml = "";
 
             if (!answersDisplayed) {
                 answersDisplayed = 0;
@@ -309,9 +314,11 @@ module.exports = (io) => {
             var userPointsDict = roomdata.get(socket, "userPointsDict");
             var userAnswersDict = roomdata.get(socket, "userAnswersDict");
             var myScoresHtml = "";
+            
 
             console.log("myCurrentChosenQuestion: " + myCurrentChosenQuestion);
-            console.log("myWordDict: " + myWordDict);             
+            console.log("myWordDict: " + myWordDict);   
+
             
             console.log("the answer for currentChosenQuestion is: " + myWordDict[myCurrentChosenQuestion] + " and user chose the answer: " + msg.text);
             if (myWordDict[myCurrentChosenQuestion] == msg.text)
@@ -319,7 +326,7 @@ module.exports = (io) => {
                 userPointsDict[msg.username] += 2;
                 roomdata.set(socket, "userPointsDict", userPointsDict);
 
-                myScoresHtml +="<p>"+msg.username + " picked the Real Correct answer: " + msg.text+ ", so "+msg.username + " scored 2 points!</p>";//" +userPointsDict[userAnswersDict[msg.text]] +" 
+                myScoresHtml +="<p>"+msg.username + " picked the Correct answer: " + msg.text+ ", so "+msg.username + " scored 2 points!</p>";//" +userPointsDict[userAnswersDict[msg.text]] +" 
 
                 console.log("user chose correct answer and won 2 points");
             }
@@ -336,7 +343,12 @@ module.exports = (io) => {
                 myScoresHtml +="<p>"+msg.username + " picked the answer: " + msg.text+ ", so "+userAnswersDict[msg.text] + " scored 1 point</p>";//" +userPointsDict[userAnswersDict[msg.text]] +" 
 
             }
-            
+
+            myScoresHtml +="<h3>The Correct Answer To "+myCurrentChosenQuestion+" was: </h2>";
+            myScoresHtml += "<p>"+myWordDict[myCurrentChosenQuestion]+"</p>";         
+
+
+            roomdata.set(socket, "myScoresHtml", myScoresHtml);
             var userCount = roomdata.get(socket, "userCount");
             var room = roomdata.get(socket, "room");
             /*
@@ -413,7 +425,8 @@ module.exports = (io) => {
         });
 
         socket.on('sendQuestion', function (msg) {
-            var myCurrentChosenQuestion = msg.text
+            var myCurrentChosenQuestion = msg.text;
+            console.log("socket myCurrentChosenQuestion1: "+myCurrentChosenQuestion);
             roomdata.set(socket, "myCurrentChosenQuestion", myCurrentChosenQuestion);
 
             var myNumberOfRounds = msg.rounds;
@@ -433,6 +446,7 @@ module.exports = (io) => {
             */
 
             var room = roomdata.get(socket, "room");
+            console.log("socket myCurrentChosenQuestion2: "+myCurrentChosenQuestion);
             io.sockets.in(room).emit('questionMessage', {
                 text: msg.text
             });
