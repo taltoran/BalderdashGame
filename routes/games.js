@@ -6,7 +6,6 @@ var Question = require('../models/Question.js');    //questions model
 var utils = require('./utils');                     // has functions for creating user session, also require login function
 var router = express.Router();
 
-
 /* GET newgame page. */
 router.get('/', utils.requireLogin, function (req, res, next) {
     //console.log("i'm here in .get newgame");
@@ -138,7 +137,9 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
                         gameActive: true,                   //set game active to false in post
                         gameFull: false,
                         gameName: req.body.gameName,
-                        category: categoriesToAdd
+                        category: categoriesToAdd,
+                        gameActive: true,
+                        gameFull: false
                     });
 
                     console.log("my categories on save: " + req.body.categories);
@@ -192,7 +193,8 @@ router.post('/Join', function (req, res, next) {
         {
             gameName: req.body.code,
             gameActive: true
-        }, function (err, gameJoin) {
+        //}, function (err, gameJoin) {
+        }, function (err, game) {
             if (err) next(err);
 
             if (gameJoin) {
@@ -234,24 +236,28 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
 
         Game.findOne(
             {
-                gameName: req.session['gameName'], 
+                gameName: req.session['gameName'],
                 gameActive: true
-
-            }, function (err, myGame) {
+            }, function (err, game) {
                 if (err) next(err);
 
                 if (myGame) {
                     req.session['gameName'] = null;
-                    var winners = [];
-                    var gameFull = false;
-                    Question.find()
-                        .then(function (word) {
-                            res.render('Game.pug', {
-                                title: 'Question Creator', 
-                                userName: req.user.username, wordsList: word, categories: myGame.category, rounds: myGame.rounds, numberOfPlayers: myGame.playerNumber, gameName: myGame.gameName, 
-                                winnerList: winners, gameFull: myGame.gameFull
+
+                    // checks that the game has not been set to full for player to join
+                    if(game.gameFull){
+                        console.log("The Game Is Full");
+                        myInvalidCode = "Game room, \""+game.gameName+"\" is currently full, please try again"
+                        res.render('Join.pug', { invalidCode: myInvalidCode });
+                    }else{
+                        Question.find()
+                            .then(function (words) {
+                                res.render('Game.pug', {
+                                    title: 'Question Creator', userName: req.user.username,
+                                    wordsList: words, categories: ["words", "people"], rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName
+                                }); //game.category
                             });
-                        });
+                    }
                 }
                 else {
                     req.session['gameName'] = null;
@@ -278,21 +284,26 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
                 {
                     gameName: req.session['gameName'],
                     gameActive: true
-                }, function (err, myGame) {
+                }, function (err, game) {
                     if (err) next(err);
 
                     if (myGame) {
                         req.session['gameName'] = null;
-                        var winners = [];
-                        Question.find()
-                            .then(function (words) {
-                                res.render('Game.pug', {
-                                    title: 'Question Creator',
-                                    userName: req.user.username, wordsList: word, categories: myGame.category, rounds: myGame.rounds, numberOfPlayers: myGame.playerNumber, gameName: myGame.gameName, 
-                                    winnerList: winners, gameFull: myGame.gameFull
+                        // checks that the game has not been set to full for player to join
+                        if (game.gameFull) {
+                            console.log("The Game Is Full");
+                            myInvalidCode = "Game room, \""+game.gameName+"\" is currently full, please try again"
+                            res.render('Join.pug', { invalidCode: myInvalidCode });
+                        } else {
+                            Question.find()
+                                .then(function (words) {
+                                    res.render('Game.pug', {
+                                        title: 'Question Creator', userName: req.user.username,
+                                        wordsList: words, categories: ["words", "people"], rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName
+                                    }); //game.category
                                 });
-                            });
-                    }
+                        }
+                    }    
                     else {
                         req.session['gameName'] = null;
                     }
@@ -317,7 +328,8 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
 router.post('/Game', function (req, res, next) {
     console.log("I'm in the Game post");
     console.log(req.body.myChoice);
-
+    
+    //BryanCatNArr merge into socketfix
     // winnerList should be returned as a list strings of winners names
     // For loop through winnersList where winner.username is set to user name in find one
     for (winner in winnerList) {
@@ -363,8 +375,10 @@ router.post('/Game', function (req, res, next) {
     });
 
     res.redirect('/games');
+    //end of bryans added code
 
-
+    // Posting for game and user data is happening in the socket.js in models
+    res.redirect('/games');
 
     /*
         if (req.body.myChoice == 'choseNo')
