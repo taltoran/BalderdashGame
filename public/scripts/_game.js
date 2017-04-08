@@ -880,6 +880,10 @@ window.onload = () => {
         //$("#gamediv").show();
         $("#questionWait").show();
 
+        // Reset Timeout Variable
+        answerSent = false;
+        answerPicked = false;
+
         socket.emit('showHostFirstScreen', {
             username: msg.username
         });
