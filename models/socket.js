@@ -639,6 +639,17 @@ module.exports = (io) => {
                 io.emit('hideLoading', { 
                 });
                 */
+                // Timeout
+                var gameRound = "send";
+                roomdata.set(socket, "gameRound", gameRound);                
+            
+                setTimeout(function () {
+                    gameRound = roomdata.get(socket, "gameRound");
+                    if (gameRound == "send") {
+                        io.sockets.in(room).emit('timeoutSend');
+                    } 
+                }, 15 * 1000);
+
                 io.sockets.in(room).emit('hideLoading', {});
                 usersAnswered = 0;
                 roomdata.set(socket, "usersAnswered", usersAnswered);
@@ -656,18 +667,7 @@ module.exports = (io) => {
 
             var userAnswersDict = roomdata.get(socket, "userAnswersDict");
             userAnswersDict[msg.text] = msg.username;
-            roomdata.set(socket, "userAnswersDict", userAnswersDict);
-
-
-            // Timeout
-            var gameRound = "send";
-            roomdata.set(socket, "gameRound", gameRound);
-            setTimeout(function () {
-                gameRound = roomdata.get(socket, "gameRound");
-                if (gameRound == "send") {
-                    io.sockets.in(room).emit('timeoutSend');
-                } 
-            }, 15 * 1000);
+            roomdata.set(socket, "userAnswersDict", userAnswersDict);            
 
         });
 

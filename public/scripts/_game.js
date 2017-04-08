@@ -380,9 +380,9 @@ window.onload = () => {
     });   
     // Sends blank answer on timeout
     socket.on('timeoutSendQuestion', (msg) => {
-
-        if (answerSent == false) {
-            //alert("timeout answerSent " + answerSent);
+        
+        if (answerSent == false) {  
+            //alert("timeout answerSent " + answerSent);          
             $('.send_message').click();
         }            
     });
@@ -497,7 +497,7 @@ window.onload = () => {
         console.log(msg.text);
 
         // reset timeout variable
-        answerSent = false;
+        //answerSent = false;
         //alert("answerMessage answerSent " + answerSent);
 
         var $answerMessages, answerMessage;
@@ -586,14 +586,15 @@ window.onload = () => {
                         answerPicked = true;
 
                         var buttonText = this.innerHTML;
-                        
-                        alert("answerTimeout: " + answerTimeout);
+                        //alert("answerPicked: " + answerPicked);
+
+                        //alert("answerTimeout: " + answerTimeout);
                         if (answerTimeout == true) {
                             buttonText = "no response";
                             answerTimeout = false;
                         }                        
                         
-                        alert("buttonText: "+buttonText);
+                        //alert("buttonText: "+buttonText);
                         socket.emit('addToChosenAnswer', { 
                             text: buttonText,
                             username: user
@@ -924,7 +925,7 @@ window.onload = () => {
             
             if ($message_input.val() ==null || $message_input.val()=="") 
             { 
-                return "blank response"; 
+                return "no response"; 
             } 
             else 
             { 
@@ -933,8 +934,10 @@ window.onload = () => {
         };
         sendMessage = function (text) {
             console.log('send: ' + text);
+
             // keeps track if user sent an answer
             answerSent = true;
+            
             //alert("sendMessage answerSent " + answerSent);
             socket.emit('send', { 
                 username: user,
@@ -947,7 +950,7 @@ window.onload = () => {
         $('.send_message').click(function (e) {
             console.log("I clicked .send_message button"); 
             $("div.gamediv2").hide();
-            $("#answerWait").show();
+            $("#answerWait").show();            
             return sendMessage(getMessageText());
         });
 
