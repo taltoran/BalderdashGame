@@ -548,8 +548,8 @@ module.exports = (io) => {
                 console.log("<p>"+msg.username + " picked the Correct answer: " + msg.text+ ", so "+msg.username + " scored 2 points!</p>");
 
                 console.log("user chose correct answer and won 2 points");
-            } else if (msg.text == "blank response") {
-                console.log("Blank Response chosen");
+            } else if (msg.text == "no response") {
+                console.log("No Response chosen: " + msg.text);
                 
                 myScoresHtml += "<p>" + msg.username + " picked the answer: " + msg.text + ", so " + userAnswersDict[msg.text] + " scored 0 point</p>";//" +userPointsDict[userAnswersDict[msg.text]] +" 
 

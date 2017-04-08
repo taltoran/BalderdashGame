@@ -20,6 +20,7 @@ window.onload = () => {
     //***used to see if all users have chosen an answer
     var usersChosenAnswer = 0;
     var answerPicked = new Boolean(false);
+    var answerTimeout = new Boolean(false); 
     var answerMessagesButton = document.getElementsByClassName("answerText");
 
     //used to display scores at end of each round
@@ -373,7 +374,7 @@ window.onload = () => {
     // Randomly clicks a question button after 15 seconds
     socket.on('timeoutHostQuestion', (msg) => {
 
-        let randomNum = Math.floor(Math.random() * 4);
+        let randomNum = Math.floor(Math.random() * (sendButton.length - 1));
         //alert("numQuestions: " + msg.numQuestions + "random: " + randomNum);
         $(sendButton[randomNum]).click();
     });   
@@ -391,7 +392,8 @@ window.onload = () => {
         //alert("timeoutSend " + answerPicked);
         if (answerPicked == false) {
             //alert("timeoutSend answerPicked " + answerPicked);
-            answerMessagesButton[0].click("timedOut");            
+            answerTimeout = true;
+            answerMessagesButton[0].click();            
         }        
     });  
 
@@ -572,7 +574,7 @@ window.onload = () => {
                 
 
                 for (var i = 0; i < answerMessagesButton.length; i++) {
-                    answerMessagesButton[i].onclick = function(timedOut) {
+                    answerMessagesButton[i].onclick = function() {
                         //alert(this.innerHTML);//textContent);//innerHTML);//textContent);//Content);
                         $temp = $($('.answerTemplate').clone().html());
                         //alert(this.innerHTML);
@@ -581,12 +583,17 @@ window.onload = () => {
                         $("div.gamediv3").hide();
                         firstTimeThroughAnswer = 0;
                         
-                        answerPicked = true;                        
+                        answerPicked = true;
+
                         var buttonText = this.innerHTML;
-                        if (timedOut) {
-                            buttonText = "blank response";
-                        }
                         
+                        alert("answerTimeout: " + answerTimeout);
+                        if (answerTimeout == true) {
+                            buttonText = "no response";
+                            answerTimeout = false;
+                        }                        
+                        
+                        alert("buttonText: "+buttonText);
                         socket.emit('addToChosenAnswer', { 
                             text: buttonText,
                             username: user
