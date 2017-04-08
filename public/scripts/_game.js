@@ -26,6 +26,42 @@ window.onload = () => {
     var scores = document.getElementById("scores");
     //used to display final scores
     var finalscores = document.getElementById("finalscores");
+
+    // Timer 
+    var myCounter;
+
+    function startTimer(gameRound) {
+        var totaltime = 15;
+
+        // Clear Timer before starting    
+        //var count = 0;
+        $('.time').html('0');
+        $('.pie').css('background-image',
+            'linear-gradient(' + 90 + 'deg, transparent 50%, white 50%),linear-gradient(90deg, white 50%, transparent 50%)'
+        );
+
+        function update(percent) {
+            var deg;
+            if (percent < (totaltime / 2)) {
+                deg = 90 + (360 * percent / totaltime);
+                $('.pie').css('background-image',
+                    'linear-gradient(' + deg + 'deg, transparent 50%, white 50%),linear-gradient(90deg, white 50%, transparent 50%)'
+                );
+            } else if (percent >= (totaltime / 2)) {
+                deg = -90 + (360 * percent / totaltime);
+                $('.pie').css('background-image',
+                    'linear-gradient(' + deg + 'deg, transparent 50%, #00b5e8 50%),linear-gradient(90deg, white 50%, transparent 50%)'
+                );
+            }
+        }
+        var count = parseInt($('.time').text());
+        myCounter = setInterval(function () {
+            count += 1;
+            $('.time').html(count);
+            update(count);
+            if (count == totaltime) clearInterval(myCounter);
+        }, 1000);
+    }
     
 
     
@@ -154,19 +190,22 @@ window.onload = () => {
         }
         else
         {
-          myChosenWords[myQuestion] = "true"
+          myChosenWords[myQuestion] = "true";
         }
         //var myString= "<button class=sendQuestion name=\""+myQuestion+"\">"+ myQuestion + "</button>";
         //console.log(myString);
-        gamediv.innerHTML += "<div style='padding:10px'>"
+        gamediv.innerHTML += "<div style='padding:10px'>";
         //gamediv.innerHTML += "  <p> Category: "+myCategory+"</p>" //
         gamediv.innerHTML += "  <button class=sendQuestion value=\""+myQuestion+"\" name=\" "+myQuestion+"\">"+ myCategory + ": "+myQuestion + "</button>";
-        gamediv.innerHTML += "</div>"
+        gamediv.innerHTML += "</div>";        
+
     }
     
+    // Timer
+    gamediv.innerHTML += "<div style='padding:10px'>";
+    gamediv.innerHTML += '<div class="pie degree"><span class="block"></span><span class="time" id="time1">0</span></div>';
 
-    
-    
+
 
 /*
     sendAnswer.onclick = function() {
@@ -328,11 +367,12 @@ window.onload = () => {
             $('.send_message').click();
         }            
     });
-    // Randomly clicks a response
+    // Clicks a null answer for zero points on timeout
     socket.on('timeoutSend', (msg) => {
 
+        //alert("timeoutSend " + answerPicked);
         if (answerPicked == false) {
-            //alert("timeoutSend answerSent " + answerPicked);
+            //alert("timeoutSend answerPicked " + answerPicked);
             answerMessagesButton[0].click("timedOut");            
         }        
     });  
@@ -415,6 +455,10 @@ window.onload = () => {
         $("#loadingScreen").hide();
         $("#questionWait").hide();
         $("div.gamediv2").show();
+
+        // Timer
+        clearInterval(myCounter);
+        startTimer();
     });
 
 
@@ -556,6 +600,10 @@ window.onload = () => {
         
         $("#answerWait").hide();
         $("div.gamediv3").show();
+
+        // Timer
+        clearInterval(myCounter);
+        startTimer();
     });
 
 
@@ -657,7 +705,11 @@ window.onload = () => {
         //scores.innerHTML = "";
         $("#finalscores").hide();
         $("#gamediv").show();
-        $("#questionWait").hide();        
+        $("#questionWait").hide();
+
+        // Timer
+        clearInterval(myCounter);
+        startTimer();        
     });
 
 
@@ -665,13 +717,16 @@ window.onload = () => {
     //used for showscores
     var myTempCount = 0;
     socket.on('showScores', function (msg) {
-        console.log("I'm in show scores. heres the innerHTML:");
-        // Reset Timeout Variable
-        answerPicked = false;
+        console.log("I'm in show scores. heres the innerHTML:");        
 
         //alert(scores.innerHTML);
         scores.innerHTML = msg.text+ "</br><h1>User Answers: </h1>"+scoresHtml;
         
+        // Reset Timeout Variable
+        answerSent = false;
+        answerPicked = false;
+        //alert("showFinalScores: answerSent " + answerSent);
+        //alert("showFinalScores: answerPicked " + answerPicked);
 
         $('.message_input').val('');
 
@@ -721,6 +776,13 @@ window.onload = () => {
 
 //used to show final scores at the end of the game
     socket.on('showFinalScores', function (msg) {
+
+        // Reset Timeout Variable
+        answerSent = false;
+        answerPicked = false;
+        //alert("showFinalScores: answerSent " + answerSent);
+        //alert("showFinalScores: answerPicked " + answerPicked);
+        
         console.log("I'm in show final scores. heres the innerHTML:");
         //alert(finalscores.innerHTML);
         $('.message_input').val('');
@@ -791,10 +853,6 @@ window.onload = () => {
         $("#finalscores").hide();
         //$("#gamediv").show();
         $("#questionWait").show();
-
-        // reset Timeout variables
-        answerSent = false;
-        answerChosen = false;
 
         socket.emit('showHostFirstScreen', {
             username: msg.username

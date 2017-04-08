@@ -1,0 +1,33 @@
+.pie {
+  width: 121px;
+  height: 121px;
+  display: block;
+  position: relative;
+  border-radius: 50%;
+  background-color: #00b5e8;
+  border: 4px solid #0022ff;
+  margin: auto;
+}
+.pie .block {
+  position: absolute;
+  background: #fff;
+  width: 81px;
+  height: 81px;
+  display: block;
+  border-radius: 50%;
+  top: 20px;
+  left: 20px;
+}
+
+.time {
+  font-size: .5em;
+  position: absolute;
+  top: 30%;
+  left: 41%;
+  color: #ffffff;
+}
+
+.degree {
+  /*90 + ( 360 * .1 )*/
+  background-image: linear-gradient(90deg, transparent 50%, white 50%), linear-gradient(90deg, white 50%, transparent 50%);
+}

@@ -8,6 +8,7 @@ block content
       //- stylesheets
       link(rel='stylesheet', href='/stylesheets/style.css')
       link(rel='stylesheet', href='/stylesheets/index.css')
+      link(rel='stylesheet', href='/stylesheets/timer.css')
       style.
         .loader {
         border: 10px solid #f3f3f3;
@@ -104,6 +105,7 @@ block content
         p.sendAnswer(name=value.answer style="visibility:hidden")=value.answer
         br
         br
+
   div
   .gamediv2(style='text-align:center; padding-top:50px')
       div
@@ -124,6 +126,10 @@ block content
           #send_btn.send_message(style='padding-top:10px')
             .icon
             button.text Send
+      
+      div.pie.degree
+        span.block
+        span.time 0      
 
   div
   .gamediv3(style='text-align:center; padding-top:50px')
@@ -149,6 +155,10 @@ block content
                 button.answerText 
         //ul.messages
         //div
+        
+        div.pie.degree
+          span.block
+          span.time 0
 
   div
   #scores(style='text-align:center; padding-top:50px')
@@ -195,6 +205,7 @@ block scripts
   script(src='/socket.io/socket.io.js')
   script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js')
   //script(src='../js/templates.js', type='text/javascript')
+  //script(src='/scripts/timer.js', type='text/javascript')
 
   script.
     $("#answerWait").hide();

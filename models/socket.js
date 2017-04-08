@@ -302,7 +302,7 @@ module.exports = (io) => {
                     //console.log("socket.numQuestions" + msg.numQuestions + "sent to " + sendToThisPerson);
                     io.sockets.connected[sendToThisPerson].emit('timeoutHostQuestion');
                 } 
-            }, 10 * 1000);
+            }, 15 * 1000);
             
         });
 
@@ -705,7 +705,7 @@ module.exports = (io) => {
                 if (gameRound == "sendQuestion") {
                     io.sockets.in(room).emit('timeoutSendQuestion');
                 } 
-            }, 10 * 1000);
+            }, 15 * 1000);
 
         });
 
