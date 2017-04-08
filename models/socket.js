@@ -295,7 +295,7 @@ module.exports = (io) => {
             // Timeout for Host
             var gameRound = "hostQuestion";
             roomdata.set(socket, "gameRound", gameRound);
-            setTimeout(function () {
+            var timeoutHost = setTimeout(function () {
                 gameRound = roomdata.get(socket, "gameRound");
                 if (gameRound == "hostQuestion") {
                     var sendToThisPerson = roomdata.get(socket, "hostEmit");
@@ -303,6 +303,7 @@ module.exports = (io) => {
                     io.sockets.connected[sendToThisPerson].emit('timeoutHostQuestion');
                 } 
             }, 15 * 1000);
+            roomdata.set(socket, "timeoutHost", timeoutHost);
             
         });
 
@@ -359,7 +360,8 @@ module.exports = (io) => {
 
             console.log("emptyUserAnswers " + userAnswersDict[msg.text] + " ,answer username: " + msg.username);
 
-            
+            var timeoutSend = roomdata.get(socket, "timeoutSend");
+            clearTimeout(timeoutSend);
             //if (answersDisplayed == 0)
             //{
 
@@ -640,15 +642,19 @@ module.exports = (io) => {
                 });
                 */
                 // Timeout
+                var timeoutSendQuestion = roomdata.get(socket, "timeoutSendQuestion");
+                clearTimeout(timeoutSendQuestion);
+
                 var gameRound = "send";
                 roomdata.set(socket, "gameRound", gameRound);                
             
-                setTimeout(function () {
+                var timeoutSend = setTimeout(function () {
                     gameRound = roomdata.get(socket, "gameRound");
                     if (gameRound == "send") {
                         io.sockets.in(room).emit('timeoutSend');
                     } 
                 }, 15 * 1000);
+                roomdata.set(socket, "timeoutSend", timeoutSend);
 
                 io.sockets.in(room).emit('hideLoading', {});
                 usersAnswered = 0;
@@ -689,6 +695,9 @@ module.exports = (io) => {
 
             console.log("mycurrent question is: " + msg.text);
 
+            var timeoutHost = roomdata.get(socket, "timeoutHost");
+            clearTimeout(timeoutHost);
+
             /*
             //Brady Added
             io.emit('questionMessage', { 
@@ -703,12 +712,13 @@ module.exports = (io) => {
             });
 
             // Timeout
-            setTimeout(function () {
+            var timeoutSendQuestion = setTimeout(function () {
                 gameRound = roomdata.get(socket, "gameRound");
                 if (gameRound == "sendQuestion") {
                     io.sockets.in(room).emit('timeoutSendQuestion');
                 } 
             }, 15 * 1000);
+            roomdata.set(socket, "timeoutSendQuestion", timeoutSendQuestion);
 
         });
 
