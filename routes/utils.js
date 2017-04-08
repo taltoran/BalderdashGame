@@ -20,7 +20,7 @@ module.exports.notFull = function(req, res, next) {
   var gamefull = false;
   if (gamefull) {
     myInvalidCode = "Game room is full, please try again"
-    res.redirect('/games/Join', { invalidCode: myInvalidCode });
+    res.redirect('/Game/Join', { invalidCode: myInvalidCode });
   } else {
     next();
   }

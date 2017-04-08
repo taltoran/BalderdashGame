@@ -142,7 +142,7 @@ window.onload = () => {
     var myChosenWords = {};
     var count = 0;
     var categoryCount = 0;
-    for (var i = 0; i<4; i++)
+    for (var i = 0; i<5; i++)
     {
         var randomNum= Math.floor(Math.random() * (myWordsList.length))
         var myQuestion = myWordsList[randomNum].question
@@ -181,10 +181,15 @@ window.onload = () => {
           myChosenWords[myQuestion] = "true"
           if (myCount ==200)
           {
-              for (var j =0; j<myChosenWords.length; j++)
-              {
-                  myChosenWords[myQuestion] = "false";
-              }
+                myChosenWords = {};
+                myCount = 0
+                while (myChosenWords[myQuestion] == "true" && myWordsList[randomNum].category != myCategories[categoryCount] &&myCount <200)
+                {
+                    randomNum= Math.floor(Math.random() * (myWordsList.length));
+                    myQuestion = myWordsList[randomNum].question;
+                    myCategory = myWordsList[randomNum].category;
+                    myCount +=1;
+                }
           }
           myCount = 0;
         }
@@ -266,17 +271,17 @@ window.onload = () => {
                 //setCurrentQuestion: myQuestion    
             });
             
-            for (var i = 0; i<4; i++)
+            for (var i = 0; i<5; i++)
             {  
                 var randomNum= Math.floor(Math.random() * (myWordsList.length))
                 var myQuestion = myWordsList[randomNum].question;
-                var myCategory = myWordsList[randomNum].category
+                var myCategory = myWordsList[randomNum].category;
         
                 while (myWordsList[randomNum].category != myCategories[categoryCount])
                 {
                     randomNum= Math.floor(Math.random() * (myWordsList.length));
-                    myQuestion = myWordsList[randomNum].question
-                    myCategory = myWordsList[randomNum].category
+                    myQuestion = myWordsList[randomNum].question;
+                    myCategory = myWordsList[randomNum].category;
                 }
 
                 
@@ -295,22 +300,35 @@ window.onload = () => {
                     while (myChosenWords[myQuestion] == "true" && myWordsList[randomNum].category != myCategories[categoryCount] &&myCount <200)
                     {
                         randomNum= Math.floor(Math.random() * (myWordsList.length));
-                        myQuestion = myWordsList[randomNum].question
+                        myQuestion = myWordsList[randomNum].question;
+                        myCategory = myWordsList[randomNum].category;
                         myCount +=1;
                     }
                     myChosenWords[myQuestion] = "true"
                     if (myCount ==200)
                     {
+                        //categoryCount = 0;
+                        myChosenWords = {};
+                        myCount = 0
+                        while (myChosenWords[myQuestion] == "true" && myWordsList[randomNum].category != myCategories[categoryCount] &&myCount <200)
+                        {
+                            randomNum= Math.floor(Math.random() * (myWordsList.length));
+                            myQuestion = myWordsList[randomNum].question;
+                            myCategory = myWordsList[randomNum].category;
+                            myCount +=1;
+                        }
+                        /*
                         for (var j=0; j<myChosenWords.length; j++)
                         {
                             myChosenWords[myQuestion] = "false";
                         }
+                        */
                     }
                     myCount = 0;
                 }
                 else
                 {
-                    myChosenWords[myQuestion] = "true"
+                    myChosenWords[myQuestion] = "true";
                 }
 
                 $(sendButton[i]).val(myQuestion);

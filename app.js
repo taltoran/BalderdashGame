@@ -21,7 +21,7 @@ mongoose.Promise = Promise;
 // routes
 var index = require('./routes/index');
 var users = require('./routes/users');
-var games = require('./routes/games');
+var games = require('./routes/Game');
 
 // database connection
 var db = mongoose.connection;
@@ -72,7 +72,7 @@ app.use(middleware.simpleAuth);
 //routes
 app.use('/', index);
 app.use('/users', users);
-app.use('/games', games);
+app.use('/Game', games);
 
 
 app.get('/logout', function(req, res) {
