@@ -58,7 +58,7 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
     myPlayers = '';
     myRounds = '';
     myGameName = '';
-    var  categoriesToAdd = [];
+    var categoriesToAdd = [];
 
 
     var isValid = true;
@@ -106,90 +106,143 @@ router.post('/Create', utils.requireLogin, function (req, res, next) {
 
             }
             else {
-                if (!isValid) {
-                    //console.log("i'm in !isValid");
-                    res.render('Create.pug', { invalidPlayers: myPlayers, invalidRounds: myRounds, invalidGameName: myGameName });
-                }
-                else {
-
-                    
-if (req.body.words == "on") {
-                            categoriesToAdd.push("words");
-                        }
-
-                        if (req.body.people == "on") {
-                            categoriesToAdd.push("people");
-                        }
-
-                        if (req.body.initials == "on") {
-                            categoriesToAdd.push("initials");
-                        }
-
-                        if (req.body.laws == "on") {
-                            categoriesToAdd.push("laws");
-                        }
-
-                        if (req.body.movies == "on") {
-                            categoriesToAdd.push("movies");
-                        }
-
-                    //console.log("isValid3: " +isValid);
-                    var game = new Game({
-                        playerNumber: req.body.players,
-                        rounds: req.body.rounds,
+                Game.findOne(
+                    {
                         gameName: req.body.gameName,
-                        category: categoriesToAdd,
-                        gameActive: true,
-                        gameFull: false
-                    });
-/*
-                    //console.log("isValid3: " +isValid);
-                    var game = new Game({
-                        playerNumber: req.body.players,
-                        rounds: req.body.rounds,
-                        category: req.body.categories,
-                        gameName: req.body.gameName,
-                        gameActive: true,
-                        gameFull: false
-                    });
-                    */
+                        gameActive: false
+                    }, function (err, game) {
+                        if (err) next(err);
 
-                    console.log("my categories on save: " + req.body.categories);
+                        if (game) {
+                            if (req.body.words == "on") {
+                                categoriesToAdd.push("words");
+                            }
 
-                    game.save(function (err) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            //console.log('game saved');
+                            if (req.body.people == "on") {
+                                categoriesToAdd.push("people");
+                            }
+
+                            if (req.body.initials == "on") {
+                                categoriesToAdd.push("initials");
+                            }
+
+                            if (req.body.laws == "on") {
+                                categoriesToAdd.push("laws");
+                            }
+
+                            if (req.body.movies == "on") {
+                                categoriesToAdd.push("movies");
+                            }
+
+                            game.playerNumber = req.body.players;
+                            game.rounds = req.body.rounds;
+                            game.gameName = req.body.gameName;
+                            game.category = categoriesToAdd;
+                            game.gameActive = true;
+                            game.gameFull = false;
+
+                            console.log("my categories on save: " + req.body.categories);
+
+                            game.save(function (err) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    //console.log('game saved');
+                                }
+                            });
+
+                            req.session['success'] = 'User Created Game';
+                            req.session['gameName'] = game.gameName;
+                            res.redirect('Play');
+
+                        }
+                        else {
+                            if (!isValid) {
+                                //console.log("i'm in !isValid");
+                                res.render('Create.pug', { invalidPlayers: myPlayers, invalidRounds: myRounds, invalidGameName: myGameName });
+                            }
+                            else {
+
+                                if (req.body.words == "on") {
+                                    categoriesToAdd.push("words");
+                                }
+
+                                if (req.body.people == "on") {
+                                    categoriesToAdd.push("people");
+                                }
+
+                                if (req.body.initials == "on") {
+                                    categoriesToAdd.push("initials");
+                                }
+
+                                if (req.body.laws == "on") {
+                                    categoriesToAdd.push("laws");
+                                }
+
+                                if (req.body.movies == "on") {
+                                    categoriesToAdd.push("movies");
+                                }
+
+                                //console.log("isValid3: " +isValid);
+                                var game = new Game({
+                                    playerNumber: req.body.players,
+                                    rounds: req.body.rounds,
+                                    gameName: req.body.gameName,
+                                    category: categoriesToAdd,
+                                    gameActive: true,
+                                    gameFull: false
+                                });
+
+                                /*
+                                                    //console.log("isValid3: " +isValid);
+                                                    var game = new Game({
+                                                        playerNumber: req.body.players,
+                                                        rounds: req.body.rounds,
+                                                        category: req.body.categories,
+                                                        gameName: req.body.gameName,
+                                                        gameActive: true,
+                                                        gameFull: false
+                                                    });
+                                                    */
+
+                                console.log("my categories on save: " + req.body.categories);
+
+                                game.save(function (err) {
+                                    if (err) {
+                                        console.log(err);
+                                    } else {
+                                        //console.log('game saved');
+                                    }
+                                });
+
+                                /*
+                                                Game.find(function (err, games) 
+                                                {
+                                                    if (err) return console.error(err);
+                                                    console.log(games);
+                                                });
+                                
+                                */
+
+                                req.session['success'] = 'User Created Game';
+                                req.session['gameName'] = game.gameName;
+                                res.redirect('Play');
+
+                            }
                         }
                     });
-
-                    /*
-                                    Game.find(function (err, games) 
-                                    {
-                                        if (err) return console.error(err);
-                                        console.log(games);
-                                    });
-                    
-                    */
-
-                    req.session['success'] = 'User Created Game';
-                    req.session['gameName'] = game.gameName;
-                    res.redirect('Game');
-                }
             }
         });
-
 });
 
 
-/******************************** JOIN LOGIC  ************************************/
+    /******************************** JOIN LOGIC  ************************************/
 
-/* GET Join page. */
-router.get('/Join', utils.requireLogin, function (req, res, next) {
-    //console.log("i'm here in .get Join");
-    res.render('Join.pug');
-});
+    /* GET Join page. */
+    router.get('/Join', utils.requireLogin, function (req, res, next) {
+        //console.log("i'm here in .get Join");
+        res.render('Join.pug');
+    });
 
 /* POST Join page. */
 router.post('/Join', function (req, res, next) {
@@ -213,7 +266,7 @@ router.post('/Join', function (req, res, next) {
 
                 req.session['success'] = 'User Joined Game';
                 req.session['gameName'] = game.gameName;
-                res.redirect('Game');
+                res.redirect('Play');
 
 
             }
@@ -238,7 +291,7 @@ router.post('/Join', function (req, res, next) {
 
 
 /* GET Game page. */
-router.get('/Game', utils.requireLogin, function (req, res, next) {
+router.get('/Play', utils.requireLogin, function (req, res, next) {
 
     if (req.session['success'] == 'User Created Game') {
         console.log("Yes a user just created a game!");
@@ -257,16 +310,16 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
                     req.session['gameName'] = null;
 
                     // checks that the game has not been set to full for player to join
-                    if(game.gameFull){
+                    if (game.gameFull) {
                         console.log("The Game Is Full");
-                        myInvalidCode = "Game room, \""+game.gameName+"\" is currently full, please try again"
+                        myInvalidCode = "Game room, \"" + game.gameName + "\" is currently full, please try again"
                         res.render('Join.pug', { invalidCode: myInvalidCode });
-                    }else{
+                    } else {
                         Question.find()
                             .then(function (words) {
                                 res.render('Game.pug', {
                                     title: 'Question Creator', userName: req.user.username,
-                                    wordsList: words, categories:game.category , rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName
+                                    wordsList: words, categories: game.category, rounds: game.rounds, numberOfPlayers: game.playerNumber, gameName: game.gameName
                                 }); //["words", "people"]
                             });
                     }
@@ -304,7 +357,7 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
                         // checks that the game has not been set to full for player to join
                         if (game.gameFull) {
                             console.log("The Game Is Full");
-                            myInvalidCode = "Game room, \""+game.gameName+"\" is currently full, please try again"
+                            myInvalidCode = "Game room, \"" + game.gameName + "\" is currently full, please try again"
                             res.render('Join.pug', { invalidCode: myInvalidCode });
                         } else {
                             Question.find()
@@ -315,7 +368,7 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
                                     }); //["words", "people"]
                                 });
                         }
-                    }    
+                    }
                     else {
                         req.session['gameName'] = null;
                     }
@@ -337,12 +390,12 @@ router.get('/Game', utils.requireLogin, function (req, res, next) {
 
 
 /* POST Game page. */
-router.post('/Game', function (req, res, next) {
+router.post('/Play', function (req, res, next) {
     console.log("I'm in the Game post");
     console.log(req.body.myChoice);
 
     // Posting for game and user data is happening in the socket.js in models
-    res.redirect('/games');
+    res.redirect('/Game');
 
     /*
         if (req.body.myChoice == 'choseNo')
@@ -483,9 +536,9 @@ router.patch('/questions/:id', function (req, res) {
     /*var theQuestion = req.params.id;
     var query = { question: theQuestion };
     var newAnswer = document.getElementById("editAnswer").value;
-
+ 
     Model.findOneAndUpdate(query, { $set: {answer: newAnswer }}, options, callback)
-
+ 
     MyModel.findOneAndUpdate(
         query, // find a document with that filter
         modelDoc, // document to insert when nothing was found

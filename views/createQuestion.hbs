@@ -7,11 +7,11 @@
     <div style='color:black'>
         <span id="chooseCat">Choose Category:</span>
         <select id="category" name="category">
-        <option value="words">Weird Words</option>
-        <option value="people">Peculiar People</option>
-        <option value="initials">Incredible Initials</option>
-        <option value="movies">Marvelous Movies</option>
-        <option value="laws">Laughable Laws</option>
+        <option value="words">Weird Words/Definitions</option>
+        <option value="people">Famous People</option>
+        <option value="initials">Incredible Initials (Acronyms)</option>
+        <option value="movies">Movie Headlines</option>
+        <option value="laws">Ludicrous Laws</option>
         </select>
         <br>
         <br>
@@ -42,7 +42,7 @@
         <button class="dropbtn">Weird Words/Definitions</button>
         <div class="dropdown-content">
             {{#each wordsList}}
-                <a href="/games/editQuestion/{{_id}}">{{ question }}</a>
+                <a href="/Game/editQuestion/{{_id}}">{{ question }}</a>
             {{/each}}
         </div>
     </div>
@@ -50,7 +50,7 @@
         <button class="dropbtn">Famous People</button>
         <div class="dropdown-content">
             {{#each peopleList}}
-                <a href="/games/editQuestion/{{_id}}">{{ question }}</a>
+                <a href="/Game/editQuestion/{{_id}}">{{ question }}</a>
             {{/each}}
         </div>
     </div>
@@ -58,7 +58,7 @@
         <button class="dropbtn">Incredible Initials (Acronyms)</button>
         <div class="dropdown-content">
             {{#each initialsList}}
-                <a href="/games/editQuestion/{{_id}}">{{ question }}</a>
+                <a href="/Game/editQuestion/{{_id}}">{{ question }}</a>
             {{/each}}
         </div>
     </div>
@@ -66,15 +66,15 @@
         <button class="dropbtn">Movie Headlines</button>
         <div class="dropdown-content">
             {{#each moviesList}}
-                <a href="/games/editQuestion/{{_id}}">{{ question }}</a>
+                <a href="/Game/editQuestion/{{_id}}">{{ question }}</a>
             {{/each}}
         </div>
     </div>
     <div class="dropdown">
-        <button class="dropbtn">Ludicrous Law</button>
+        <button class="dropbtn">Ludicrous Laws</button>
         <div class="dropdown-content">
             {{#each lawsList}}
-                <a href="/games/editQuestion/{{_id}}">{{ question }}</a>
+                <a href="/Game/editQuestion/{{_id}}">{{ question }}</a>
             {{/each}}
         </div>
     </div>
