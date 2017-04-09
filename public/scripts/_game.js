@@ -32,7 +32,7 @@ window.onload = () => {
     var myCounter;
 
     function startTimer(gameRound) {
-        var totaltime = 15;
+        var totaltime = 14.75;
 
         // Clear Timer before starting    
         //var count = 0;
@@ -57,11 +57,11 @@ window.onload = () => {
         }
         var count = parseInt($('.time').text());
         myCounter = setInterval(function () {
-            count += 1;
+            count += .25;
             $('.time').html(count);
             update(count);
             if (count == totaltime) clearInterval(myCounter);
-        }, 1000);
+        }, 250);
     }
     
 
@@ -796,7 +796,7 @@ window.onload = () => {
 
         }
 
-        setTimeout(startOver, 3000);
+        //setTimeout(startOver, 3000);
     });
 
 

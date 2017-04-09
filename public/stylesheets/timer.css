@@ -5,7 +5,7 @@
   position: relative;
   border-radius: 50%;
   background-color: #00b5e8;
-  border: 4px solid #0022ff;
+  border: 4px solid #ffffff;
   margin: auto;
 }
 .pie .block {
@@ -25,6 +25,7 @@
   top: 30%;
   left: 41%;
   color: #ffffff;
+  display: none;
 }
 
 .degree {
