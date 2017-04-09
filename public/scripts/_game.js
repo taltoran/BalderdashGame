@@ -156,41 +156,29 @@ window.onload = () => {
             myCategory = myWordsList[randomNum].category
         }
 
-        
-        if (categoryCount ==myCategories.length-1)
-        {
-            categoryCount = 0;
-        }
-        else
-        {
-            categoryCount +=1;
-        }
-        
-            
-        
-
         if (myChosenWords[myQuestion] == "true")
         {
           var myCount = 0
-          while (myChosenWords[myQuestion] == "true" && myWordsList[randomNum].category != myCategories[categoryCount] &&myCount <200)
+          while ((myChosenWords[myQuestion] == "true" || myWordsList[randomNum].category != myCategories[categoryCount])  && myCount <200)
           {
             randomNum= Math.floor(Math.random() * (myWordsList.length));
             myQuestion = myWordsList[randomNum].question
             myCategory = myWordsList[randomNum].category
             myCount +=1;
           }
-          myChosenWords[myQuestion] = "true"
+          myChosenWords[myQuestion] = "true";
           if (myCount ==200)
           {
                 myChosenWords = {};
-                myCount = 0
-                while (myChosenWords[myQuestion] == "true" && myWordsList[randomNum].category != myCategories[categoryCount] &&myCount <200)
+                myCount = 0;
+                while (myChosenWords[myQuestion] == "true" || myWordsList[randomNum].category != myCategories[categoryCount] || myCount <200)
                 {
                     randomNum= Math.floor(Math.random() * (myWordsList.length));
                     myQuestion = myWordsList[randomNum].question;
                     myCategory = myWordsList[randomNum].category;
                     myCount +=1;
                 }
+                myChosenWords[myQuestion] = "true";
           }
           myCount = 0;
         }
@@ -203,7 +191,17 @@ window.onload = () => {
         gamediv.innerHTML += "<div style='padding:10px'>";
         //gamediv.innerHTML += "  <p> Category: "+myCategory+"</p>" //
         gamediv.innerHTML += "  <button class=sendQuestion value=\""+myQuestion+"\" name=\" "+myQuestion+"\">"+ myCategory + ": "+myQuestion + "</button>";
-        gamediv.innerHTML += "</div>";        
+        gamediv.innerHTML += "</div>";      
+
+        if (categoryCount ==myCategories.length-1)
+        {
+            
+            categoryCount = 0;
+        }
+        else
+        {
+            categoryCount +=1;
+        }  
 
     }
     
@@ -271,6 +269,9 @@ window.onload = () => {
                 rounds: myRounds,
                 //setCurrentQuestion: myQuestion    
             });
+
+            var count = 0;
+            var categoryCount = 0;
             
             for (var i = 0; i<5; i++)
             {  
@@ -285,20 +286,10 @@ window.onload = () => {
                     myCategory = myWordsList[randomNum].category;
                 }
 
-                
-                if (categoryCount ==myCategories.length-1)
-                {
-                    categoryCount = 0;
-                }
-                else
-                {
-                    categoryCount +=1;
-                }
-
                 if (myChosenWords[myQuestion] == "true")
                 {
                     var myCount = 0
-                    while (myChosenWords[myQuestion] == "true" && myWordsList[randomNum].category != myCategories[categoryCount] &&myCount <200)
+                    while ((myChosenWords[myQuestion] == "true" || myWordsList[randomNum].category != myCategories[categoryCount]) &&myCount <200)
                     {
                         randomNum= Math.floor(Math.random() * (myWordsList.length));
                         myQuestion = myWordsList[randomNum].question;
@@ -318,6 +309,7 @@ window.onload = () => {
                             myCategory = myWordsList[randomNum].category;
                             myCount +=1;
                         }
+                        myChosenWords[myQuestion] = "true"
                         /*
                         for (var j=0; j<myChosenWords.length; j++)
                         {
@@ -335,6 +327,15 @@ window.onload = () => {
                 $(sendButton[i]).val(myQuestion);
                 //gamediv.innerHTML += "  <p> Category: "+myCategory+"</p>"
                 $(sendButton[i]).text(myCategory+": "+myQuestion);
+
+                if (categoryCount ==myCategories.length-1)
+                {
+                    categoryCount = 0;
+                }
+                else
+                {
+                    categoryCount +=1;
+                }
             }
 
             //used to give users 15 seconds to enter their answers
