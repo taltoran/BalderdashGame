@@ -15,14 +15,54 @@ window.onload = () => {
     //used to get input answer
     var inputAnswer = document.getElementById("inputAnswer");
     var answers = document.getElementById("answers");
+    var answerSent = new Boolean(false);
 
     //***used to see if all users have chosen an answer
     var usersChosenAnswer = 0;
+    var answerPicked = new Boolean(false);
+    var answerTimeout = new Boolean(false); 
+    var answerMessagesButton = document.getElementsByClassName("answerText");
 
     //used to display scores at end of each round
     var scores = document.getElementById("scores");
     //used to display final scores
     var finalscores = document.getElementById("finalscores");
+
+    // Timer 
+    var myCounter;
+
+    function startTimer(gameRound) {
+        var totaltime = 14.75;
+
+        // Clear Timer before starting    
+        //var count = 0;
+        $('.time').html('0');
+        $('.pie').css('background-image',
+            'linear-gradient(' + 90 + 'deg, transparent 50%, white 50%),linear-gradient(90deg, white 50%, transparent 50%)'
+        );
+
+        function update(percent) {
+            var deg;
+            if (percent < (totaltime / 2)) {
+                deg = 90 + (360 * percent / totaltime);
+                $('.pie').css('background-image',
+                    'linear-gradient(' + deg + 'deg, transparent 50%, white 50%),linear-gradient(90deg, white 50%, transparent 50%)'
+                );
+            } else if (percent >= (totaltime / 2)) {
+                deg = -90 + (360 * percent / totaltime);
+                $('.pie').css('background-image',
+                    'linear-gradient(' + deg + 'deg, transparent 50%, #00b5e8 50%),linear-gradient(90deg, white 50%, transparent 50%)'
+                );
+            }
+        }
+        var count = parseInt($('.time').text());
+        myCounter = setInterval(function () {
+            count += .25;
+            $('.time').html(count);
+            update(count);
+            if (count == totaltime) clearInterval(myCounter);
+        }, 250);
+    }
     
 
     
@@ -116,59 +156,60 @@ window.onload = () => {
             myCategory = myWordsList[randomNum].category
         }
 
-        
-        if (categoryCount ==myCategories.length-1)
-        {
-            categoryCount = 0;
-        }
-        else
-        {
-            categoryCount +=1;
-        }
-        
-            
-        
-
         if (myChosenWords[myQuestion] == "true")
         {
           var myCount = 0
-          while (myChosenWords[myQuestion] == "true" && myWordsList[randomNum].category != myCategories[categoryCount] &&myCount <200)
+          while ((myChosenWords[myQuestion] == "true" || myWordsList[randomNum].category != myCategories[categoryCount])  && myCount <200)
           {
             randomNum= Math.floor(Math.random() * (myWordsList.length));
             myQuestion = myWordsList[randomNum].question
             myCategory = myWordsList[randomNum].category
             myCount +=1;
           }
-          myChosenWords[myQuestion] = "true"
+          myChosenWords[myQuestion] = "true";
           if (myCount ==200)
           {
                 myChosenWords = {};
-                myCount = 0
-                while (myChosenWords[myQuestion] == "true" && myWordsList[randomNum].category != myCategories[categoryCount] &&myCount <200)
+                myCount = 0;
+                while (myChosenWords[myQuestion] == "true" || myWordsList[randomNum].category != myCategories[categoryCount] || myCount <200)
                 {
                     randomNum= Math.floor(Math.random() * (myWordsList.length));
                     myQuestion = myWordsList[randomNum].question;
                     myCategory = myWordsList[randomNum].category;
                     myCount +=1;
                 }
+                myChosenWords[myQuestion] = "true";
           }
           myCount = 0;
         }
         else
         {
-          myChosenWords[myQuestion] = "true"
+          myChosenWords[myQuestion] = "true";
         }
         //var myString= "<button class=sendQuestion name=\""+myQuestion+"\">"+ myQuestion + "</button>";
         //console.log(myString);
-        gamediv.innerHTML += "<div style='padding:10px'>"
+        gamediv.innerHTML += "<div style='padding:10px'>";
         //gamediv.innerHTML += "  <p> Category: "+myCategory+"</p>" //
         gamediv.innerHTML += "  <button class=sendQuestion value=\""+myQuestion+"\" name=\" "+myQuestion+"\">"+ myCategory + ": "+myQuestion + "</button>";
-        gamediv.innerHTML += "</div>"
+        gamediv.innerHTML += "</div>";      
+
+        if (categoryCount ==myCategories.length-1)
+        {
+            
+            categoryCount = 0;
+        }
+        else
+        {
+            categoryCount +=1;
+        }  
+
     }
     
+    // Timer
+    gamediv.innerHTML += "<div style='padding:10px'>";
+    gamediv.innerHTML += '<div class="pie degree"><span class="block"></span><span class="time" id="time1">0</span></div>';
 
-    
-    
+
 
 /*
     sendAnswer.onclick = function() {
@@ -228,6 +269,9 @@ window.onload = () => {
                 rounds: myRounds,
                 //setCurrentQuestion: myQuestion    
             });
+
+            var count = 0;
+            var categoryCount = 0;
             
             for (var i = 0; i<5; i++)
             {  
@@ -242,20 +286,10 @@ window.onload = () => {
                     myCategory = myWordsList[randomNum].category;
                 }
 
-                
-                if (categoryCount ==myCategories.length-1)
-                {
-                    categoryCount = 0;
-                }
-                else
-                {
-                    categoryCount +=1;
-                }
-
                 if (myChosenWords[myQuestion] == "true")
                 {
                     var myCount = 0
-                    while (myChosenWords[myQuestion] == "true" && myWordsList[randomNum].category != myCategories[categoryCount] &&myCount <200)
+                    while ((myChosenWords[myQuestion] == "true" || myWordsList[randomNum].category != myCategories[categoryCount]) &&myCount <200)
                     {
                         randomNum= Math.floor(Math.random() * (myWordsList.length));
                         myQuestion = myWordsList[randomNum].question;
@@ -275,6 +309,7 @@ window.onload = () => {
                             myCategory = myWordsList[randomNum].category;
                             myCount +=1;
                         }
+                        myChosenWords[myQuestion] = "true"
                         /*
                         for (var j=0; j<myChosenWords.length; j++)
                         {
@@ -292,6 +327,15 @@ window.onload = () => {
                 $(sendButton[i]).val(myQuestion);
                 //gamediv.innerHTML += "  <p> Category: "+myCategory+"</p>"
                 $(sendButton[i]).text(myCategory+": "+myQuestion);
+
+                if (categoryCount ==myCategories.length-1)
+                {
+                    categoryCount = 0;
+                }
+                else
+                {
+                    categoryCount +=1;
+                }
             }
 
             //used to give users 15 seconds to enter their answers
@@ -310,7 +354,7 @@ window.onload = () => {
         //adds to gamediv3
         chosenQuestionTwo.innerHTML = currentChosenCategoryNQuestion;//msg.text;
     });
-
+/*
 //in testing right now. this cuts off people who take more than 15 seconds to answer question.
 //and shows the answers that have been entered.
     socket.on('showAnswersTimeout', (msg)=>{
@@ -325,7 +369,34 @@ window.onload = () => {
         socket.emit('showAnswers', {
         });
     }
+    */
 
+// Timeout Emits
+    // Randomly clicks a question button after 15 seconds
+    socket.on('timeoutHostQuestion', (msg) => {
+
+        let randomNum = Math.floor(Math.random() * (sendButton.length - 1));
+        //alert("numQuestions: " + msg.numQuestions + "random: " + randomNum);
+        $(sendButton[randomNum]).click();
+    });   
+    // Sends blank answer on timeout
+    socket.on('timeoutSendQuestion', (msg) => {
+        
+        if (answerSent == false) {  
+            //alert("timeout answerSent " + answerSent);          
+            $('.send_message').click();
+        }            
+    });
+    // Clicks a null answer for zero points on timeout
+    socket.on('timeoutSend', (msg) => {
+
+        //alert("timeoutSend " + answerPicked);
+        if (answerPicked == false) {
+            //alert("timeoutSend answerPicked " + answerPicked);
+            answerTimeout = true;
+            answerMessagesButton[0].click();            
+        }        
+    });  
 
 //once everyone has joined the game the host name is saved.
 //this will call to show the host the first screen, 
@@ -358,6 +429,7 @@ window.onload = () => {
 
         //this is where it calls to show host first screen
         socket.emit('showHostFirstScreen', {
+            username: msg.username
         });
         return $hosts.animate({ scrollTop: $hosts.prop('scrollHeight') }, 300);
     });
@@ -404,6 +476,10 @@ window.onload = () => {
         $("#loadingScreen").hide();
         $("#questionWait").hide();
         $("div.gamediv2").show();
+
+        // Timer
+        clearInterval(myCounter);
+        startTimer();
     });
 
 
@@ -420,6 +496,10 @@ window.onload = () => {
         console.log('get message')
         console.log(msg.username);
         console.log(msg.text);
+
+        // reset timeout variable
+        //answerSent = false;
+        //alert("answerMessage answerSent " + answerSent);
 
         var $answerMessages, answerMessage;
         if (msg.text.trim() === '') {
@@ -465,7 +545,7 @@ window.onload = () => {
                     ul.appendChild(ul.children[Math.random() * i | 0]);
                 }
 
-                var answerMessagesButton = document.getElementsByClassName("answerText");
+                //var answerMessagesButton = document.getElementsByClassName("answerText");
 
 
                 if (firstTimeThroughAnswer == 0)
@@ -503,11 +583,22 @@ window.onload = () => {
                         $("#answerChosen").show();
                         $("div.gamediv3").hide();
                         firstTimeThroughAnswer = 0;
-                
                         
+                        answerPicked = true;
+
+                        var buttonText = this.innerHTML;
+                        //alert("answerPicked: " + answerPicked);
+
+                        //alert("answerTimeout: " + answerTimeout);
+                        if (answerTimeout == true) {
+                            buttonText = "no response";
+                            answerTimeout = false;
+                        }                        
+                        
+                        //alert("buttonText: "+buttonText);
                         socket.emit('addToChosenAnswer', { 
-                        text: this.innerHTML,
-                        username: user
+                            text: buttonText,
+                            username: user
                         });
                         
 
@@ -536,6 +627,10 @@ window.onload = () => {
         
         $("#answerWait").hide();
         $("div.gamediv3").show();
+
+        // Timer
+        clearInterval(myCounter);
+        startTimer();
     });
 
 
@@ -637,7 +732,11 @@ window.onload = () => {
         //scores.innerHTML = "";
         $("#finalscores").hide();
         $("#gamediv").show();
-        $("#questionWait").hide();        
+        $("#questionWait").hide();
+
+        // Timer
+        clearInterval(myCounter);
+        startTimer();        
     });
 
 
@@ -645,10 +744,16 @@ window.onload = () => {
     //used for showscores
     var myTempCount = 0;
     socket.on('showScores', function (msg) {
-        console.log("I'm in show scores. heres the innerHTML:");
+        console.log("I'm in show scores. heres the innerHTML:");        
+
         //alert(scores.innerHTML);
         scores.innerHTML = msg.text+ "</br><h1>User Answers: </h1>"+scoresHtml;
         
+        // Reset Timeout Variable
+        answerSent = false;
+        answerPicked = false;
+        //alert("showFinalScores: answerSent " + answerSent);
+        //alert("showFinalScores: answerPicked " + answerPicked);
 
         $('.message_input').val('');
 
@@ -680,7 +785,7 @@ window.onload = () => {
             $("#questionWait").show();
 
             socket.emit('showHostFirstScreen', {
-            
+                username: msg.username
             });
 
             var $answerMessage;
@@ -691,13 +796,20 @@ window.onload = () => {
 
         }
 
-        setTimeout(startOver, 3000);
+        //setTimeout(startOver, 3000);
     });
 
 
 
 //used to show final scores at the end of the game
     socket.on('showFinalScores', function (msg) {
+
+        // Reset Timeout Variable
+        answerSent = false;
+        answerPicked = false;
+        //alert("showFinalScores: answerSent " + answerSent);
+        //alert("showFinalScores: answerPicked " + answerPicked);
+        
         console.log("I'm in show final scores. heres the innerHTML:");
         //alert(finalscores.innerHTML);
         $('.message_input').val('');
@@ -769,8 +881,12 @@ window.onload = () => {
         //$("#gamediv").show();
         $("#questionWait").show();
 
+        // Reset Timeout Variable
+        answerSent = false;
+        answerPicked = false;
+
         socket.emit('showHostFirstScreen', {
-        
+            username: msg.username
         });
         
         var $answerMessage;
@@ -814,7 +930,7 @@ window.onload = () => {
             
             if ($message_input.val() ==null || $message_input.val()=="") 
             { 
-                return "blank response"; 
+                return "no response"; 
             } 
             else 
             { 
@@ -823,10 +939,15 @@ window.onload = () => {
         };
         sendMessage = function (text) {
             console.log('send: ' + text);
+
+            // keeps track if user sent an answer
+            answerSent = true;
+            
+            //alert("sendMessage answerSent " + answerSent);
             socket.emit('send', { 
                 username: user,
                 text: text 
-            });
+            });            
         };
         
         
@@ -834,7 +955,7 @@ window.onload = () => {
         $('.send_message').click(function (e) {
             console.log("I clicked .send_message button"); 
             $("div.gamediv2").hide();
-            $("#answerWait").show();
+            $("#answerWait").show();            
             return sendMessage(getMessageText());
         });
 
